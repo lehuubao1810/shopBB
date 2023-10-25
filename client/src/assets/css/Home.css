@@ -41,6 +41,9 @@
     color: #82869e;
     font-weight: 500;
 }
+.listProduct__header a:hover {
+    color: #0248b8;
+}
 .listProduct__content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
