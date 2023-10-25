@@ -76,7 +76,7 @@ function Footer() {
             </div>
           </div>
         </div>
-        <div className="footer__col">
+        <div className="footer__col bank">
           <div className="footer__col__title">
             Danh sách các ngân hàng có thể thanh toán
           </div>

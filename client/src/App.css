@@ -148,6 +148,9 @@ nav ul li:hover {
   position: relative;
   margin-top: 90px;
 }
+.slideShow img {
+  height: 600px;
+}
 
 /* Product Card */
 .productCard {
@@ -161,7 +164,7 @@ nav ul li:hover {
   object-fit: cover;
   cursor: pointer;
 }
-.productName {
+.productCard .productName {
   height: 60px;
   margin: 10px 0;
   color: #4f4e4e;
@@ -183,4 +186,95 @@ nav ul li:hover {
 }
 .discount {
   color: #0248b8;
+}
+
+
+/* Footer */
+footer {
+  border-top: 4px solid #0248b8;
+  padding: 40px 12%;
+}
+.footer__row {
+  display: flex;
+  gap: 200px;
+  margin-bottom: 20px;
+}
+
+.footer__row a {
+  display: block;
+  text-decoration: none;
+  color: #616161;
+}
+.footer__row a:hover {
+  color: #0248b8;
+}
+.footer__col__title {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #333;
+}
+.footer__col__item {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #616161;
+}
+.footer__payment {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.payment__item {
+  text-align: center;
+  color: #616161;
+  width: 80px;
+}
+.payment__item i {
+  font-size: 28px;
+}
+.payment__item p {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Responsive */
+/* Phone */
+@media only screen and (max-width: 480px) {
+  /* CSS rules for phone screens */
+  /* Header responsive */
+  header {
+    display: none;
+  }
+
+  /* Slide Show responsive */
+  .slideShow {
+    margin-top: 60px;
+  }
+  .slideShow img {
+    height: 200px;
+  }
+
+  /* Product Card responsive */
+  .productCard .productName {
+    height: 95px;
+  }
+
+  /* Up btn responsive */
+
+  /* Footer responsive */
+  footer {
+    padding: 20px 5%;
+  }
+  .footer__row {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .footer__col {
+    margin-bottom: 15px;
+  }
+  .footer__row .bank {
+    display: none;
+  }
 }

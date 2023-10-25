@@ -55,7 +55,6 @@ function SlideShow() {
           style={{
             display: index === currentImageIndex ? "block" : "none",
             width: "100%",
-            height: "600px",
             objectFit: "cover",
           }}
         />
