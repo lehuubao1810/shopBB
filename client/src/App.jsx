@@ -12,7 +12,7 @@ import Product from './pages/Product'
 function App() {
   // const { user } = useAuth()
 
-  const user = true
+  const user = false
 
   return (
     <Router>
