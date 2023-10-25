@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 10%;
+  box-shadow: 0 0 10px 5px #949393;
+}
+
+.category {
+  border: 1px solid #949393;
+  padding: 6px 16px;
+  height: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
