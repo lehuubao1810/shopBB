@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import '../assets/css/Register.css'
+import "../assets/css/Register.css"
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -50,7 +50,7 @@ const Register = () => {
     };
 
     return (
-        <div>
+        <div className='registerPage'>
             <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <div>
