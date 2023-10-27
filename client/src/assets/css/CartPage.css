@@ -154,7 +154,10 @@
   .cartPage__content_products__header__title {
     grid-template-columns: 6fr 2fr 2fr;
   }
-  .cartPage__content_products__header__title span:nth-last-child(1) {
+  .cartPage__content_products__header__title span {
     display: none;
+  }
+  .cartPage__content_products__header__title span:nth-child(1) {
+    display: inline-block;
   }
 }

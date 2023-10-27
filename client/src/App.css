@@ -388,6 +388,18 @@ footer {
     display: none;
   }
   .productCart__content__info {
-    grid-template-columns: 5.75fr 2.25fr 2fr;
+    grid-template-columns: 1fr;
   }
+  .productCart__content__info__quantity {
+    border: none;
+  }
+  .productCart__content__gift__item i {
+    color: #f83142;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .productCart__content__gift__item span {
+    color: #333;
+    font-size: 12px;
+  } 
 }
