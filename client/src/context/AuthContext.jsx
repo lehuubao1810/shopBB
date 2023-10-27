@@ -1,25 +1,29 @@
 import { useContext, createContext, useState } from "react";
+import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
-function AuthContextProvider({children}) {
+export default function AuthContextProvider({children}) {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
+
     const login = async (email, password) => {
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch("https://reqres.in/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
             const data = await response.json();
-            if (response.ok) {
-                setUser(data.user);
+            if (data.token) {
+                Cookies.set("token", data.token); // save token in cookie
+                setUser(data.token);
                 setError(null);
             } else {
-                setError(data.message);
+                setError(data.error);
             }
         } catch (error) {
             setError(error.message);
@@ -66,4 +70,6 @@ function AuthContextProvider({children}) {
     );
 }
 
-export default AuthContextProvider;
+AuthContextProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+}

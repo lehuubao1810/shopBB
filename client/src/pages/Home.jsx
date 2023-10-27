@@ -9,79 +9,9 @@ import image4 from "../assets/images/small-banner/4.png";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
+import { products } from "../context/products";
+
 export default function Home() {
-  const products = [
-    {
-      id: 1,
-      name: "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      slug: "apple-macbook-air-m1-256gb-2020-i-chinh-hang-apple-viet-nam",
-      imgUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/a/i/air_m2.png",
-      price: 22990000,
-      brand: "Apple",
-      category: "Laptop",
-      description:
-        "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      rating: 4.5,
-      discount: 0.16,
-    },
-    {
-      id: 2,
-      name: "Apple Macbook Pro 13 M2 2022 8GB 256GB I Chính hãng Apple Việt Nam",
-      slug: "apple-macbook-pro-13-m2-2022-8gb-256gb-i-chinh-hang-apple-viet-nam",
-      imgUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/p/r/pro-m2.jpg",
-      price: 35990000,
-      brand: "Apple",
-      category: "Laptop",
-      description:
-        "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      rating: 4.5,
-      discount: 0.18,
-    },
-    {
-      id: 3,
-      name: "Laptop ASUS TUF Gaming F15 FX506HC-HN144W",
-      slug: "laptop-asus-tuf-gaming-f15-fx506hc-hn144w",
-      imgUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/5/h/5h53.png",
-      price: 22190000,
-      brand: "Apple",
-      category: "Laptop",
-      description:
-        "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      rating: 4.5,
-      discount: 0.19,
-    },
-    {
-      id: 4,
-      name: "Laptop gaming MSI GF63 Thin 11SC 664VN",
-      slug: "laptop-gaming-msi-gf63-thin-11sc-664vn",
-      imgUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_21_.png",
-      price: 16490000,
-      brand: "Apple",
-      category: "Laptop",
-      description:
-        "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      rating: 4.5,
-      discount: 0.09,
-    },
-    {
-      id: 5,
-      name: "Laptop Asus VivoBook Go 14 E1404FA-NK177W",
-      slug: "laptop-asus-vivobook-go-14-e1404fa-nk177w",
-      imgUrl:
-        "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_-_2023-06-08t005130.908.png",
-      price: 14490000,
-      brand: "Apple",
-      category: "Laptop",
-      description:
-        "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam",
-      rating: 4.5,
-      discount: 0.08,
-    },
-  ];
 
   return (
     <div className="homePage">

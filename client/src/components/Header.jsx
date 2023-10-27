@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState} from "react";
+import { useCart } from "../context/CartContext";
 
 function Header() {
   const [isShow, setIsShow] = useState(false);
@@ -7,8 +8,9 @@ function Header() {
     if (isShow) setIsShow(false);
   }
 
-  const [cartItems, setCartItems] = useState([]);
-  const [search, setSearch] = useState("");
+  const { cartQuantity } = useCart();
+
+  // const [search, setSearch] = useState("");
 
   return (
     <header onClick={handleCloseNav}>
@@ -21,6 +23,7 @@ function Header() {
       </div>
       {isShow && (
         <nav
+          className="nav"
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -75,9 +78,9 @@ function Header() {
         <input
           type="text"
           placeholder="Nhập sản phẩm cần tìm"
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
+          // onChange={(e) => {
+          //   setSearch(e.target.value);
+          // }}
         />
         <i className="fa-solid fa-magnifying-glass btnSearch"></i>
       </div>
@@ -96,7 +99,7 @@ function Header() {
           <i className="fa-solid fa-cart-shopping"></i>
           <div>
             Giỏ hàng của bạn
-            <br />({cartItems.length}) sản phẩm
+            <br />({cartQuantity}) sản phẩm
           </div>
         </a>
       </div>

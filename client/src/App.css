@@ -1,10 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+/* MUI */
+.MuiInputLabel-root {
+  background-color: #f8f8fc;
+  padding-right: 8px !important;
 }
 
 /* Header */
@@ -69,7 +75,8 @@ header {
   cursor: pointer;
 }
 
-.login a, .cart a{
+.login a,
+.cart a {
   display: flex;
   gap: 15px;
   align-items: center;
@@ -78,9 +85,15 @@ header {
   font-size: 13px;
   font-weight: 500;
   line-height: 1.6;
+  transition: all 0.3s ease;
 }
-.login a i, .cart a i{
+.login a i,
+.cart a i {
   font-size: 25px;
+}
+.login:hover a,
+.cart:hover a {
+  color: #0248b8;
 }
 .overlay {
   position: fixed;
@@ -92,36 +105,37 @@ header {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
-nav {
+.nav {
   position: absolute;
   top: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-nav ul {
+.nav ul {
   background-color: #fff;
   border-radius: 5px;
 }
-nav ul li {
+.nav ul li {
   list-style: none;
   padding: 8px 30px 8px 20px;
   cursor: pointer;
 }
-nav li a {
+.nav li a {
   text-decoration: none;
   color: #333;
   font-size: 13px;
   font-weight: 500;
 }
-nav i {
+.nav i {
   width: 16px;
   font-size: 16px;
   text-align: center;
   margin-right: 10px;
   color: #616161;
 }
-nav ul li:hover a{
+.nav ul li:hover a {
   color: #0248b8;
 }
-nav ul li:hover {
+.nav ul li:hover {
   background-color: #f3f5fc;
 }
 
@@ -188,6 +202,97 @@ nav ul li:hover {
   color: #0248b8;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* productCart */
+.productCart {
+  display: flex;
+  margin-bottom: 40px;
+  align-items: center;
+}
+.productCart__content__info {
+  display: grid;
+  grid-template-columns: 5fr 1.75fr 1.5fr 1.75fr;
+  margin-bottom: 20px;
+  gap: 10px;
+  align-items: center;
+}
+.productCart__content__info p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.productCart__content__info p:nth-last-child(1) {
+  text-align: end;
+}
+.productCart__content__info del {
+  /* text-align: end; */
+  font-size: 13px;
+}
+.productCart__content__info__item {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.productCart__content__info__item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 0.5px solid #d4d4d4;
+}
+.productCart__content__info__item h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+.productCart__content__info__quantity {
+  width: 100%;
+  background-color: #f3f3f7;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 8px;
+  border-radius: 5px;
+  align-items: center;
+  border: 0.5px solid #d4d4d4;
+}
+.productCart__content__info__quantity span {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+.productCart__content__info__quantity button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.productCart__content__gift {
+  padding: 15px;
+  background-color: #f3f3f7;
+  border-radius: 5px;
+}
+.productCart__content__gift__item {
+  margin-bottom: 10px;
+}
+.productCart__content__gift__item:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.productCart__content__gift__item i {
+  color: #f83142;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.productCart__content__gift__item span {
+  color: #333;
+  font-size: 14px;
+}
 
 /* Footer */
 footer {
@@ -241,7 +346,7 @@ footer {
 
 /* Responsive */
 /* Phone */
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 700px) {
   /* CSS rules for phone screens */
   /* Header responsive */
   header {
@@ -276,5 +381,13 @@ footer {
   }
   .footer__row .bank {
     display: none;
+  }
+
+  /* productCart */
+  .productCart__content__info p:nth-last-child(1) {
+    display: none;
+  }
+  .productCart__content__info {
+    grid-template-columns: 5.75fr 2.25fr 2fr;
   }
 }

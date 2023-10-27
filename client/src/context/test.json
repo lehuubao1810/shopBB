@@ -1,0 +1,19 @@
+[
+    {
+        "name": "MacBook Pro",
+        "atributes": [
+            {
+                "name": "CPU",
+                "value": "Intel Core i7"
+            },
+            {
+                "name": "RAM",
+                "value": "16GB"
+            },
+            {
+                "name": "SSD",
+                "value": "512GB"
+            }
+        ]
+    }
+]

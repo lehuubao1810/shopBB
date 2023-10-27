@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../context/AuthContext";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -8,12 +10,16 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const { login } = useAuth();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle login logic here
-    if (email === "example@example.com" && password === "password") {
+    if (email !== "" && password !== "") {
+      await login(email, password);
+      alert("Login success");
+      navigate("/");
       setError("");
-      console.log("Logged in successfully!");
     } else {
       setError("Invalid email or password");
     }
