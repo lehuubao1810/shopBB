@@ -216,6 +216,10 @@
     padding: 15px;
     border-top: 0.5px solid #d4d4d4;
   }
+  .productPreview__info__right__btn button {
+    padding: 10px;
+    font-size: 14px;
+  }
   .productDetail {
     grid-template-columns: 1fr;
     gap: 40px;
