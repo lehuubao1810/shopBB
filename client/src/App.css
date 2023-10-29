@@ -384,6 +384,9 @@ footer {
   }
 
   /* productCart */
+  .productCart__content {
+    width: 100%;
+  }
   .productCart__content__info p:nth-last-child(1) {
     display: none;
   }

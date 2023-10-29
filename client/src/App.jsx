@@ -11,6 +11,8 @@ import Register from './pages/Register'
 import Category from './pages/Category'
 import Product from './pages/Product'
 import CartPage from './pages/CartPage'
+import CheckOut from './pages/Checkout'
+import ResponseCheckout from './pages/ResponseCheckout'
 
 function App() {
   // const { user } = useAuth()
@@ -24,6 +26,9 @@ function App() {
         <Route path="/:categoryName" element={<Category />} />
         <Route path="/:categoryName/:productSlug" element={<Product />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout/response" element={<ResponseCheckout />} />
+        {/* <Route path="*" element={<Navigate to="/" />} /> */}
+        <Route path="/checkout" element={<CheckOut />} />
         {user ? (
           <>
             <Route path="/login" element={<Navigate to="/" />} />

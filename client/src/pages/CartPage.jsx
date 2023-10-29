@@ -1,28 +1,73 @@
-// import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCart from "../components/ProductCart";
 import { useCart } from "../context/CartContext";
+import formatPrice from "../util/formatPrice";
 
 import "../assets/css/CartPage.css";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, addToCart, reduceQuantity } = useCart();
   const navigate = useNavigate();
-  function formatPrice(price) {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  }
+
+  // handle addAll, addOne, removeOne, removeAll to order through checkbox
+  const [order, setOrder] = useState([]);
+  const [isAll, setIsAll] = useState(false);
+
+  useEffect(() => {
+    if(!localStorage.getItem('order')){
+      localStorage.setItem('order', JSON.stringify([]))
+    }
+    const orderStorage = JSON.parse(localStorage.getItem('order'))
+    setOrder(orderStorage)
+  },[])
+
+  useEffect(() => {
+    localStorage.setItem('order', JSON.stringify(order))
+    setIsAll(order.length === cartItems.length)
+  },[order, cartItems])
 
   const calculateTotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+    return order.reduce(
+      (total, item) => total + (item.price * (1 - item.discount)) * item.quantity,
       0
     );
+  };
+
+  const handleCheckBoxAll = (e) => {
+    if (e.target.checked) {
+      setOrder(cartItems);
+    } else {
+      setOrder([]);
+    }
+  };
+
+  const handleCheckBox = (e, item) => {
+    if (e.target.checked) {
+      setOrder([...order, item]);
+    } else {
+      setOrder(order.filter((orderItem) => orderItem.id !== item.id));
+    }
+  };
+
+  const handleChangeQuantity = (item) => {
+    setOrder(
+      order.map((orderItem) =>
+        orderItem.id === item.id
+          ? { ...orderItem, quantity: item.quantity }
+          : orderItem
+      )
+    )
+  }
+  const handleDelete = (item) => {
+    setOrder(order.filter((orderItem) => orderItem.id !== item.id));
+  }
+
+  const checkIsExist = (item) => {
+    return order.some((orderItem) => orderItem.id === item.id);
   };
 
   return (
@@ -31,11 +76,12 @@ export default function CartPage() {
       <div className="cartPage__container">
         {cartItems.length === 0 ? (
           <div className="cartPage__container__empty">
-            <img src="https://shopfront-cdn.tekoapis.com/static/empty_cart.png" alt="empty cart" />
+            <img
+              src="https://shopfront-cdn.tekoapis.com/static/empty_cart.png"
+              alt="empty cart"
+            />
             <p>Không có sản phẩm nào trong giỏ hàng của bạn</p>
-            <button
-              onClick={() => navigate("/")}
-            >Quay lại mua sắm</button>
+            <button onClick={() => navigate("/")}>Quay lại mua sắm</button>
           </div>
         ) : (
           <>
@@ -43,7 +89,7 @@ export default function CartPage() {
             <div className="cartPage__container__content">
               <div className="cartPage__content_products">
                 <div className="cartPage__content_products__header">
-                  <input type="checkbox" />
+                  <input type="checkbox" onChange={(e) => handleCheckBoxAll(e)} checked={isAll}/>
                   <div className="cartPage__content_products__header__title">
                     <span>Sản phẩm</span>
                     <span>Đơn giá</span>
@@ -62,6 +108,10 @@ export default function CartPage() {
                       index={index}
                       removeFromCart={removeFromCart}
                       reduceQuantity={reduceQuantity}
+                      handleCheckBox={handleCheckBox}
+                      checkIsExist={checkIsExist}
+                      handleDelete={handleDelete}
+                      handleChangeQuantity={handleChangeQuantity}
                       addToCart={addToCart}
                     />
                   ))}
@@ -91,7 +141,9 @@ export default function CartPage() {
                     <span>Thành tiền</span>
                     <span>{formatPrice(calculateTotal())}</span>
                   </div>
-                  <button>Thanh toán</button>
+                  <button
+                    onClick={() => navigate("/checkout")}
+                  >Thanh toán</button>
                 </div>
               </div>
             </div>

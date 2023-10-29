@@ -1,24 +1,28 @@
 import PropTypes from "prop-types";
+import formatPrice from "../util/formatPrice";
 
 export default function ProductCart(props) {
-  function formatPrice(price) {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  }
 
   const handleDelete = () => {
     if (props.item.quantity === 1) {
       props.removeFromCart(props.item);
+      props.handleDelete(props.item);
     } else {
       props.reduceQuantity(props.item);
+      props.handleChangeQuantity(props.item);
     }
   };
 
+  const handleAdd = () => {
+    props.addToCart(props.item);
+    props.handleChangeQuantity(props.item);
+  }
+
+  // const 
+
   return (
     <div className="productCart">
-      <input type="checkbox" />
+      <input type="checkbox" onChange={(e) => props.handleCheckBox(e, props.item)} checked={props.checkIsExist(props.item)}/>
       <div key={props.index} className="productCart__content">
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
@@ -48,7 +52,7 @@ export default function ProductCart(props) {
               </svg>
             </button>
             <span>{props.item.quantity}</span>
-            <button onClick={() => props.addToCart(props.item)}>
+            <button onClick={handleAdd}>
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -101,4 +105,8 @@ ProductCart.propTypes = {
   removeFromCart: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
   reduceQuantity: PropTypes.func.isRequired,
+  handleCheckBox: PropTypes.func.isRequired,
+  checkIsExist: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleChangeQuantity: PropTypes.func.isRequired,
 };

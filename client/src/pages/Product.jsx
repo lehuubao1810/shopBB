@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CartContext";
+import formatPrice from "../util/formatPrice";
+import notify from "../util/notify";
 
 import "../assets/css/Product.css";
 
@@ -16,7 +18,7 @@ export default function Product() {
   console.log(productSlug);
   const navigate = useNavigate();
   const product = {
-    id: 1,
+    id: 4,
     name: "Laptop gaming MSI GF63 Thin 11SC 664VN",
     slug: "laptop-gaming-msi-gf63-thin-11sc-664vn",
     imgUrl:
@@ -69,32 +71,6 @@ export default function Product() {
 
   const priceDiscount = product.price * (1 - product.discount);
 
-  function formatPrice(price) {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  }
-
-  const notify = (type, message) => {
-    switch (type) {
-      case "success":
-        toast.success(message);
-        break;
-      case "error":
-        toast.error(message);
-        break;
-      case "warning":
-        toast.warning(message);
-        break;
-      case "info":
-        toast.info(message);
-        break;
-      default:
-        toast(message);
-        break;
-    }
-  };
   const { addToCart } = useCart();
   const handleAddToCart = () => {
     // add product to cart (local storage)

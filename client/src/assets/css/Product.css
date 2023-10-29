@@ -204,6 +204,9 @@
     flex-direction: column;
     align-items: center;
   }
+  .productPreview__info__left__img {
+    width: 100%;
+  }
   .productPreview__info__left__tech {
     display: none;
   }

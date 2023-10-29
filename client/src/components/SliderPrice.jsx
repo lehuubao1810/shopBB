@@ -3,15 +3,11 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import PropTypes from "prop-types";
 
+import formatPrice from "../util/formatPrice";
+
 export default function SliderPrice({ slug, handleFilterPrice }) {
   const [value, setValue] = useState([0, 120000000]);
 
-  function formatPrice(price) {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  }
 
   const handleChange = (e, newValue) => {
     setValue(newValue);

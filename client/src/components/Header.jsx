@@ -84,7 +84,7 @@ function Header() {
         />
         <i className="fa-solid fa-magnifying-glass btnSearch"></i>
       </div>
-      <div className="login">
+      {/* <div className="login">
         <a href="/login">
           <i className="fa-solid fa-circle-user"></i>
           <div>
@@ -93,7 +93,7 @@ function Header() {
             Đăng ký
           </div>
         </a>
-      </div>
+      </div> */}
       <div className="cart">
         <a href="/cart">
           <i className="fa-solid fa-cart-shopping"></i>
