@@ -225,3 +225,15 @@
 .checkOutPage__container__content__right__checkout button:hover {
   background-color: #043f9e;
 }
+
+/* Responsive */
+@media only screen and (max-width: 700px) {
+  /* CSS rules for phone screens */
+  .checkOutPage__container {
+    padding: 20px 5%;
+  }
+  
+  .checkOutPage__container__content {
+    grid-template-columns: 1fr;
+  }
+}
