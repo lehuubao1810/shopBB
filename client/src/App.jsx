@@ -11,7 +11,7 @@ import Register from './pages/Register'
 import Category from './pages/Category'
 import Product from './pages/Product'
 import CartPage from './pages/CartPage'
-import CheckOut from './pages/Checkout'
+import CheckOut from './pages/CheckOut'
 import ResponseCheckout from './pages/ResponseCheckout'
 
 function App() {
