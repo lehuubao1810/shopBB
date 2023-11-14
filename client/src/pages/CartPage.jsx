@@ -18,6 +18,10 @@ export default function CartPage() {
   const [isAll, setIsAll] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
     if(!localStorage.getItem('order')){
       localStorage.setItem('order', JSON.stringify([]))
     }

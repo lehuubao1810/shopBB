@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+import notify from "../utils/notify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import formatPrice from "../utils/formatPrice";
@@ -16,9 +19,12 @@ export default function CheckOut() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [city, setCity] = useState("Hà Nội");
-  const [district, setDistrict] = useState("Hà Đông");
-  const [ward, setWard] = useState("Dương Nội");
+  const [city, setCity] = useState([{ name: "Tỉnh, Thành phố" }]);
+  const [citySelected, setCitySelected] = useState("");
+  const [district, setDistrict] = useState([{ name: "Quận, Huyện" }]);
+  const [districtSelected, setDistrictSelected] = useState("");
+  const [ward, setWard] = useState([{ name: "Phường, Xã" }]);
+  const [wardSelected, setWardSelected] = useState("");
   const [address, setAddress] = useState("");
 
   const [note, setNote] = useState("");
@@ -30,7 +36,33 @@ export default function CheckOut() {
     }
     const orderStorage = JSON.parse(localStorage.getItem("order"));
     setOrder(orderStorage);
+
+    // get address from api
+    // const apiProvince = https://provinces.open-api.vn/api/
+    // const apiDistrict = https://provinces.open-api.vn/api/p/${provinceId}?depth=2
+    // const apiWard = https://provinces.open-api.vn/api/d/${districtId}?depth=2
+
+    fetch("https://provinces.open-api.vn/api/")
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setCity(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  const callApiDistrict = (provinceId) => {
+    fetch(`https://provinces.open-api.vn/api/p/${provinceId}?depth=2`)
+      .then((res) => res.json())
+      .then((data) => setDistrict(data.districts))
+      .catch((err) => console.log(err));
+  };
+  const callApiWard = (districtId) => {
+    fetch(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`)
+      .then((res) => res.json())
+      .then((data) => setWard(data.wards))
+      .catch((err) => console.log(err));
+  };
 
   const calculateTotal = () => {
     return order.reduce(
@@ -40,10 +72,31 @@ export default function CheckOut() {
   };
 
   const checkInput = () => {
-    if (name === "" || phone === "" || email === "" || address === "") {
+    if (
+      name === "" ||
+      phone === "" ||
+      email === "" ||
+      address === "" ||
+      citySelected === "" ||
+      districtSelected === "" ||
+      wardSelected === ""
+    ) {
       return false;
     }
     return true;
+  };
+
+  const sendOrderToEmail = (orderCheckout) => {
+    fetch("http://localhost:5000/api/mail/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderCheckout),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   };
 
   const handleCheckOut = () => {
@@ -52,7 +105,7 @@ export default function CheckOut() {
         customer: {
           name,
           phone,
-          address,
+          address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
         },
         email,
         products: order.map((item) => ({
@@ -62,11 +115,18 @@ export default function CheckOut() {
         total: calculateTotal(),
         payment,
       };
+      console.log(orderCheckout);
 
       if (payment === "Banking") {
-        alert("Thanh toán Banking tạm thời chưa hỗ trợ");
+        notify("error", "Thanh toán Banking đang được phát triển");
         return;
       }
+
+      const orderEmail = {
+        email: email,
+        order: "orderCheckout"
+        // total: calculateTotal(),
+      };
 
       // create order in database
       fetch("http://localhost:5000/api/order", {
@@ -81,23 +141,24 @@ export default function CheckOut() {
         .then(() => {
           // clear order in localStorage
           localStorage.setItem("order", JSON.stringify([]));
-          alert("Đặt hàng thành công");
-          console.log(orderCheckout);
+          notify("success", "Đặt hàng thành công");
+          sendOrderToEmail(orderEmail);
           // redirect to home page
           navigate("/checkout/response?isCheckout=true&status=success");
         })
         .catch((err) => {
-          alert("Đặt hàng thất bại");
+          notify("error", "Đặt hàng thất bại");
           navigate("/checkout/response?isCheckout=true&status=fail");
           console.log(err);
         });
     } else {
-      alert("Vui lòng điền đầy đủ thông tin");
+      notify("error", "Vui lòng nhập đầy đủ thông tin");
     }
   };
 
   return (
     <div className="checkOutPage">
+      <ToastContainer />
       <Header />
       <div className="checkOutPage__container">
         {order.length === 0 ? (
@@ -147,11 +208,17 @@ export default function CheckOut() {
                     <select
                       name="city"
                       id="city"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
+                      onChange={(e) => {
+                        setCitySelected(e.target.value);
+                        callApiDistrict(e.target.value);
+                      }}
                     >
-                      <option value="hanoi">Hà Nội</option>
-                      <option value="hcm">Hồ Chí Minh</option>
+                      <option value="">Tỉnh, Thành phố </option>
+                      {city.map((item, index) => (
+                        <option value={item.code} key={index}>
+                          {item.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="group__item">
@@ -159,11 +226,16 @@ export default function CheckOut() {
                     <select
                       name="district"
                       id="district"
-                      value={district}
-                      onChange={(e) => setDistrict(e.target.value)}
+                      onChange={(e) => {
+                        setDistrictSelected(e.target.value);
+                        callApiWard(e.target.value);
+                      }}
                     >
-                      <option value="hanoi">Hà Nội</option>
-                      <option value="hcm">Hồ Chí Minh</option>
+                      {district.map((item, index) => (
+                        <option value={item.code} key={index}>
+                          {item.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -173,11 +245,15 @@ export default function CheckOut() {
                     <select
                       name="ward"
                       id="ward"
-                      value={ward}
-                      onChange={(e) => setWard(e.target.value)}
+                      onChange={(e) => {
+                        setWardSelected(e.target.value);
+                      }}
                     >
-                      <option value="hanoi">Hà Nội</option>
-                      <option value="hcm">Hồ Chí Minh</option>
+                      {ward.map((item, index) => (
+                        <option value={item.code} key={index}>
+                          {item.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="group__item">

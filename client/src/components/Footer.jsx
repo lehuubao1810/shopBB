@@ -1,30 +1,33 @@
+import { useState, useEffect } from "react";
+
 function Footer() {
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/category")
+      .then((res) => res.json())
+      .then((metadata) => {
+        setCategories(metadata.data);
+      });
+  }, []);
+
   return (
     <footer>
       <div className="footer__row">
         <div className="footer__col">
           <div className="footer__col__title">Danh mục sản phẩm</div>
-          <a href="/laptop" className="footer__col__item">
+          {/* <a href="/laptop" className="footer__col__item">
             Laptop
-          </a>
-          <a href="/phone" className="footer__col__item">
-            Điện thoại
-          </a>
-          <a href="/pc" className="footer__col__item">
-            PC - Máy tính bộ
-          </a>
-          <a href="/accessory" className="footer__col__item">
-            PC - Phụ kiện máy tính
-          </a>
-          <a href="/monitor" className="footer__col__item">
-            PC - Màn hình máy tính
-          </a>
-          <a href="/sound" className="footer__col__item">
-            Thiết bị âm thanh
-          </a>
-          <a href="/office-equipment" className="footer__col__item">
-            Thiết bị văn phòng
-          </a>
+          </a> */}
+          {
+            categories.map((category) => (
+              <a key={category._id} href={`/${category.slug}`} className="footer__col__item">
+                {category.name}
+              </a>
+            ))
+          }
+
         </div>
         <div className="footer__col">
           <div className="footer__col__title">Cộng đồng Shop BB</div>

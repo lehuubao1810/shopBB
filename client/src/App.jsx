@@ -13,6 +13,7 @@ import Product from './pages/Product'
 import CartPage from './pages/CartPage'
 import CheckOut from './pages/CheckOut'
 import ResponseCheckout from './pages/ResponseCheckout'
+import SearchPage from './pages/SearchPage'
 
 function App() {
   // const { user } = useAuth()
@@ -27,6 +28,7 @@ function App() {
         <Route path="/:categoryName/:productSlug" element={<Product />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/response" element={<ResponseCheckout />} />
+        <Route path="/search/:searchValue" element={<SearchPage />} />
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
         <Route path="/checkout" element={<CheckOut />} />
         {user ? (

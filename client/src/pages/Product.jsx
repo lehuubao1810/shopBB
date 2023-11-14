@@ -28,6 +28,10 @@ export default function Product() {
   const [productsRelated, setProductsRelated] = useState([]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
     // Get product by slug (use fetch)
     fetch(`http://localhost:5000/api/category/slug/${categoryName}`, {
       method: "GET",

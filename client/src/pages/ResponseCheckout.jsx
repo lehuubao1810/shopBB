@@ -1,7 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import success from "../assets/images/responsePage/success.png";
+import fail from "../assets/images/responsePage/fail.png";
 
 import "../assets/css/Response.css";
 
@@ -13,6 +16,10 @@ export default function ResponseCheckout() {
   const isCheckout = searchParams.get("isCheckout") === "true";
   const isResponse = searchParams.get("status") === "success";
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const navigate = useNavigate();
 
   return (
@@ -21,20 +28,30 @@ export default function ResponseCheckout() {
       <div className="responseCheckoutPage__content">
         {isCheckout ? (
           isResponse ? (
-            <h1>
-              Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ gửi hóa đơn
+            <div className="checkOutPage__container__empty">
+            <img
+              src={success}
+              alt="empty cart"
+            />
+            Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ gửi hóa đơn
               qua email cho bạn.
               <br />
               Cảm ơn bạn đã mua hàng tại shop!
-            </h1>
+            <button onClick={() => navigate("/")}>Tiếp tục mua sắm</button>
+          </div>
           ) : (
-            <h1>
-              Xin lỗi, đơn hàng của bạn không thể được đặt thành công. Vui lòng
+            <div className="checkOutPage__container__empty">
+            <img
+              src={fail}
+              alt="empty cart"
+            />
+            Xin lỗi, đơn hàng của bạn không thể được đặt thành công. Vui lòng
               thử lại sau.
               <br />
               Hoặc liên hệ với chúng tôi qua email:{" "}
               <a href="mailto:bb@cskh.com">bb@cskh.com</a>
-            </h1>
+            <button onClick={() => navigate("/")}>Quay lại mua sắm</button>
+          </div>
           )
         ) : (
           <div className="checkOutPage__container__empty">

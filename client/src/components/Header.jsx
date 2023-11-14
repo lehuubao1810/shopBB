@@ -1,8 +1,14 @@
-import { useState} from "react";
+import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useCart } from "../context/CartContext";
 
 function Header() {
+
+  const navigate = useNavigate();
+
   const [isShow, setIsShow] = useState(false);
+  const [search, setSearch] = useState("");
 
   function handleCloseNav() {
     if (isShow) setIsShow(false);
@@ -10,7 +16,15 @@ function Header() {
 
   const { cartQuantity } = useCart();
 
-  // const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/category")
+      .then((res) => res.json())
+      .then((metadata) => {
+        setCategories(metadata.data);
+      });
+  }, []);
 
   return (
     <header onClick={handleCloseNav}>
@@ -29,48 +43,20 @@ function Header() {
           }}
         >
           <ul>
-            <li>
+            {/* <li>
               <a href="/laptop">
                 <i className="fa-solid fa-laptop"></i>
                 Laptop
               </a>
-            </li>
-            <li>
-              <a href="/phone">
-                <i className="fa-solid fa-mobile-screen-button"></i>
-                Điện thoại
-              </a>
-            </li>
-            <li>
-              <a href="/pc">
-                <i className="fa-solid fa-computer"></i>
-                PC - Máy tính bộ
-              </a>
-            </li>
-            <li>
-              <a href="/accessory">
-                <i className="fa-regular fa-keyboard"></i>
-                PC - Phụ kiện máy tính
-              </a>
-            </li>
-            <li>
-              <a href="/monitor">
-                <i className="fa-solid fa-desktop"></i>
-                PC - Màn hình máy tính
-              </a>
-            </li>
-            <li>
-              <a href="/sound">
-                <i className="fa-solid fa-headphones"></i>
-                Thiết bị âm thanh
-              </a>
-            </li>
-            <li>
-              <a href="/office-equipment">
-                <i className="fa-solid fa-print"></i>
-                Thiết bị văn phòng
-              </a>
-            </li>
+            </li> */}
+            {categories.map((category) => (
+              <li key={category._id}>
+                <a href={`/${category.slug}`}>
+                  <i className={`${category.thumb}`}></i>
+                  {category.name}
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
       )}
@@ -78,11 +64,14 @@ function Header() {
         <input
           type="text"
           placeholder="Nhập sản phẩm cần tìm"
-          // onChange={(e) => {
-          //   setSearch(e.target.value);
-          // }}
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
         />
-        <i className="fa-solid fa-magnifying-glass btnSearch"></i>
+        <i className="fa-solid fa-magnifying-glass btnSearch" onClick={
+          () => navigate(`/search/${search}`)
+        }></i>
       </div>
       {/* <div className="login">
         <a href="/login">

@@ -10,11 +10,11 @@ routerOrder.post('', createOrder);
 // get orders
 routerOrder.get('', getOrders);
 
-// get order
+// get order 
 routerOrder.get('/:id', getOrder);
 
 // get order by email
-routerOrder.get('/email/:email', getOrderByEmail);
+routerOrder.get('/email/:email/:otp', getOrderByEmail);
 
 // authentication
 routerOrder.use(authentication);
