@@ -21,15 +21,22 @@ app.use(express.json()); // for parsing application/json
 connectMongoDB();
 
 // CORS
-const corsOptions = {
-    origin: 'http://localhost:5173', // Chỉ cho phép truy cập từ domain này
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Bật hỗ trợ cookies trên CORS requests
-    optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-  };
-  
-  app.use(cors(corsOptions));
+const allowedOrigins = ["http://localhost:5173", "https://shop-bb.vercel.app"];
 
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 // Routes
 app.use("/api", router);
 
