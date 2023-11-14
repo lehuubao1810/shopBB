@@ -1,16 +1,25 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import PropTypes from "prop-types";
 
-
-export default function FilterAutoWidth({slug, name, handleFilter}) {
-  const [age, setAge] = React.useState('');
+export default function FilterAutoWidth({
+  slug,
+  name,
+  options,
+  handleFilter,
+  sortPrice,
+}) {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const valueParam = searchParams.get(slug) || "";
+  const [value, setValue] = useState(valueParam);
 
   const handleChange = (e) => {
-    setAge(e.target.value);
+    setValue(e.target.value);
     handleFilter(slug, e.target.value);
   };
 
@@ -20,16 +29,24 @@ export default function FilterAutoWidth({slug, name, handleFilter}) {
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
-        value={age}
-        label="Age"
+        value={value}
+        label="value"
         onChange={handleChange}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>Không lựa chọn</em>
         </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        {options
+          ? options.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))
+          : sortPrice.map((option, index) => (
+              <MenuItem key={index} value={option.value}>
+                {option.name}
+              </MenuItem>
+            ))}
       </Select>
     </FormControl>
   );
@@ -38,5 +55,7 @@ export default function FilterAutoWidth({slug, name, handleFilter}) {
 FilterAutoWidth.propTypes = {
   name: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  sortPrice: PropTypes.array.isRequired,
   handleFilter: PropTypes.func.isRequired,
 };

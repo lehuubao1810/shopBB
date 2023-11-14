@@ -4,14 +4,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 // import { StyledEngineProvider } from "@mui/material/styles";
+import PropTypes from "prop-types";
 
-export default function PaginationControlled() {
+export default function PaginationControlled({totalPages}) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  //   const currentPage = parseInt(searchParams.get("page")) || 1;
-  const [page, setPage] = useState(1);
-  const handleChange = (e, value) => {
+    const currentPage = parseInt(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(currentPage);
+  const handleChange = (e, value) => {    
     setPage(value);
     searchParams.set("page", value);
     navigate({ search: searchParams.toString() });
@@ -35,14 +36,14 @@ export default function PaginationControlled() {
       <Stack spacing={2}>
         {!isMobile ? (
           <Pagination
-            count={10}
+            count={totalPages}
             page={page}
             onChange={handleChange}
             size="large"
           />
         ) : (
           <Pagination
-            count={10}
+            count={totalPages}
             page={page}
             onChange={handleChange}
           />
@@ -52,3 +53,7 @@ export default function PaginationControlled() {
     // </StyledEngineProvider>
   );
 }
+
+PaginationControlled.propTypes = {
+  totalPages: PropTypes.number.isRequired,
+};

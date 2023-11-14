@@ -2,16 +2,22 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
-import formatPrice from "../util/formatPrice";
+import formatPrice from "../utils/formatPrice";
 
-export default function SliderPrice({ slug, handleFilterPrice }) {
-  const [value, setValue] = useState([0, 120000000]);
+export default function SliderPrice({ handleFilterPrice }) {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const minPrice = parseInt(searchParams.get("minPrice")) || 0;
+  const maxPrice = parseInt(searchParams.get("maxPrice")) || 120000000;
+
+  const [value, setValue] = useState([minPrice, maxPrice]);
 
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
-    handleFilterPrice(slug, newValue);
+    handleFilterPrice(newValue);
     // console.log(newValue);
   };
 
@@ -35,5 +41,4 @@ export default function SliderPrice({ slug, handleFilterPrice }) {
 
 SliderPrice.propTypes = {
   handleFilterPrice: PropTypes.func.isRequired,
-  slug: PropTypes.string.isRequired,
 };

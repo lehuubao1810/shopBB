@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import formatPrice from "../util/formatPrice";
+import formatPrice from "../utils/formatPrice";
 
 export default function ProductCart(props) {
 
@@ -26,7 +26,7 @@ export default function ProductCart(props) {
       <div key={props.index} className="productCart__content">
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
-            <img src={props.item.imgDescs[0]} alt={props.item.name} />
+            <img src={props.item.thumb} alt={props.item.name} />
             <h4>{props.item.name}</h4>
           </div>
           <div>

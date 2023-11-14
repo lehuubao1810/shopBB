@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import Header from "../components/Header";
@@ -12,16 +12,33 @@ import SliderPrice from "../components/SliderPrice";
 
 import "../assets/css/Category.css";
 
-import { products } from "../context/products";
+// import { products } from "../context/products";
 // import { filterProduct } from "../context/filterProduct";
 
 export default function Category() {
   // const [category, setCategory] = useState(null);
-  // const [products, setProducts] = useState([]);
+  const [dataProducts, setDataProducts] = useState([]); // [products, setProducts]
+  const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { categoryName } = useParams();
+  const sortPrice = [
+    {
+      name: "Giá tăng dần",
+      value: "asc",
+    },
+    {
+      name: "Giá giảm dần",
+      value: "desc",
+    },
+  ];
   const navigate = useNavigate();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  // const searchParams = new URLSearchParams(location.search);
+  const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
 
   // const [filterProduct, setFilterProduct] = useState([]);
 
@@ -29,25 +46,55 @@ export default function Category() {
     searchParams.set(slug, value);
     navigate({ search: searchParams.toString() });
   };
-  const handleFilterPrice = (slug, value) => {
-    const valueText = value[0] + "-" + value[1];
-    searchParams.set(slug, valueText);
+  const handleFilterPrice = (value) => {
+    //minPrice=20&maxPrice=50
+    // const valueText = `minPrice=${value[0]}&maxPrice=${value[1]}`
+    searchParams.set("minPrice", value[0]);
+    searchParams.set("maxPrice", value[1]);
     navigate({ search: searchParams.toString() });
     // console.log(value);
   };
 
   useEffect(() => {
-    // Get the category ID from the URL
-    // console.log(categoryId);
-    // Fetch the category data from an API
-    // fetch("https://reqres.in/api/users?page=2") // test API
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
-    console.log(searchParams.toString())
+    // Get category by name (use fetch)
+    fetch(`http://localhost:5000/api/category/slug/${categoryName}`, 
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        // console.log(res);
+        return res.json();
+      })
+      .then((metadata) => {
+        console.log(metadata.data.attributes);
+        setFilter(metadata.data.attributes);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, [categoryName]);
 
-  }, [searchParams]);
+  useEffect(() => {
+    // Get products by category (use fetch)
+    fetch(
+      `http://localhost:5000/api/product/category/${categoryName}?${searchParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((metadata) => {
+        setDataProducts(metadata);
+        setProducts(metadata.products);
+        // console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }, [searchParams, categoryName]);
 
   return (
     <div className="categoryPage">
@@ -56,52 +103,41 @@ export default function Category() {
       <div className="categoryPage__content">
         <h5 className="categoryPage__content__title">Lọc danh sách</h5>
         <div className="categoryPage__content__filter">
+          {loading && <h1>Loading...</h1>}
+          {filter.map((item, index) => (
+            <FilterAutoWidth
+              key={index}
+              slug={item.slug}
+              name={item.name}
+              options={item.options}
+              handleFilter={handleFilter}
+            />
+          ))}
+
           <FilterAutoWidth
-            slug="brand"
-            name="Thương hiệu"
-            handleFilter={handleFilter}
-          />
-          <FilterAutoWidth slug="cpu" name="CPU" handleFilter={handleFilter} />
-          <FilterAutoWidth slug="ram" name="RAM" handleFilter={handleFilter} />
-          <FilterAutoWidth
-            slug="disk"
-            name="Ổ cứng"
-            handleFilter={handleFilter}
-          />
-          <FilterAutoWidth
-            slug="laptop_vga"
-            name="Card đồ họa"
-            handleFilter={handleFilter}
-          />
-          <FilterAutoWidth
-            slug="laptop_resolution"
-            name="Độ phân giải"
-            handleFilter={handleFilter}
-          />
-          <FilterAutoWidth
-            slug="laptop_screen_size"
-            name="Kích thước màn hình"
-            handleFilter={handleFilter}
-          />
-          <FilterAutoWidth
-            slug="sort"
+            slug="sortPrice"
             name="Sắp xếp"
+            sortPrice={sortPrice}
             handleFilter={handleFilter}
           />
-          <SliderPrice
-            slug="range_price"
-            handleFilterPrice={handleFilterPrice}
-          />
+          <SliderPrice handleFilterPrice={handleFilterPrice} />
           {false && <button className="btnFilter">Lọc</button>}
         </div>
         <h2 className="categoryPage__content__title">{categoryName}</h2>
         <div className="listProduct__content">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <ProductCard key={index} product={product} categoryName={categoryName} />
+            ))
+          ) : (
+            <h4>Không tồn tại sản phẩm nào</h4>
+          )}
         </div>
       </div>
-      <Pagination />
+      <Pagination
+        totalPages={dataProducts.totalPages}
+        currentPage={dataProducts.currentPage}
+      />
       <UpBtn />
       <Footer />
     </div>

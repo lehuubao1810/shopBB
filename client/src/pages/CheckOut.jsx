@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import formatPrice from "../util/formatPrice";
+import formatPrice from "../utils/formatPrice";
 
 import "../assets/css/CheckOut.css";
 
@@ -22,7 +22,7 @@ export default function CheckOut() {
   const [address, setAddress] = useState("");
 
   const [note, setNote] = useState("");
-  const [payment, setPayment] = useState("VNPAY-QR");
+  const [payment, setPayment] = useState("COD");
 
   useEffect(() => {
     if (!localStorage.getItem("order")) {
@@ -49,21 +49,48 @@ export default function CheckOut() {
   const handleCheckOut = () => {
     if (checkInput()) {
       const orderCheckout = {
-        name,
-        phone,
+        customer: {
+          name,
+          phone,
+          address,
+        },
         email,
-        city,
-        district,
-        ward,
-        address,
-        note,
-        payment,
-        order,
+        products: order.map((item) => ({
+          product: item._id,
+          quantity: item.quantity,
+        })),
         total: calculateTotal(),
+        payment,
       };
-      alert("Đặt hàng thành công");
-      console.log(orderCheckout);
-      navigate("/checkout/response");
+
+      if (payment === "Banking") {
+        alert("Thanh toán Banking tạm thời chưa hỗ trợ");
+        return;
+      }
+
+      // create order in database
+      fetch("http://localhost:5000/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderCheckout),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .then(() => {
+          // clear order in localStorage
+          localStorage.setItem("order", JSON.stringify([]));
+          alert("Đặt hàng thành công");
+          console.log(orderCheckout);
+          // redirect to home page
+          navigate("/checkout/response?isCheckout=true&status=success");
+        })
+        .catch((err) => {
+          alert("Đặt hàng thất bại");
+          navigate("/checkout/response?isCheckout=true&status=fail");
+          console.log(err);
+        });
     } else {
       alert("Vui lòng điền đầy đủ thông tin");
     }
@@ -180,20 +207,20 @@ export default function CheckOut() {
                   <input
                     type="radio"
                     name="payment"
-                    value="VNPAY-QR"
                     defaultChecked
+                    value="COD"
                     onChange={(e) => setPayment(e.target.value)}
                   />
-                  <span>Thanh toán VNPAY-QR</span>
+                  <span>Thanh toán khi nhận hàng (COD)</span>
                 </div>
                 <div className="checkOutPage__container__content__left__payment__item">
                   <input
                     type="radio"
                     name="payment"
-                    value="COD"
+                    value="Banking"
                     onChange={(e) => setPayment(e.target.value)}
                   />
-                  <span>Thanh toán khi nhận hàng (COD)</span>
+                  <span>Thanh toán Banking</span>
                 </div>
               </div>
             </div>
@@ -207,12 +234,12 @@ export default function CheckOut() {
                   >
                     <div className="checkOutPage__container__content__right__product__item__info">
                       <div className="img">
-                        <img src={item.imgDescs[0]} alt={item.name} />
+                        <img src={item.thumb} alt={item.name} />
                       </div>
                       <div className="group">
                         <p>{item.name}</p>
                         <span>Số lượng: {item.quantity}</span>
-                        <h4>{formatPrice(item.price*(1-item.discount))}</h4>
+                        <h4>{formatPrice(item.price * (1 - item.discount))}</h4>
                         <del>{formatPrice(item.price)}</del>
                       </div>
                     </div>

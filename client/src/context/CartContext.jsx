@@ -17,7 +17,7 @@ export default function CartContextProvider({ children }) {
 
   const removeFromCart = (item) => {
     const updatedCartItems = cartItems.filter(
-      (cartItem) => cartItem.id !== item.id
+      (cartItem) => cartItem._id !== item._id
     );
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
@@ -26,7 +26,7 @@ export default function CartContextProvider({ children }) {
   const reduceQuantity = (item) => {
     const updatedCartItems = [...cartItems];
     const foundIndex = updatedCartItems.findIndex(
-      (cartItem) => cartItem.id === item.id
+      (cartItem) => cartItem._id === item._id
     );
     if (foundIndex === -1) {
       updatedCartItems.push({ ...item, quantity: 1 });
@@ -40,7 +40,7 @@ export default function CartContextProvider({ children }) {
   const addToCart = (item) => {
     const updatedCartItems = [...cartItems];
     const foundIndex = updatedCartItems.findIndex(
-      (cartItem) => cartItem.id === item.id
+      (cartItem) => cartItem._id === item._id
     );
     if (foundIndex === -1) {
       updatedCartItems.push({ ...item, quantity: 1 });

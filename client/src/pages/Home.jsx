@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import Header from "../components/Header";
 import "../assets/css/Home.css";
 import SlideShow from "../components/SlideShow";
@@ -9,9 +11,35 @@ import image4 from "../assets/images/small-banner/4.png";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
-import { products } from "../context/products";
+// import { products } from "../context/products";
 
 export default function Home() {
+
+  const [laptop, setLaptop] = useState([]);
+  // const [pc, setPc] = useState([]);
+  // const [phone, setPhone] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/product/category/laptop`)
+      .then((res) => res.json())
+      .then((data) => {
+        setLaptop(data.products);
+      })
+      .catch((err) => console.log(err));
+
+    // fetch(`http://localhost:5000/api/product/category/pc`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setPc(data.products);
+    //   })
+    //   .catch((err) => console.log(err));
+    // fetch(`http://localhost:5000/api/product/category/phone`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setPhone(data.products);
+    //   })
+    //   .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="homePage">
@@ -40,12 +68,12 @@ export default function Home() {
             </a>
           </div>
           <div className="listProduct__content">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {laptop.map((product) => (
+              <ProductCard key={product.id} product={product} categoryName='laptop' />
             ))}
           </div>
         </div>
-        <div className="listProduct">
+        {/* <div className="listProduct">
           <div className="listProduct__header">
             <h2>PC nổi bật</h2>
             <a href="/pc">
@@ -70,7 +98,7 @@ export default function Home() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
       <Footer />
       <UpBtn />

@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCart from "../components/ProductCart";
 import { useCart } from "../context/CartContext";
-import formatPrice from "../util/formatPrice";
+import formatPrice from "../utils/formatPrice";
 
 import "../assets/css/CartPage.css";
 
@@ -49,25 +49,25 @@ export default function CartPage() {
     if (e.target.checked) {
       setOrder([...order, item]);
     } else {
-      setOrder(order.filter((orderItem) => orderItem.id !== item.id));
+      setOrder(order.filter((orderItem) => orderItem._id !== item._id));
     }
   };
 
   const handleChangeQuantity = (item) => {
     setOrder(
       order.map((orderItem) =>
-        orderItem.id === item.id
+        orderItem._id === item._id
           ? { ...orderItem, quantity: item.quantity }
           : orderItem
       )
     )
   }
   const handleDelete = (item) => {
-    setOrder(order.filter((orderItem) => orderItem.id !== item.id));
+    setOrder(order.filter((orderItem) => orderItem._id !== item._id));
   }
 
   const checkIsExist = (item) => {
-    return order.some((orderItem) => orderItem.id === item.id);
+    return order.some((orderItem) => orderItem._id === item._id);
   };
 
   return (
@@ -101,7 +101,7 @@ export default function CartPage() {
                   {cartItems.map((item, index) => (
                     <ProductCart
                       key={index}
-                      imgUrl={item.imgDescs[0]}
+                      thumb={item.thumb}
                       item={item}
                       discount={item.discount}
                       quantity={item.quantity}

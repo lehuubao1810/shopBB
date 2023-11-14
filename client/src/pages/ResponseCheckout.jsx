@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -6,8 +6,12 @@ import Footer from "../components/Footer";
 import "../assets/css/Response.css";
 
 export default function ResponseCheckout() {
-  const isCheckout = false;
-  const isResponse = false;
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const isCheckout = searchParams.get("isCheckout") === "true";
+  const isResponse = searchParams.get("status") === "success";
 
   const navigate = useNavigate();
 
