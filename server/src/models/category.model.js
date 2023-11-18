@@ -10,7 +10,7 @@ const categorySchema = new mongoose.Schema(
       required: true,
     },
     thumb: {
-      type: String,
+      type: String, 
       required: true,
     },
     slug: {

@@ -10,6 +10,7 @@ const ProductCard = ({ product, categoryName }) => {
 
   function handleClick() {
     navigate(`/${categoryName}/${product.slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   return (

@@ -17,20 +17,26 @@ const shopSchema = new mongoose.Schema({
         required: true,
         min: 8,
     },
-    status: {
-        type: String,
-        enum: ["Pending", "Active"],
-        default: "Pending",
-    },
+    // status: {
+    //     type: String,
+    //     enum: ["Pending", "Active"],
+    //     default: "Pending",
+    // },
     role: {
         type: String,
-        enum: ["Admin", "Seller"],
-        default: "Seller",
+        enum: ["Admin", "Seller","Customer"],
+        default: "Customer",
     },
-    verify: {
-        type: Schema.Types.Boolean,
-        default: false,
-    },
+    orders: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Order",
+        },
+    ],
+    // verify: {
+    //     type: Schema.Types.Boolean,
+    //     default: false,
+    // },
 }, {
     timestamps: true,
     collection: COLLECTION_NAME,

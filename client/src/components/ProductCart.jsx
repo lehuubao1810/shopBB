@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
+import {useNavigate} from "react-router-dom";
+
 import formatPrice from "../utils/formatPrice";
 
 export default function ProductCart(props) {
+
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     if (props.item.quantity === 1) {
@@ -18,7 +22,9 @@ export default function ProductCart(props) {
     props.handleChangeQuantity(props.item);
   }
 
-  // const 
+  const handleClickName = () => {
+    navigate(`/${props.item.categoryName}/${props.item.slug}`);
+  }
 
   return (
     <div className="productCart">
@@ -27,7 +33,7 @@ export default function ProductCart(props) {
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
             <img src={props.item.thumb} alt={props.item.name} />
-            <h4>{props.item.name}</h4>
+            <h4 className="productCart__content__info__item__name" onClick={handleClickName}>{props.item.name}</h4>
           </div>
           <div>
             <p>{formatPrice(props.item.price * (1 - props.item.discount))}</p>

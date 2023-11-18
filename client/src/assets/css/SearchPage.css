@@ -8,6 +8,9 @@
 .searchPage__content__header {
     margin-bottom: 40px;
 }
+.searchPage__content__title {
+    margin-bottom: 20px;
+}
 /* Responsive */
 @media only screen and (max-width: 700px) {
   /* CSS rules for phone screens */

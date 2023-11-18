@@ -6,6 +6,11 @@ const COLLECTION_NAME = "Orders";
 const orderSchema = new mongoose.Schema(
   {
     customer: {
+      customer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Customer",
+        // required: true,
+      },
       address: {
         type: String,
         required: true,

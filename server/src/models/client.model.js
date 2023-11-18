@@ -8,7 +8,7 @@ const clientSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    otp: {
+    otp: { 
         type: Number,
         required: true,
     },

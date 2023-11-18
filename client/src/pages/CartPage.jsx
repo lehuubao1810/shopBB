@@ -105,10 +105,7 @@ export default function CartPage() {
                   {cartItems.map((item, index) => (
                     <ProductCart
                       key={index}
-                      thumb={item.thumb}
                       item={item}
-                      discount={item.discount}
-                      quantity={item.quantity}
                       index={index}
                       removeFromCart={removeFromCart}
                       reduceQuantity={reduceQuantity}

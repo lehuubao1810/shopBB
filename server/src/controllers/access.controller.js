@@ -18,7 +18,7 @@ import { getInfoData } from "../utils/lodash.util.js";
 export const signUp = async (req, res) => {
   try {
     // check email is already exist
-    const isExisted = await Shop.findOne({ email: req.body.email }).lean();
+    const isExisted = await Shop.findOne({ email: req.body.email, role: req.query.role }).lean();
     // lean() is used to convert mongoose object to plain javascript object
     if (isExisted) {
       return res.status(400).json({
@@ -60,7 +60,7 @@ export const signUp = async (req, res) => {
     );
 
     // verify token
-    const decoded = await verifyToken(tokenPair.accessToken, publicKeyString);
+    const decoded = verifyToken(tokenPair.accessToken, publicKeyString);
 
     return res.status(200).json({
       message: "success signup",
@@ -82,7 +82,7 @@ export const signUp = async (req, res) => {
 // login
 export const logIn = async (req, res) => {
   // check email is exist
-  const shop = await Shop.findOne({ email: req.body.email }).lean();
+  const shop = await Shop.findOne({ email: req.body.email, role: req.query.role }).lean();
 
   if (!shop) {
     return res.status(400).json({

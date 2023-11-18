@@ -12,10 +12,13 @@
 }
 
 .categoryPage__content__filter {
+  margin-bottom: 20px;
+}
+
+.categoryPage__content__filter__row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: 20px;
 }
 
 .categoryPage__content__filter .btnFilter {

@@ -14,6 +14,8 @@ import CartPage from './pages/CartPage'
 import CheckOut from './pages/CheckOut'
 import ResponseCheckout from './pages/ResponseCheckout'
 import SearchPage from './pages/SearchPage'
+import Policy from './pages/Policy'
+import Contact from './pages/Contact'
 
 function App() {
   // const { user } = useAuth()
@@ -29,6 +31,8 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/response" element={<ResponseCheckout />} />
         <Route path="/search/:searchValue" element={<SearchPage />} />
+        <Route path="/policy/:policyName" element={<Policy />} />
+        <Route path="/contact" element={<Contact />} />
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
         <Route path="/checkout" element={<CheckOut />} />
         {user ? (

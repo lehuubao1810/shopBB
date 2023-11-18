@@ -46,7 +46,7 @@ function Footer() {
           </a>
         </div>
         <div className="footer__col">
-          <div className="footer__col__title">Email liên hệ</div>
+          <div className="footer__col__title">Liên hệ</div>
           <div className="footer__col__item">
             Hỗ trợ khách hàng:
             <a href="mailto:cskh@bb.com">cskh@bb.com</a>
@@ -59,16 +59,31 @@ function Footer() {
             Góp ý, khiếu nại:
             <a href="mailto:kn@bb.com">kn@bb.com</a>
           </div>
+          <a href="/contact" className="footer__col__item">
+            Liên hệ, feedback
+          </a>
+        </div>
+        <div className="footer__col">
+          <div className="footer__col__title">Chính sách</div>
+          <a href="/policy/return-policy" className="footer__col__item">
+            Chính sách đổi trả
+          </a>
+          <a href="/policy/warranty-policy" className="footer__col__item">
+            Chính sách bảo hành
+          </a>
+          <a href="/policy/shipping-policy" className="footer__col__item">
+            Chính sách vận chuyển
+          </a>
         </div>
       </div>
       <div className="footer__row">
         <div className="footer__col">
           <div className="footer__col__title">Phương thức thanh toán</div>
           <div className="footer__payment">
-            <div className="payment__item">
+            {/* <div className="payment__item">
               <i className="fa-solid fa-qrcode"></i>
               <p>QR Code</p>
-            </div>
+            </div> */}
             <div className="payment__item">
               <i className="fa-solid fa-money-bill"></i>
               <p>Tiền mặt</p>

@@ -19,6 +19,9 @@ routerOrder.get('/email/:email/:otp', getOrderByEmail);
 // authentication
 routerOrder.use(authentication);
 
+// create order by customer
+routerOrder.post('/customer', createOrder);
+
 // delete order
 routerOrder.delete('/:id', deleteOrder);
 

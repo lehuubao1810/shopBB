@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createProduct, getProductsByCategory, getProduct, deleteProduct, createProducts } from "../controllers/product.controller.js";
+import { createProduct, getProductsByCategory, getProduct, deleteProduct, createProducts, searchProduct } from "../controllers/product.controller.js";
 import { authentication } from "../utils/auth.util.js";
 
 const routerProduct = express.Router();
@@ -12,6 +12,9 @@ routerProduct.get("/category/:slug", getProductsByCategory);
 // get Product
 routerProduct.get("/:slug", getProduct);
 
+// search product
+routerProduct.get("/search/result", searchProduct);
+ 
 // authentication
 routerProduct.use(authentication);
 

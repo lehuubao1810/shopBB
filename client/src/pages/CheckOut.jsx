@@ -8,6 +8,7 @@ import notify from "../utils/notify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import formatPrice from "../utils/formatPrice";
+import PayPalPayment from "../components/PayPalPayment";
 
 import "../assets/css/CheckOut.css";
 
@@ -71,6 +72,7 @@ export default function CheckOut() {
     );
   };
 
+
   const checkInput = () => {
     if (
       name === "" ||
@@ -81,13 +83,14 @@ export default function CheckOut() {
       districtSelected === "" ||
       wardSelected === ""
     ) {
+      notify("error", "Vui lòng nhập đầy đủ thông tin");
       return false;
     }
     return true;
   };
 
   const sendOrderToEmail = (orderCheckout) => {
-    fetch("http://localhost:5000/api/mail/send-email", {
+    fetch("http://localhost:5000/api/mail/send-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,60 +103,62 @@ export default function CheckOut() {
   };
 
   const handleCheckOut = () => {
-    if (checkInput()) {
-      const orderCheckout = {
-        customer: {
-          name,
-          phone,
-          address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
-        },
-        email,
-        products: order.map((item) => ({
-          product: item._id,
-          quantity: item.quantity,
-        })),
-        total: calculateTotal(),
-        payment,
-      };
-      console.log(orderCheckout);
+    const orderCheckout = {
+      customer: {
+        name,
+        phone,
+        address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
+      },
+      email,
+      products: order.map((item) => ({
+        product: item._id,
+        quantity: item.quantity,
+      })),
+      total: calculateTotal(),
+      payment,
+    };
+    console.log(orderCheckout);
 
-      if (payment === "Banking") {
-        notify("error", "Thanh toán Banking đang được phát triển");
-        return;
-      }
+    const orderEmail = {
+      email: email,
+      products: order.map((item) => ({
+        productName: item.name,
+        quantity: item.quantity,
+        price: item.price * (1 - item.discount),
+      })),
+      total: calculateTotal(),
+      payment,
+      address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
+    };
 
-      const orderEmail = {
-        email: email,
-        order: "orderCheckout"
-        // total: calculateTotal(),
-      };
-
-      // create order in database
-      fetch("http://localhost:5000/api/order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderCheckout),
+    // create order in database
+    fetch("http://localhost:5000/api/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderCheckout),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .then(() => {
+        // clear order in localStorage
+        localStorage.setItem("order", JSON.stringify([]));
+        notify("success", "Đặt hàng thành công");
+        sendOrderToEmail(orderEmail);
+        // redirect to home page
+        navigate("/checkout/response?isCheckout=true&status=success");
       })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .then(() => {
-          // clear order in localStorage
-          localStorage.setItem("order", JSON.stringify([]));
-          notify("success", "Đặt hàng thành công");
-          sendOrderToEmail(orderEmail);
-          // redirect to home page
-          navigate("/checkout/response?isCheckout=true&status=success");
-        })
-        .catch((err) => {
-          notify("error", "Đặt hàng thất bại");
-          navigate("/checkout/response?isCheckout=true&status=fail");
-          console.log(err);
-        });
-    } else {
-      notify("error", "Vui lòng nhập đầy đủ thông tin");
-    }
+      .catch((err) => {
+        notify("error", "Đặt hàng thất bại");
+        navigate("/checkout/response?isCheckout=true&status=fail");
+        console.log(err);
+      });
+  };
+
+  const handleBtnCheckOut = () => {
+    if (!checkInput()) return;
+    handleCheckOut();
   };
 
   return (
@@ -296,7 +301,7 @@ export default function CheckOut() {
                     value="Banking"
                     onChange={(e) => setPayment(e.target.value)}
                   />
-                  <span>Thanh toán Banking</span>
+                  <span>Thanh toán PayPal, Visa, Master, JCB</span>
                 </div>
               </div>
             </div>
@@ -362,7 +367,15 @@ export default function CheckOut() {
                   <span>Thành tiền</span>
                   <span>{formatPrice(calculateTotal())}</span>
                 </div>
-                <button onClick={handleCheckOut}>Thanh toán</button>
+                {payment === "COD" ? (
+                  <button onClick={handleBtnCheckOut}>Xác nhận đặt hàng</button>
+                ) : (
+                  <PayPalPayment
+                    handleCheckOut={handleCheckOut}
+                    checkInput={checkInput}
+                    amount={parseFloat((calculateTotal() / 23000).toFixed(2))}
+                  />
+                )}
               </div>
             </div>
           </div>

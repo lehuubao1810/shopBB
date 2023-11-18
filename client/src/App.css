@@ -239,16 +239,21 @@ header {
   gap: 15px;
   align-items: center;
 }
+
 .productCart__content__info__item img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   border: 0.5px solid #d4d4d4;
 }
-.productCart__content__info__item h4 {
+.productCart__content__info__item__name {
   font-size: 14px;
   font-weight: 500;
   color: #333;
+  cursor: pointer;
+}
+.productCart__content__info__item__name:hover {
+  color: #0248b8;
 }
 .productCart__content__info__quantity {
   width: 100%;
@@ -312,6 +317,9 @@ footer {
 }
 .footer__row a:hover {
   color: #0248b8;
+}
+.footer__col {
+  width: 100%;
 }
 .footer__col__title {
   font-size: 15px;

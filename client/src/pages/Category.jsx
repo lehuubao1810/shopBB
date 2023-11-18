@@ -57,8 +57,7 @@ export default function Category() {
 
   useEffect(() => {
     // Get category by name (use fetch)
-    fetch(`http://localhost:5000/api/category/slug/${categoryName}`, 
-    {
+    fetch(`http://localhost:5000/api/category/slug/${categoryName}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -104,30 +103,38 @@ export default function Category() {
         <h5 className="categoryPage__content__title">Lọc danh sách</h5>
         <div className="categoryPage__content__filter">
           {loading && <h1>Loading...</h1>}
-          {filter.map((item, index) => (
+
+          <div className="categoryPage__content__filter__row">
+            {filter.map((item, index) => (
+              <FilterAutoWidth
+                key={index}
+                slug={item.slug}
+                name={item.name}
+                options={item.options}
+                handleFilter={handleFilter}
+              />
+            ))}
+
             <FilterAutoWidth
-              key={index}
-              slug={item.slug}
-              name={item.name}
-              options={item.options}
+              slug="sortPrice"
+              name="Sắp xếp"
+              sortPrice={sortPrice}
               handleFilter={handleFilter}
             />
-          ))}
-
-          <FilterAutoWidth
-            slug="sortPrice"
-            name="Sắp xếp"
-            sortPrice={sortPrice}
-            handleFilter={handleFilter}
-          />
-          <SliderPrice handleFilterPrice={handleFilterPrice} />
-          {false && <button className="btnFilter">Lọc</button>}
+          </div>
+          <div className="categoryPage__content__filter__row">
+            <SliderPrice handleFilterPrice={handleFilterPrice} />
+          </div>
         </div>
         <h2 className="categoryPage__content__title">{categoryName}</h2>
         <div className="listProduct__content">
           {products.length > 0 ? (
             products.map((product, index) => (
-              <ProductCard key={index} product={product} categoryName={categoryName} />
+              <ProductCard
+                key={index}
+                product={product}
+                categoryName={categoryName}
+              />
             ))
           ) : (
             <h4>Không tồn tại sản phẩm nào</h4>

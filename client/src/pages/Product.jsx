@@ -90,13 +90,16 @@ export default function Product() {
   const { addToCart } = useCart();
   const handleAddToCart = () => {
     // add product to cart (local storage)
-    addToCart(product);
+    addToCart(
+      // add product to cart (local storage) and add categoryName to product
+      { ...product, categoryName }
+    );
     notify("success", "Thêm vào giỏ hàng thành công");
   };
 
   const handleBuyNow = () => {
     // notify("success", "Thêm vào giỏ hàng thành công");
-    addToCart(product);
+    addToCart({ ...product, categoryName });
     navigate("/cart");
   };
 
@@ -262,7 +265,7 @@ export default function Product() {
               <div className="productRelated__content">
                 <div className="listProduct__content">
                   {productsRelated && productsRelated.slice(0, 4).map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} categoryName={categoryName}/>
                   ))}
                 </div>
               </div>
