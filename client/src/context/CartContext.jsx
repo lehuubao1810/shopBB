@@ -1,12 +1,47 @@
 import { useContext, createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import { useAuth } from "./AuthContext";
+
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
 export default function CartContextProvider({ children }) {
+
+  const {user} = useAuth();
+
   const [cartItems, setCartItems] = useState([]);
+
+  const updateCartApi = (cart) => {
+    fetch(`http://localhost:5000/api/cart/${user._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+  }
+
+  const addToCartApi = (item) => {
+    fetch(`http://localhost:5000/api/cart/${user._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ product_id: item._id, quantity: 1 }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+  }
+
+
   useEffect(() => {
     if (!localStorage.getItem("cart")) {
       localStorage.setItem("cart", JSON.stringify([]));
@@ -15,23 +50,46 @@ export default function CartContextProvider({ children }) {
     setCartItems(cart);
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      fetch(`http://localhost:5000/api/cart/${user._id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setCartItems(data.data);
+            localStorage.setItem("cart", JSON.stringify(data.data));
+          } else {
+            console.log(data.error);
+          }
+        });
+    }
+  }, [user]);
+
   const removeFromCart = (item) => {
     const updatedCartItems = cartItems.filter(
-      (cartItem) => cartItem._id !== item._id
+      (cartItem) => cartItem.product._id !== item._id
     );
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+    updateCartApi(updatedCartItems);
   };
 
   const reduceQuantity = (item) => {
     const updatedCartItems = [...cartItems];
     const foundIndex = updatedCartItems.findIndex(
-      (cartItem) => cartItem._id === item._id
+      (cartItem) => cartItem.product._id === item._id
     );
     if (foundIndex === -1) {
-      updatedCartItems.push({ ...item, quantity: 1 });
+      updatedCartItems.push({ product: item, quantity: 1 });
+      addToCartApi(item);
     } else {
       updatedCartItems[foundIndex].quantity--;
+      updateCartApi(updatedCartItems);
     }
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
@@ -40,12 +98,14 @@ export default function CartContextProvider({ children }) {
   const addToCart = (item) => {
     const updatedCartItems = [...cartItems];
     const foundIndex = updatedCartItems.findIndex(
-      (cartItem) => cartItem._id === item._id
+      (cartItem) => cartItem.product._id === item._id
     );
     if (foundIndex === -1) {
-      updatedCartItems.push({ ...item, quantity: 1 });
+      updatedCartItems.push({ product: item, quantity: 1 });
+      addToCartApi(item);
     } else {
       updatedCartItems[foundIndex].quantity++;
+      updateCartApi(updatedCartItems);
     }
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));

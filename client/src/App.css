@@ -11,6 +11,16 @@
 .MuiInputLabel-root {
   background-color: #f8f8fc;
   padding-right: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+.MuiSelect-select {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+a {
+  cursor: pointer;
 }
 
 /* Header */
@@ -74,7 +84,24 @@ header {
   font-size: 18px;
   cursor: pointer;
 }
-
+.personalBoard {
+  position: absolute;
+  top: 90%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #82869e;
+  list-style: none;
+}
+.personalBoard li {
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #333;
+}
+.personalBoard li:hover {
+  color: #0248b8;
+  background-color: #f5f5f5;
+}
 .login a,
 .cart a {
   display: flex;
@@ -299,6 +326,113 @@ header {
   font-size: 14px;
 }
 
+/* Cancel order modal */
+.cancelOrderModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: #6161611e;
+  width: 100%;
+  height: 100vh;
+  top:0;
+  left:0;
+  z-index: 100;
+}
+.cancelOrderModal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  gap: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.cancelOrderModal__content__buttons {
+  display: flex;
+  gap: 40px;
+}
+.cancelOrderModal__content__buttons button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #0248b8;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #0248b8;
+  transition: all 0.3s ease-in-out;
+}
+.cancelOrderModal__content__buttons button:hover {
+  background-color: #fff;
+  color: #0248b8;
+  border: 1px solid #0248b8;
+}
+.cancelOrderModal__content__buttons button:nth-child(2) {
+  background-color: #f83142;
+  border: 1px solid #f83142;
+}
+.cancelOrderModal__content__buttons button:nth-child(2):hover {
+  background-color: #fff;
+  color: #f83142;
+  border: 1px solid #f83142;
+}
+
+/* Review modal */
+.ReviewModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: #6161611e;
+  width: 100%;
+  height: 100vh;
+  top:0;
+  left:0;
+  z-index: 100;
+}
+.ReviewModal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  gap: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.ReviewModal__content__buttons {
+  display: flex;
+  gap: 40px;
+}
+.ReviewModal__content__buttons button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #0248b8;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #0248b8;
+  transition: all 0.3s ease-in-out;
+}
+.ReviewModal__content__buttons button:hover {
+  background-color: #fff;
+  color: #0248b8;
+  border: 1px solid #0248b8;
+}
+.ReviewModal__content__buttons button:nth-child(2) {
+  background-color: #f83142;
+  border: 1px solid #f83142;
+}
+.ReviewModal__content__buttons button:nth-child(2):hover {
+  background-color: #fff;
+  color: #f83142;
+  border: 1px solid #f83142;
+}
+
+
 /* Footer */
 footer {
   border-top: 4px solid #0248b8;
@@ -412,5 +546,5 @@ footer {
   .productCart__content__gift__item span {
     color: #333;
     font-size: 12px;
-  } 
+  }
 }

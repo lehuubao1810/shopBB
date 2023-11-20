@@ -8,18 +8,18 @@ export default function ProductCart(props) {
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    if (props.item.quantity === 1) {
+    if (props.quantity === 1) {
       props.removeFromCart(props.item);
       props.handleDelete(props.item);
     } else {
       props.reduceQuantity(props.item);
-      props.handleChangeQuantity(props.item);
+      props.handleChangeQuantity(props.item, -1);
     }
   };
 
   const handleAdd = () => {
     props.addToCart(props.item);
-    props.handleChangeQuantity(props.item);
+    props.handleChangeQuantity(props.item, 1);
   }
 
   const handleClickName = () => {
@@ -28,7 +28,7 @@ export default function ProductCart(props) {
 
   return (
     <div className="productCart">
-      <input type="checkbox" onChange={(e) => props.handleCheckBox(e, props.item)} checked={props.checkIsExist(props.item)}/>
+      <input type="checkbox" onChange={(e) => props.handleCheckBox(e, props.item, props.quantity)} checked={props.checkIsExist(props.item)}/>
       <div key={props.index} className="productCart__content">
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
@@ -57,7 +57,7 @@ export default function ProductCart(props) {
                 ></path>
               </svg>
             </button>
-            <span>{props.item.quantity}</span>
+            <span>{props.quantity}</span>
             <button onClick={handleAdd}>
               <svg
                 fill="none"
@@ -78,7 +78,7 @@ export default function ProductCart(props) {
           </div>
           <p>
             {formatPrice(
-              props.item.price * (1 - props.item.discount) * props.item.quantity
+              props.item.price * (1 - props.item.discount) * props.quantity
             )}
           </p>
         </div>
@@ -115,4 +115,5 @@ ProductCart.propTypes = {
   checkIsExist: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleChangeQuantity: PropTypes.func.isRequired,
+  quantity: PropTypes.number.isRequired,
 };

@@ -17,6 +17,14 @@ const shopSchema = new mongoose.Schema({
         required: true,
         min: 8,
     },
+    phone: {
+        type: String,
+        default: null,
+    },
+    address: {
+        type: String,
+        default: null,
+    },
     // status: {
     //     type: String,
     //     enum: ["Pending", "Active"],
@@ -33,10 +41,33 @@ const shopSchema = new mongoose.Schema({
             ref: "Order",
         },
     ],
+    cart: [
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: "Product",
+                default: null,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                default: 1,
+            },
+        },
+    ],
+    // resetPasswordToken: {
+    //     type: String,
+    // },
     // verify: {
     //     type: Schema.Types.Boolean,
     //     default: false,
     // },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+        },
+    ],
 }, {
     timestamps: true,
     collection: COLLECTION_NAME,

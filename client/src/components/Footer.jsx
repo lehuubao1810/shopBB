@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
 
+  const navigate = useNavigate();
+  
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -22,7 +25,7 @@ function Footer() {
           </a> */}
           {
             categories.map((category) => (
-              <a key={category._id} href={`/${category.slug}`} className="footer__col__item">
+              <a key={category._id} onClick={()=> navigate(`/${category.slug}`)} className="footer__col__item">
                 {category.name}
               </a>
             ))
@@ -65,13 +68,13 @@ function Footer() {
         </div>
         <div className="footer__col">
           <div className="footer__col__title">Chính sách</div>
-          <a href="/policy/return-policy" className="footer__col__item">
+          <a onClick={()=> navigate('/policy/return-policy')} className="footer__col__item">
             Chính sách đổi trả
           </a>
-          <a href="/policy/warranty-policy" className="footer__col__item">
+          <a onClick={()=> navigate('/policy/warranty-policy')} className="footer__col__item">
             Chính sách bảo hành
           </a>
-          <a href="/policy/shipping-policy" className="footer__col__item">
+          <a onClick={()=> navigate('/policy/shipping-policy')} className="footer__col__item">
             Chính sách vận chuyển
           </a>
         </div>

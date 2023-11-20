@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -10,9 +10,10 @@ export default function FilterAutoWidth({
   slug,
   name,
   options,
-  handleFilter,
   sortPrice,
+  filterOrder,
 }) {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const valueParam = searchParams.get(slug) || "";
@@ -20,7 +21,8 @@ export default function FilterAutoWidth({
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    handleFilter(slug, e.target.value);
+    searchParams.set(slug, e.target.value);
+    navigate({ search: searchParams.toString() });
   };
 
   return (
@@ -42,7 +44,13 @@ export default function FilterAutoWidth({
                 {option}
               </MenuItem>
             ))
-          : sortPrice.map((option, index) => (
+          : sortPrice
+          ? sortPrice.map((option, index) => (
+              <MenuItem key={index} value={option.value}>
+                {option.name}
+              </MenuItem>
+            ))
+          : filterOrder.map((option, index) => (
               <MenuItem key={index} value={option.value}>
                 {option.name}
               </MenuItem>
@@ -57,5 +65,5 @@ FilterAutoWidth.propTypes = {
   slug: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   sortPrice: PropTypes.array.isRequired,
-  handleFilter: PropTypes.func.isRequired,
+  filterOrder: PropTypes.array.isRequired,
 };

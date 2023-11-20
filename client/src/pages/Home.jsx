@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import "../assets/css/Home.css";
@@ -15,9 +16,15 @@ import Footer from "../components/Footer";
 
 export default function Home() {
 
+  const navigate = useNavigate();
+
   const [laptop, setLaptop] = useState([]);
   // const [pc, setPc] = useState([]);
   // const [phone, setPhone] = useState([]);
+
+  useEffect(() => {
+    document.title = "Shop BB | Laptop, Điện thoại, Linh kiện, PC";
+  },[]);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/product/category/laptop`)
@@ -47,28 +54,28 @@ export default function Home() {
       <SlideShow />
       <div className="homePage__content">
         <div className="smallBanner">
-          <a href="/laptop">
+          <a onClick={()=> navigate('/laptop')}>
             <img src={image1} alt="small-bannerLaptop" />
           </a>
-          <a href="/pc">
+          <a onClick={()=> navigate('/pc')}>
             <img src={image2} alt="small-bannerPc" />
           </a>
-          <a href="/monitor">
+          <a onClick={()=> navigate('/monitor')}>
             <img src={image3} alt="small-bannerMonitor" />
           </a>
-          <a href="/phone">
+          <a onClick={()=> navigate('/phone')}>
             <img src={image4} alt="small-bannerPhone" />
           </a>
         </div>
         <div className="listProduct">
           <div className="listProduct__header">
             <h2>Laptop nổi bật</h2>
-            <a href="/laptop">
+            <a onClick={()=> navigate('/laptop')}>
               Xem tất cả <i className="fa-solid fa-angle-right"></i>
             </a>
           </div>
           <div className="listProduct__content">
-            {laptop.map((product) => (
+            {laptop?.map((product) => (
               <ProductCard key={product.id} product={product} categoryName='laptop' />
             ))}
           </div>

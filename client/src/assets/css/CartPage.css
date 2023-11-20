@@ -113,6 +113,7 @@
   background-color: transparent;
   cursor: pointer;
 }
+
 .cartPage__content_checkout__payment__item {
   display: flex;
   justify-content: space-between;
@@ -138,10 +139,14 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+
 .cartPage__content_checkout__payment button:hover {
   background-color: #043f9e;
 }
-
+.cartPage__content_checkout__payment button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 /* Responsive */
 @media only screen and (max-width: 700px) {
   /* CSS rules for phone screens */

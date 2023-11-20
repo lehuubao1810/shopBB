@@ -1,20 +1,22 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 function Header() {
-
   const navigate = useNavigate();
 
-  const [isShow, setIsShow] = useState(false);
+  const [isShowNav, setIsShowNav] = useState(false);
+  const [isShowPersonalBoard, setIsShowPersonalBoard] = useState(false);
   const [search, setSearch] = useState("");
 
   function handleCloseNav() {
-    if (isShow) setIsShow(false);
+    if (isShowNav) setIsShowNav(false);
   }
 
   const { cartQuantity } = useCart();
+  const { user, logout } = useAuth();
 
   const [categories, setCategories] = useState([]);
 
@@ -28,14 +30,14 @@ function Header() {
 
   return (
     <header onClick={handleCloseNav}>
-      <a href="/" className="logo">
+      <a className="logo" onClick={() => navigate("/")}>
         BB.
       </a>
-      <div className="category" onClick={() => setIsShow(!isShow)}>
+      <div className="category" onClick={() => setIsShowNav(!isShowNav)}>
         <i className="fa-solid fa-bars"></i>
         <span>Danh mục sản phẩm</span>
       </div>
-      {isShow && (
+      {isShowNav && (
         <nav
           className="nav"
           onClick={(e) => {
@@ -51,7 +53,12 @@ function Header() {
             </li> */}
             {categories.map((category) => (
               <li key={category._id}>
-                <a href={`/${category.slug}`}>
+                <a
+                  onClick={() => {
+                    handleCloseNav();
+                    navigate(`/${category.slug}`);
+                  }}
+                >
                   <i className={`${category.thumb}`}></i>
                   {category.name}
                 </a>
@@ -69,22 +76,41 @@ function Header() {
             setSearch(e.target.value);
           }}
         />
-        <i className="fa-solid fa-magnifying-glass btnSearch" onClick={
-          () => navigate(`/search/${search}`)
-        }></i>
+        <i
+          className="fa-solid fa-magnifying-glass btnSearch"
+          onClick={() => navigate(`/search/${search}`)}
+        ></i>
       </div>
-      {/* <div className="login">
-        <a href="/login">
-          <i className="fa-solid fa-circle-user"></i>
-          <div>
-            Đăng nhập
-            <br />
-            Đăng ký
-          </div>
-        </a>
-      </div> */}
+      <div className="login">
+        {user ? (
+          <a onClick={() => setIsShowPersonalBoard(!isShowPersonalBoard)}>
+            <i className="fa-solid fa-circle-user"></i>
+            <div>
+              Xin chào,
+              <br />
+              {user.name.split(" ")[1].toUpperCase()}
+            </div>
+            {isShowPersonalBoard && (
+              <ul className="personalBoard">
+                <li onClick={() => navigate(`/user/${user._id}/order`)}>Đơn hàng của tôi</li>
+                <li onClick={() => navigate(`/user/${user._id}/personal`)}>Thông tin cá nhân</li>
+                <li onClick={logout}>Đăng xuất</li>
+              </ul>
+            )}
+          </a>
+        ) : (
+          <a onClick={() => navigate("/login")}>
+            <i className="fa-solid fa-circle-user"></i>
+            <div>
+              Đăng nhập
+              <br />
+              Đăng ký
+            </div>
+          </a>
+        )}
+      </div>
       <div className="cart">
-        <a href="/cart">
+        <a onClick={() => navigate("/cart")}>
           <i className="fa-solid fa-cart-shopping"></i>
           <div>
             Giỏ hàng của bạn

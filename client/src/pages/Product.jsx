@@ -57,6 +57,7 @@ export default function Product() {
     })
       .then((res) => res.json())
       .then((metadata) => {
+        document.title = `${metadata.data.name} | Shop BB`;
         metadata.data.priceDiscount =
           metadata.data.price * (1 - metadata.data.discount);
         setProduct(metadata.data);

@@ -1,5 +1,5 @@
 import express from 'express';
-import { logIn, logOut, refreshToken, signUp } from '../controllers/access.controller.js';
+import { getInfoShop, logIn, logOut, refreshToken, signUp } from '../controllers/access.controller.js';
 import { authentication } from '../utils/auth.util.js';
 
 const routerAccess = express.Router();
@@ -12,6 +12,9 @@ routerAccess.post('/shop/login', logIn);
 
 // authentication
 routerAccess.use(authentication);
+
+// get info
+routerAccess.get('/shop', getInfoShop);
 
 // logout
 routerAccess.post('/shop/logout', logOut);

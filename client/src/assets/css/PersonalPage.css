@@ -1,0 +1,20 @@
+.personalPage {
+    margin-top: 90px;
+    background-color: #f5f5f5;
+  }
+  
+  .personalPage__content {
+    padding: 20px 10%;
+    margin-top: 40px;
+    min-height: 60vh;
+    text-align: center;
+  }
+  
+
+  @media only screen and (max-width: 700px) {
+    /* CSS rules for phone screens */
+    .personalPage__content {
+      padding: 20px 5%;
+    }
+  }
+  

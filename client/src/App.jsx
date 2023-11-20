@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 // import { useContext } from 'react'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 
-// import { useAuth } from './context/AuthContext'
+import { useAuth } from './context/AuthContext'
 
 import './App.css'
 import Home from './pages/Home'
@@ -16,11 +16,13 @@ import ResponseCheckout from './pages/ResponseCheckout'
 import SearchPage from './pages/SearchPage'
 import Policy from './pages/Policy'
 import Contact from './pages/Contact'
+import OrderPage from './pages/OrderPage'
+import PersonalPage from './pages/PersonalPage'
 
 function App() {
-  // const { user } = useAuth()
+  const { user } = useAuth()
 
-  const user = Cookies.get('token') ? true : false
+  // const user = Cookies.get('access-token') ? true : false
 
   return (
     <Router>
@@ -39,11 +41,15 @@ function App() {
           <>
             <Route path="/login" element={<Navigate to="/" />} />
             <Route path="/register" element={<Navigate to="/" />} />
+            <Route path={`/user/${user._id}/personal`} element={<PersonalPage />} />
+            <Route path={`/user/${user._id}/order`} element={<OrderPage />} />
           </>
         ) : (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            {/* <Route path="/personal" element={<Navigate to="/login" />} /> */}
+            {/* <Route path="/order" element={<Navigate to="/login" />} /> */}
           </>
         )}
       </Routes>

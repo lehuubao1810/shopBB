@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { findByUserId, findByRefreshTokenUsed, removeById } from "../services/keyToken.services.js";
+import Shop from "../models/shop.model.js";
 // import nodemailler from "nodemailer";
 
 export const createTokenPair = (payload, privateKey) => {
@@ -108,7 +109,28 @@ export const authentication = async (req, res, next) => {
   }
 };
 
+export const checkPermission = async (req, res, next) => {
+  try {
+    const shop = await Shop.findById(req.keyStore.user).lean();
+    
+    if (!shop) {
+      return res.status(400).json({
+        error: "shop is invalid",
+      });
+    }
 
-// export const authenticateEmail = async (req, res, next) => {
+    if (shop.role !== "Admin" && shop.role !== "Seller") {
+      return res.status(400).json({
+        error: "shop is not admin",
+      });
+    }
 
-// };
+    return next();
+
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+      message: "error verify token in catch 2",
+    });
+  }
+}

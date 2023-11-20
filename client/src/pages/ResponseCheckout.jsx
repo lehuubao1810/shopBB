@@ -18,6 +18,7 @@ export default function ResponseCheckout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = "Xác nhận trạng thái đặt hàng | Shop BB";
   }, []);
 
   const navigate = useNavigate();

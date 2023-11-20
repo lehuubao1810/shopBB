@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema(
     customer: {
       customer_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Customer",
+        ref: "Shop",
         // required: true,
       },
       address: {
@@ -43,8 +43,12 @@ const orderSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["pending", "processing", "shipping", "delivered"],
+      enum: ["pending", "processing", "shipping", "delivered", "cancelled"],
       default: "pending",
+    },
+    reviewed: {
+      type: Boolean,
+      default: false,
     },
     total: {
       type: Number,

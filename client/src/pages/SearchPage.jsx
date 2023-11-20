@@ -25,6 +25,10 @@ export default function SearchPage() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    document.title = `Kết quả tìm kiếm cho: ${searchValue} | Shop BB`;
+  },[searchValue]);
+
+  useEffect(() => {
     // Get products by category (use fetch)
     fetch(`http://localhost:5000/api/product/search/result?name=${searchValue}&${searchParams}`, {
       method: "GET",

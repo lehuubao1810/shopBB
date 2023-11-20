@@ -5,9 +5,9 @@ import AuthContextProvider from "./context/AuthContext.jsx";
 import CartContextProvider from "./context/CartContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <CartContextProvider>
-    <AuthContextProvider>
+  <AuthContextProvider>
+    <CartContextProvider>
       <App />
-    </AuthContextProvider>
-  </CartContextProvider>
+    </CartContextProvider>
+  </AuthContextProvider>
 );

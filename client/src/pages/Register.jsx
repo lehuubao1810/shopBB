@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../context/AuthContext";
+
 import "../assets/css/register.css";
 
 export default function Register() {
+  const { register } = useAuth();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,6 +18,10 @@ export default function Register() {
   const [emailError, setEmailError] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Đăng nhập | Shop BB";
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,7 +61,8 @@ export default function Register() {
       confirmPasswordError === "" &&
       emailError === ""
     ) {
-      // submit form
+      register(username, email, password);
+      navigate("/");
     }
   };
 
@@ -60,6 +70,16 @@ export default function Register() {
     <div className="registerPage">
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {emailError && <span className="error">{emailError}</span>}
+        </div>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -92,16 +112,7 @@ export default function Register() {
             <span className="error">{confirmPasswordError}</span>
           )}
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {emailError && <span className="error">{emailError}</span>}
-        </div>
+
         <button type="submit">Register</button>
       </form>
       <p>

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCart from "../components/ProductCart";
+import UpBtn from "../components/UpBtn";
+
 import { useCart } from "../context/CartContext";
 import formatPrice from "../utils/formatPrice";
 
@@ -11,6 +13,7 @@ import "../assets/css/CartPage.css";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, addToCart, reduceQuantity } = useCart();
+
   const navigate = useNavigate();
 
   // handle addAll, addOne, removeOne, removeAll to order through checkbox
@@ -19,9 +22,7 @@ export default function CartPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  useEffect(() => {
+    document.title = "Giỏ hàng | Shop BB";
     if(!localStorage.getItem('order')){
       localStorage.setItem('order', JSON.stringify([]))
     }
@@ -36,7 +37,7 @@ export default function CartPage() {
 
   const calculateTotal = () => {
     return order.reduce(
-      (total, item) => total + (item.price * (1 - item.discount)) * item.quantity,
+      (total, item) => total + (item.product.price * (1 - item.product.discount)) * item.quantity,
       0
     );
   };
@@ -49,29 +50,29 @@ export default function CartPage() {
     }
   };
 
-  const handleCheckBox = (e, item) => {
+  const handleCheckBox = (e, item, quantity) => {
     if (e.target.checked) {
-      setOrder([...order, item]);
+      setOrder([...order, {product: item, quantity: quantity}]);
     } else {
-      setOrder(order.filter((orderItem) => orderItem._id !== item._id));
+      setOrder(order.filter((orderItem) => orderItem.product._id !== item._id));
     }
   };
 
-  const handleChangeQuantity = (item) => {
+  const handleChangeQuantity = (item, change) => {
     setOrder(
       order.map((orderItem) =>
-        orderItem._id === item._id
-          ? { ...orderItem, quantity: item.quantity }
+        orderItem.product._id === item._id
+          ? { ...orderItem, quantity: orderItem.quantity + change }
           : orderItem
       )
     )
   }
   const handleDelete = (item) => {
-    setOrder(order.filter((orderItem) => orderItem._id !== item._id));
+    setOrder(order.filter((orderItem) => orderItem.product._id !== item._id));
   }
 
   const checkIsExist = (item) => {
-    return order.some((orderItem) => orderItem._id === item._id);
+    return order.some((orderItem) => orderItem.product._id === item._id);
   };
 
   return (
@@ -105,7 +106,8 @@ export default function CartPage() {
                   {cartItems.map((item, index) => (
                     <ProductCart
                       key={index}
-                      item={item}
+                      item={item.product}
+                      quantity={item.quantity}
                       index={index}
                       removeFromCart={removeFromCart}
                       reduceQuantity={reduceQuantity}
@@ -144,6 +146,7 @@ export default function CartPage() {
                   </div>
                   <button
                     onClick={() => navigate("/checkout")}
+                    disabled={order.length === 0}
                   >Thanh toán</button>
                 </div>
               </div>
@@ -151,7 +154,7 @@ export default function CartPage() {
           </>
         )}
       </div>
-
+      <UpBtn />
       <Footer />
     </div>
   );

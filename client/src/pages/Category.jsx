@@ -56,6 +56,10 @@ export default function Category() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     // Get category by name (use fetch)
     fetch(`http://localhost:5000/api/category/slug/${categoryName}`, {
       method: "GET",
@@ -68,11 +72,15 @@ export default function Category() {
         return res.json();
       })
       .then((metadata) => {
+        document.title = `${metadata.data.name} | Shop BB`;
         console.log(metadata.data.attributes);
         setFilter(metadata.data.attributes);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [categoryName]);
 
   useEffect(() => {
@@ -105,7 +113,7 @@ export default function Category() {
           {loading && <h1>Loading...</h1>}
 
           <div className="categoryPage__content__filter__row">
-            {filter.map((item, index) => (
+            {filter?.map((item, index) => (
               <FilterAutoWidth
                 key={index}
                 slug={item.slug}
@@ -128,8 +136,8 @@ export default function Category() {
         </div>
         <h2 className="categoryPage__content__title">{categoryName}</h2>
         <div className="listProduct__content">
-          {products.length > 0 ? (
-            products.map((product, index) => (
+          {products?.length > 0 ? (
+            products?.map((product, index) => (
               <ProductCard
                 key={index}
                 product={product}

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useAuth } from "../context/AuthContext";
 import notify from "../utils/notify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -13,6 +14,9 @@ import PayPalPayment from "../components/PayPalPayment";
 import "../assets/css/CheckOut.css";
 
 export default function CheckOut() {
+
+  const { user } = useAuth();
+
   const navigate = useNavigate();
 
   const [order, setOrder] = useState([]);
@@ -30,6 +34,17 @@ export default function CheckOut() {
 
   const [note, setNote] = useState("");
   const [payment, setPayment] = useState("COD");
+
+  useEffect(() => {
+    document.title = "Đặt hàng | Shop BB";
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+    }
+  },[user]);
 
   useEffect(() => {
     if (!localStorage.getItem("order")) {
@@ -67,7 +82,7 @@ export default function CheckOut() {
 
   const calculateTotal = () => {
     return order.reduce(
-      (total, item) => total + item.price * (1 - item.discount) * item.quantity,
+      (total, item) => total + (item.product.price * (1 - item.product.discount)) * item.quantity,
       0
     );
   };
@@ -105,16 +120,22 @@ export default function CheckOut() {
   const handleCheckOut = () => {
     const orderCheckout = {
       customer: {
+        customer_id: user._id ? user._id : null,
         name,
         phone,
-        address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
+        address: `${address}, ${(ward.find((item) => item.code == wardSelected)).name}, ${
+          (district.find((item) => item.code == districtSelected)).name
+        }, ${
+          (city.find((item) => item.code == citySelected)).name
+        }`,
       },
       email,
       products: order.map((item) => ({
-        product: item._id,
+        product: item.product._id,
         quantity: item.quantity,
       })),
       total: calculateTotal(),
+      note,
       payment,
     };
     console.log(orderCheckout);
@@ -122,13 +143,18 @@ export default function CheckOut() {
     const orderEmail = {
       email: email,
       products: order.map((item) => ({
-        productName: item.name,
+        productName: item.product.name,
         quantity: item.quantity,
-        price: item.price * (1 - item.discount),
+        price: formatPrice(item.product.price * (1 - item.product.discount)),
       })),
-      total: calculateTotal(),
+      total: formatPrice(calculateTotal()),
       payment,
-      address: `${address}, ${wardSelected}, ${districtSelected}, ${citySelected}`,
+      note,
+      address: `${address}, ${(ward.find((item) => item.code == wardSelected)).name}, ${
+        (district.find((item) => item.code == districtSelected)).name
+      }, ${
+        (city.find((item) => item.code == citySelected)).name
+      }`,
     };
 
     // create order in database
@@ -315,13 +341,13 @@ export default function CheckOut() {
                   >
                     <div className="checkOutPage__container__content__right__product__item__info">
                       <div className="img">
-                        <img src={item.thumb} alt={item.name} />
+                        <img src={item.product.thumb} alt={item.product.name} />
                       </div>
                       <div className="group">
-                        <p>{item.name}</p>
+                        <p>{item.product.name}</p>
                         <span>Số lượng: {item.quantity}</span>
-                        <h4>{formatPrice(item.price * (1 - item.discount))}</h4>
-                        <del>{formatPrice(item.price)}</del>
+                        <h4>{formatPrice(item.product.price * (1 - item.product.discount))}</h4>
+                        <del>{formatPrice(item.product.price)}</del>
                       </div>
                     </div>
                     <div className="checkOutPage__container__content__right__product__item__gift">

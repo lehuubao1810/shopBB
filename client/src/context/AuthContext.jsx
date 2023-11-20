@@ -1,75 +1,131 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
-export default function AuthContextProvider({children}) {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
+export default function AuthContextProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const accessToken = Cookies.get("access-token");
+    const userId = Cookies.get("user-id");
+    if (accessToken && userId) {
+      fetch(`http://localhost:5000/api/access/shop/`, {
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": accessToken,
+          "user-id": userId,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setUser(data.metadata.shop);
+            setError(null);
+          } else {
+            setError(data.error);
+          }
+        });
+    }
+  }, []);
 
-    const login = async (email, password) => {
-        try {
-            const response = await fetch("https://reqres.in/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+  const login = async (email, password) => {
+    try {
+      fetch("http://localhost:5000/api/access/shop/login?role=Customer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            Cookies.set("access-token", data.metadata.tokenPair.accessToken, {
+              expires: 1,
             });
-            const data = await response.json();
-            if (data.token) {
-                Cookies.set("token", data.token); // save token in cookie
-                setUser(data.token);
-                setError(null);
-            } else {
-                setError(data.error);
-            }
-        } catch (error) {
-            setError(error.message);
-        }
-    };
+            Cookies.set("user-id", data.metadata.shop._id, { expires: 1 });
+            setUser(data.metadata.shop);
+            setError(null);
+          } else {
+            setError(data.error);
+            alert("Đăng nhập không thành công. Vui lòng thử lại!");
+          }
+        });
+    } catch (error) {
+      setError(error.message);
+      alert("Đăng nhập không thành công. Vui lòng thử lại!");
+    }
+  };
 
-    const logout = async () => {
-        try {
-            const response = await fetch("/api/logout", { method: "POST" });
-            if (response.ok) {
-                setUser(null);
-                setError(null);
-            } else {
-                setError("Logout failed");
-            }
-        } catch (error) {
-            setError(error.message);
-        }
-    };
+  const logout = async () => {
+    const accessToken = Cookies.get("access-token");
+    const userId = Cookies.get("user-id");
+    try {
+      fetch("http://localhost:5000/api/access/shop/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": accessToken,
+          "user-id": userId,
+        },
+        body: JSON.stringify({}),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            Cookies.remove("access-token");
+            Cookies.remove("user-id");
+            setUser(null);
+            setError(null);
+            console.log("logout success");
+          } else {
+            alert("Đăng xuất không thành công. Vui lòng thử lại!");
+            setError(data.error);
+          }
+        });
+    } catch (error) {
+      setError(error.message);
+      alert("Đăng xuất không thành công. Vui lòng thử lại!");
+    }
+  };
 
-    const register = async (name, email, password) => {
-        try {
-            const response = await fetch("/api/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+  const register = async (name, email, password) => {
+    try {
+      fetch("http://localhost:5000/api/access/shop/signup?role=Customer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success === true) {
+            Cookies.set("access-token", data.metadata.tokenPair.accessToken, {
+              expires: 1,
             });
-            const data = await response.json();
-            if (response.ok) {
-                setUser(data.user);
-                setError(null);
-            } else {
-                setError(data.message);
-            }
-        } catch (error) {
-            setError(error.message);
-        }
-    };
+            Cookies.set("user-id", data.metadata.shop._id, { expires: 1 });
+            setUser(data.metadata.shop);
+            setError(null);
+            alert("Đăng ký tài khoản thành công!");
+          } else {
+            alert("Đăng ký tài khoản không thành công. Vui lòng thử lại!");
+            setError(data.error);
+          }
+        });
+    } catch (error) {
+      setError(error.message);
+      alert("Đăng ký tài khoản không thành công. Vui lòng thử lại!");
+    }
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, error, login, logout, register }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user, error, login, logout, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 AuthContextProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-}
+  children: PropTypes.node.isRequired,
+};

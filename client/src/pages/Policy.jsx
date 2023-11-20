@@ -10,14 +10,17 @@ export default function Policy() {
   const { policyName } = useParams();
 
   useEffect(() => {
-    if (
-      policyName !== "warranty-policy" &&
-      policyName !== "shipping-policy" &&
-      policyName !== "return-policy"
-    ) {
-      alert("Policy not found!");
-      window.location.href = "/";
+    let title = '';
+    if (policyName === "warranty-policy") {
+      title = "Chính sách bảo hành";
     }
+    if (policyName === "shipping-policy") {
+      title = "Chính sách vận chuyển";
+    }
+    if (policyName === "return-policy") {
+      title = "Chính sách đổi trả";
+    }
+    document.title = `${title} | Shop BB`;
   }, [policyName]);
 
   return (
