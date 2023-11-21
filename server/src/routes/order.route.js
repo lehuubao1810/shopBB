@@ -1,5 +1,5 @@
 import express from 'express';
-import { cancelOrder, createOrder, deleteOrder, getOrder, getOrderByEmail, getOrders, updateOrder } from '../controllers/order.controller.js';
+import { cancelOrder, createOrder, deleteOrder, getOrder, getOrderByEmail, getOrders, updateOrder, updateStatusOrder } from '../controllers/order.controller.js';
 import { authentication, checkPermission } from '../utils/auth.util.js';
 
 const routerOrder = express.Router();
@@ -27,6 +27,9 @@ routerOrder.use(checkPermission);
 
 // update order
 routerOrder.put('/:id', updateOrder);
+
+// update status order
+routerOrder.put('/status/:id', updateStatusOrder);
 
 // delete order
 routerOrder.delete('/:id', deleteOrder);

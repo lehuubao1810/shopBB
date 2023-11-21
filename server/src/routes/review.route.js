@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createReview } from "../controllers/review.controller.js";
+import { createOneReview, createReview } from "../controllers/review.controller.js";
 import { authentication } from "../utils/auth.util.js";
 import { checkOrderDelivered } from "../utils/order.util.js";
 
@@ -13,6 +13,9 @@ routerReview.use(authentication);
 routerReview.use(checkOrderDelivered);
 
 // create review
-routerReview.post("/:id", createReview);    
+routerReview.post("/", createReview);    
+
+// create one review
+routerReview.post("/one", createOneReview);
 
 export default routerReview;
