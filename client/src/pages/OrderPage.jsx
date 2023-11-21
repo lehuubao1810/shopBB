@@ -48,7 +48,7 @@ export default function OrderPage() {
     const accessToken = Cookies.get("access-token");
     // const userId = Cookies.get("user-id");
     if (user) {
-      fetch(`http://localhost:5000/api/order?${searchParams}`, {
+      fetch(`http://localhost:5000/api/shop/orders?${searchParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -105,6 +105,7 @@ export default function OrderPage() {
           slug="status"
           name="Trạng thái đơn hàng"
           filterOrder={filterOrder}
+          className="orderPage__content__filter"
         />
         <div className="orderPage__content__list">
           {orders?.length === 0 ? (
@@ -219,24 +220,30 @@ export default function OrderPage() {
                     </div>
                   </div>
                   <div className="orderPage__content__list__item__body__right">
-                    {
-                      order.status === "delivered" && (
+                    {order.status === "delivered" &&
+                      (order.reviewed === false ? (
                         <div
                           className="orderPage__content__list__item__body__right__btn"
-                          onClick={() => setShowReviewModal(
-                            (prev) => !prev.show && { show: true, order: order }
-                          )}
+                          onClick={() =>
+                            setShowReviewModal(
+                              (prev) =>
+                                !prev.show && { show: true, order: order }
+                            )
+                          }
                         >
                           Đánh giá sản phẩm
                         </div>
-                      )
-                    }
+                      ) : (
+                        <div
+                          className="orderPage__content__list__item__body__right__btn done"
+                        >
+                          Đã đánh giá
+                        </div>
+                      ))}
                     {showReviewModal.show && (
                       <ReviewModal
                         handleCloseReviewModal={() =>
-                          setShowReviewModal(
-                            (prev) => !prev.show && prev.order
-                          )
+                          setShowReviewModal((prev) => !prev.show && prev.order)
                         }
                         order={showReviewModal.order}
                       />
@@ -245,9 +252,12 @@ export default function OrderPage() {
                       <>
                         <div
                           className="orderPage__content__list__item__body__right__btn cancel"
-                          onClick={() => setShowCancelOrderModal(
-                            (prev) => !prev.show && { show: true, orderId: order._id }
-                          )}
+                          onClick={() =>
+                            setShowCancelOrderModal(
+                              (prev) =>
+                                !prev.show && { show: true, orderId: order._id }
+                            )
+                          }
                         >
                           Hủy đơn hàng
                         </div>
@@ -265,11 +275,11 @@ export default function OrderPage() {
                     )}
                     <div className="orderPage__content__list__item__body__right__total">
                       <h4>
-                        Tổng tiền:
+                        Tổng tiền: {" "}
                         <span>{formatPrice(order.total)}</span>
                       </h4>
                       <h4>
-                        Trạng thái:
+                        Trạng thái: {" "}
                         <span>
                           {order.status === "pending"
                             ? "Đang chờ xử lý"

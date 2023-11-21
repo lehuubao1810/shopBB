@@ -174,9 +174,18 @@
   color: #f83142;
   border: 1px solid #f83142;
 }
+.done {
+  background-color: #0bb54a;
+  border: 1px solid #0bb54a;
+}
+.done:hover {
+  background-color: #0bb54a;
+  border: 1px solid #0bb54a;
+  color: #fff;
+}
 
 
-.orderPage__content__list__item__body__right span {
+.orderPage__content__list__item__body__right>span {
   color: #0248b8;
   margin-left: 5px;
 }
