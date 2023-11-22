@@ -23,6 +23,7 @@ export default function Home() {
   // const [phone, setPhone] = useState([]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     document.title = "Shop BB | Laptop, Điện thoại, Linh kiện, PC";
   },[]);
 

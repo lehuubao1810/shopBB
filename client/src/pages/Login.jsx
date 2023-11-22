@@ -16,12 +16,11 @@ function Login() {
 
   const { login } = useAuth();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     // Handle login logic here
     if (email !== "" && password !== "") {
-      await login(email, password);
-      alert("Login success");
+      login(email, password);
       navigate("/");
       setError("");
     } else {

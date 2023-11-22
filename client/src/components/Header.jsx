@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import LoadingSpin from "./LoadingSpin";
+import SearchResult from "./SearchResult";
+
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
@@ -9,19 +12,22 @@ function Header() {
 
   const [isShowNav, setIsShowNav] = useState(false);
   const [isShowPersonalBoard, setIsShowPersonalBoard] = useState(false);
+  const [isShowSearchResult, setIsShowSearchResult] = useState(false);
+
   const [search, setSearch] = useState("");
 
   const handleCloseNav = () => {
     if (isShowNav) setIsShowNav(false);
     if (isShowPersonalBoard) setIsShowPersonalBoard(false);
-  }
+    if (isShowSearchResult) setIsShowSearchResult(false);
+  };
   const handleLogOut = async () => {
     await logout();
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   const { cartQuantity } = useCart();
-  const { user, logout } = useAuth();
+  const { user, logout, loadingUser } = useAuth();
 
   const [categories, setCategories] = useState([]);
 
@@ -85,15 +91,23 @@ function Header() {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
+              setIsShowSearchResult(true);
             }}
           />
           <i
             className="fa-solid fa-magnifying-glass btnSearch"
             onClick={() => navigate(`/search/${search}`)}
           ></i>
+          {
+            isShowSearchResult && (
+              <SearchResult search={search} setIsShow={setIsShowSearchResult}/>
+            )
+          }
         </div>
         <div className="login">
-          {user ? (
+          {loadingUser ? (
+            <LoadingSpin size={8} />
+          ) : user ? (
             <a onClick={() => setIsShowPersonalBoard(!isShowPersonalBoard)}>
               <i className="fa-solid fa-circle-user"></i>
               <div>
@@ -114,11 +128,7 @@ function Header() {
                   <li onClick={() => navigate(`/user/${user._id}/personal`)}>
                     Thông tin cá nhân
                   </li>
-                  <li
-                    onClick={handleLogOut}
-                  >
-                    Đăng xuất
-                  </li>
+                  <li onClick={handleLogOut}>Đăng xuất</li>
                 </ul>
               )}
             </a>
@@ -150,6 +160,12 @@ function Header() {
         <div
           className="overlay"
           onClick={() => setIsShowPersonalBoard(false)}
+        ></div>
+      )}
+      {isShowSearchResult && (
+        <div
+          className="overlay"
+          onClick={() => setIsShowSearchResult(false)}
         ></div>
       )}
     </>

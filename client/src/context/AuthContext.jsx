@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(false);
 
   useEffect(() => {
     const accessToken = Cookies.get("access-token");
@@ -32,7 +33,8 @@ export default function AuthContextProvider({ children }) {
     }
   }, []);
 
-  const login = async (email, password) => {
+  const login = (email, password) => {
+    setLoadingUser(true);
     try {
       fetch("http://localhost:5000/api/access/shop/login?role=Customer", {
         method: "POST",
@@ -47,19 +49,23 @@ export default function AuthContextProvider({ children }) {
             });
             Cookies.set("user-id", data.metadata.shop._id, { expires: 1 });
             setUser(data.metadata.shop);
+            setLoadingUser(false);
+            // alert("Đăng nhập thành công!");
             setError(null);
           } else {
             setError(data.error);
+            setLoadingUser(false);
             alert("Đăng nhập không thành công. Vui lòng thử lại!");
           }
         });
     } catch (error) {
       setError(error.message);
+      setLoadingUser(false);
       alert("Đăng nhập không thành công. Vui lòng thử lại!");
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
     try {
@@ -91,7 +97,7 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
-  const register = async (name, email, password) => {
+  const register = (name, email, password) => {
     try {
       fetch("http://localhost:5000/api/access/shop/signup?role=Customer", {
         method: "POST",
@@ -120,7 +126,7 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, error, login, logout, register }}>
+    <AuthContext.Provider value={{ user, error, login, logout, register, loadingUser }}>
       {children}
     </AuthContext.Provider>
   );
