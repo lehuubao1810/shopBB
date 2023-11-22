@@ -160,7 +160,7 @@ export const getInfoShop = async (req, res) => {
       message: "success get info shop",
       success: true,
       metadata: {
-        shop: getInfoData({ data: shop, fields: ["_id", "name", "email"] }),
+        shop: getInfoData({ data: shop, fields: ["_id", "name", "email", "phone", "address"] }),
       },
     });
   } catch (error) {
