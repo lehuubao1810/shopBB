@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createProduct, getProductsByCategory, getProduct, deleteProduct, createProducts, searchProduct } from "../controllers/product.controller.js";
+import { createProduct, getProductsByCategorySlug, getProduct, deleteProduct, createProducts, searchProduct, getProductsByCategoryId } from "../controllers/product.controller.js";
 import { authentication } from "../utils/auth.util.js";
 import { checkPermission } from "../utils/auth.util.js";
 
@@ -8,7 +8,8 @@ const routerProduct = express.Router();
 
  
 // get products
-routerProduct.get("/category/:slug", getProductsByCategory);
+routerProduct.get("/category/slug/:slug", getProductsByCategorySlug);
+routerProduct.get("/category/:id", getProductsByCategoryId);
 
 // get Product
 routerProduct.get("/:slug", getProduct);

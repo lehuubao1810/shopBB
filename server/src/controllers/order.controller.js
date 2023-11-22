@@ -4,7 +4,6 @@ import Order from "../models/order.model.js";
 import Client from "../models/client.model.js";
 import Shop from "../models/shop.model.js";
 
-
 export const createOrder = async (req, res) => {
   try {
     const newOrder = await Order.create(req.body);
@@ -42,22 +41,24 @@ export const getOrders = async (req, res) => {
       createdAt: -1,
     };
 
-
     const orders = await Order.find({
       "customer.customer_id": req.keyStore.user,
       ...filter,
     })
+      .sort(sort)
       .skip(skipIndex)
       .limit(limit)
       .populate("products.product")
-      .sort(sort)
       .lean();
 
     if (!orders) {
-      return res.status(400).json({ success: false, error: {
-        message: "Không có đơn hàng nào",
-        status: 400
-      } });
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "Không có đơn hàng nào",
+          status: 400,
+        },
+      });
     }
     return res.status(200).json({
       success: true,
@@ -69,11 +70,14 @@ export const getOrders = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).json({ success: false, error: {
-      message: "Lỗi không xác định",
-      status: 400,
-      error: error
-    } });
+    return res.status(400).json({
+      success: false,
+      error: {
+        message: "Lỗi không xác định",
+        status: 400,
+        error: error,
+      },
+    });
   }
 };
 
@@ -126,19 +130,14 @@ export const deleteOrder = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
-    const updateOrder = await Order.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-      ).lean();
+    const updateOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    }).lean();
     if (!updateOrder) {
       return res.status(400).json({ success: false, error: err });
     }
     return res.status(200).json({ success: true, data: updateOrder });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(400).json({ success: false, error: error });
   }
 };
@@ -156,8 +155,7 @@ export const updateStatusOrder = async (req, res) => {
       return res.status(400).json({ success: false, error: err });
     }
     return res.status(200).json({ success: true, data: updateOrder });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(400).json({ success: false, error: error });
   }
 };
@@ -175,8 +173,7 @@ export const cancelOrder = async (req, res) => {
       return res.status(400).json({ success: false, error: err });
     }
     return res.status(200).json({ success: true, data: updateOrder });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(400).json({ success: false, error: error });
   }
 };

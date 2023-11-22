@@ -64,7 +64,7 @@ export const createProducts = async (req, res) => {
   }
 };
 
-export const getProductsByCategory = async (req, res) => {
+export const getProductsByCategorySlug = async (req, res) => {
   try {
     const categorySlug = req.params.slug;
     const page = parseInt(req.query.page) || 1;
@@ -119,9 +119,66 @@ export const getProductsByCategory = async (req, res) => {
   }
 };
 
+export const getProductsByCategoryId = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 8;
+    const sortPrice = req.query.sortPrice || "asc"; // asc | desc
+
+    // Bộ lọc
+    const filter = {};
+
+    // Nếu bạn muốn áp dụng bộ lọc theo giá, ví dụ: /api/categories/:categorySlug/products?minPrice=20&maxPrice=50
+    if (req.query.minPrice && req.query.maxPrice) {
+      filter.price = {
+        $gte: parseFloat(req.query.minPrice),
+        $lte: parseFloat(req.query.maxPrice),
+      };
+    }
+    const category = await Category.findById(categoryId).lean();
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    category.attributes.forEach(async (attribute) => {
+      if (req.query[attribute.slug]) {
+        filter[`attributes.${attribute.slug}`] = req.query[attribute.slug];
+        // exp: filter['attributes.brand'] = 'Apple'
+        // api/categories/laptop/products?brand=Apple
+      }
+    });
+
+    const totalProducts = await Product.countDocuments({
+      category: category._id,
+      ...filter,
+    });
+
+    const products = await Product.find({ category: category._id, ...filter })
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ price: sortPrice })
+      // .populate('category') // Populate để lấy thông tin danh mục
+      .lean();
+
+    res.json({
+      category: category.name,
+      products,
+      totalProducts,
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / perPage),
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getProduct = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug }).lean();
+    const product = await Product.findOne({ slug: req.params.slug })
+      .populate("reviews")
+      .lean();
     if (!product) {
       return res.status(400).json({ success: false, error: "err get product" });
     }
