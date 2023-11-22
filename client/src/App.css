@@ -133,9 +133,10 @@ header {
 .searchResult__more {
   cursor: pointer;
   margin-top: 20px;
+  color: #0248b8;
 }
 .searchResult__more:hover {
-  color: #0248b8;
+  text-decoration: underline;
 }
 
 /* PersonalBoard */

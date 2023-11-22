@@ -28,7 +28,7 @@ export default function ProductCart(props) {
       <div key={props.index} className="productCart__content">
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
-            <img src={props.item.thumb} alt={props.item.name} />
+            <img src={props.item?.thumb} alt={props.item.name} />
             <h4 className="productCart__content__info__item__name" onClick={() => navigate(`/product/${props.item.slug}`)}>{props.item.name}</h4>
           </div>
           <div>
