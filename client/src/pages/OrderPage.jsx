@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "react-quill/dist/quill.snow.css";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";

@@ -5,7 +5,6 @@
 
 .personalPage__content {
   padding: 20px 10%;
-  margin-top: 40px;
   min-height: 60vh;
 }
 
@@ -27,23 +26,33 @@
   align-items: center;
   gap: 10px;
 }
-.personalPage__content__info__item input {
+.personalPage__content__info__item h4 {
+  width: 120px;
+}
+.personalPage__content__info__item input, .personalPage__content__info__item select {
   padding: 10px 18px;
   border-radius: 5px;
   border: 1px solid #d4d4d4;
-  background-color: #f5f5f5;
   width: 40%;
   height: 100%;
   font-size: 15px;
   background-color: #fff;
 }
-.personalPage__content__info__item input:disabled {
+.personalPage__content__info__item input:disabled, .personalPage__content__info__item select:disabled {
   background-color: #f5f5f5;
+  opacity: 0.8;
 }
-.personalPage__content__info__item input:focus {
+.personalPage__content__info__item input:focus, .personalPage__content__info__item select:focus{
   outline: none;
   border: 1px solid #0248b8;
   background-color: #fff;
+}
+.personalPage__content__info__item__addressDetail, .personalPage__content__info__item__addressDetail:disabled {
+  width: auto!important;
+}
+
+.personalPage__content__info__item select {
+  width: 20%;
 }
 
 .personalPage__content__info__btn {
@@ -86,6 +95,59 @@
   background-color: #0bb54a;
   border: 1px solid #0bb54a;
   color: #fff;
+}
+
+/* confirm order */
+.confirmModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: #00000010;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.confirmModal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  gap: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.confirmModal__content__buttons {
+  display: flex;
+  gap: 40px;
+}
+.confirmModal__content__buttons button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #0248b8;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #0248b8;
+  transition: all 0.3s ease-in-out;
+}
+.confirmModal__content__buttons button:hover {
+  background-color: #fff;
+  color: #0248b8;
+  border: 1px solid #0248b8;
+}
+.confirmModal__content__buttons button:nth-child(1) {
+  background-color: #f83142;
+  border: 1px solid #f83142;
+}
+.confirmModal__content__buttons button:nth-child(1):hover {
+  background-color: #fff;
+  color: #f83142;
+  border: 1px solid #f83142;
 }
 
 @media only screen and (max-width: 700px) {

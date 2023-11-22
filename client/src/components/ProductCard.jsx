@@ -27,14 +27,16 @@ const ProductCard = ({ product }) => {
           product.discount * 100
         ).toFixed()} %`}</span>
       </div>
-      <div className="productRating">
-        <Rating
-          name="read-only"
-          value={product.rating}
-          precision={0.1}
-          readOnly
-        />
-      </div>
+      {product.rating > 0 && (
+        <div className="productRating">
+          <Rating
+            name="read-only"
+            value={product.rating}
+            precision={0.1}
+            readOnly
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -76,7 +76,11 @@
   border-radius: 5px;
   margin-bottom: 15px;
 }
-
+.checkOutPage__container__content__left__address input:focus,
+.group__item select:focus {
+  outline: none;
+  border: 1px solid #0248b8;
+}
 .group__item select {
   cursor: pointer;
 

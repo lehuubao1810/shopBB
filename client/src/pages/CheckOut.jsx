@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -14,7 +14,6 @@ import PayPalPayment from "../components/PayPalPayment";
 import "../assets/css/CheckOut.css";
 
 export default function CheckOut() {
-
   const { user } = useAuth();
 
   const navigate = useNavigate();
@@ -35,16 +34,29 @@ export default function CheckOut() {
   const [note, setNote] = useState("");
   const [payment, setPayment] = useState("COD");
 
+  const [isChangeAddress, setIsChangeAddress] = useState(false);
+
   useEffect(() => {
     document.title = "Đặt hàng | Shop BB";
   }, []);
 
+  const addressUser = useMemo(() => {
+    return user?.address ? user.address.split(",") : [];
+  }, [user]);
+
   useEffect(() => {
     if (user) {
       setName(user.name);
+      setPhone(user.phone);
       setEmail(user.email);
+      setAddress(addressUser[0]);
+      setCitySelected(addressUser[3]);
+      setDistrictSelected(addressUser[2]);
+      setWardSelected(addressUser[1]);
+      setDistrict([{ name: addressUser[2] }]);
+      setWard([{ name: addressUser[1] }]);
     }
-  },[user]);
+  }, [user, addressUser]);
 
   useEffect(() => {
     if (!localStorage.getItem("order")) {
@@ -62,10 +74,14 @@ export default function CheckOut() {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        setCity(data);
+        setCity([{ name: "Tỉnh, Thành phố" }, ...data]);
+        if (user) {
+          const cityDisplay = address ? { name: `${addressUser[3]}` } : { name: "Tỉnh, Thành phố" };
+          setCity([cityDisplay, ...data]);
+        }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [user, address, addressUser]);
 
   const callApiDistrict = (provinceId) => {
     fetch(`https://provinces.open-api.vn/api/p/${provinceId}?depth=2`)
@@ -82,11 +98,12 @@ export default function CheckOut() {
 
   const calculateTotal = () => {
     return order.reduce(
-      (total, item) => total + (item.product.price * (1 - item.product.discount)) * item.quantity,
+      (total, item) =>
+        total +
+        item.product.price * (1 - item.product.discount) * item.quantity,
       0
     );
   };
-
 
   const checkInput = () => {
     if (
@@ -123,10 +140,12 @@ export default function CheckOut() {
         customer_id: user ? user._id : null,
         name,
         phone,
-        address: `${address}, ${(ward.find((item) => item.code == wardSelected)).name}, ${
-          (district.find((item) => item.code == districtSelected)).name
-        }, ${
-          (city.find((item) => item.code == citySelected)).name
+        address: `${address}, ${
+          isChangeAddress
+            ? `${ward.find((item) => item.code == wardSelected).name}, ${
+                district.find((item) => item.code == districtSelected).name
+              }, ${city.find((item) => item.code == citySelected).name}`
+            : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
         }`,
       },
       email,
@@ -150,10 +169,12 @@ export default function CheckOut() {
       total: formatPrice(calculateTotal()),
       payment,
       note,
-      address: `${address}, ${(ward.find((item) => item.code == wardSelected)).name}, ${
-        (district.find((item) => item.code == districtSelected)).name
-      }, ${
-        (city.find((item) => item.code == citySelected)).name
+      address: `${address}, ${
+        isChangeAddress
+          ? `${ward.find((item) => item.code == wardSelected).name}, ${
+              district.find((item) => item.code == districtSelected).name
+            }, ${city.find((item) => item.code == citySelected).name}`
+          : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
       }`,
     };
 
@@ -242,9 +263,9 @@ export default function CheckOut() {
                       onChange={(e) => {
                         setCitySelected(e.target.value);
                         callApiDistrict(e.target.value);
+                        setIsChangeAddress(true);
                       }}
                     >
-                      <option value="">Tỉnh, Thành phố </option>
                       {city.map((item, index) => (
                         <option value={item.code} key={index}>
                           {item.name}
@@ -346,7 +367,11 @@ export default function CheckOut() {
                       <div className="group">
                         <p>{item.product.name}</p>
                         <span>Số lượng: {item.quantity}</span>
-                        <h4>{formatPrice(item.product.price * (1 - item.product.discount))}</h4>
+                        <h4>
+                          {formatPrice(
+                            item.product.price * (1 - item.product.discount)
+                          )}
+                        </h4>
                         <del>{formatPrice(item.product.price)}</del>
                       </div>
                     </div>

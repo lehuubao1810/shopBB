@@ -27,7 +27,7 @@ export default function Home() {
   },[]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/product/category/laptop`)
+    fetch(`http://localhost:5000/api/product/category/slug/laptop`)
       .then((res) => res.json())
       .then((data) => {
         setLaptop(data.products);
