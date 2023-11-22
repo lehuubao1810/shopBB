@@ -1,20 +1,106 @@
 .personalPage {
-    margin-top: 90px;
-    background-color: #f5f5f5;
-  }
-  
-  .personalPage__content {
-    padding: 20px 10%;
-    margin-top: 40px;
-    min-height: 60vh;
-    text-align: center;
-  }
-  
+  margin-top: 90px;
+  background-color: #f5f5f5;
+}
 
-  @media only screen and (max-width: 700px) {
-    /* CSS rules for phone screens */
-    .personalPage__content {
-      padding: 20px 5%;
-    }
+.personalPage__content {
+  padding: 20px 10%;
+  margin-top: 40px;
+  min-height: 60vh;
+}
+
+.personalPage__content__info {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.personalPage__content__info__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.personalPage__content__info__item {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.personalPage__content__info__item input {
+  padding: 10px 18px;
+  border-radius: 5px;
+  border: 1px solid #d4d4d4;
+  background-color: #f5f5f5;
+  width: 40%;
+  height: 100%;
+  font-size: 15px;
+  background-color: #fff;
+}
+.personalPage__content__info__item input:disabled {
+  background-color: #f5f5f5;
+}
+.personalPage__content__info__item input:focus {
+  outline: none;
+  border: 1px solid #0248b8;
+  background-color: #fff;
+}
+
+.personalPage__content__info__btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #0248b8;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #0248b8;
+  transition: all 0.3s ease-in-out;
+}
+.personalPage__content__info__btn:hover {
+  background-color: #fff;
+  color: #0248b8;
+  border: 1px solid #0248b8;
+}
+
+.personalPage__content__info__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+.cancel {
+  background-color: #f83142;
+  border: 1px solid #f83142;
+}
+.cancel:hover {
+  background-color: #fff;
+  color: #f83142;
+  border: 1px solid #f83142;
+}
+.done {
+  background-color: #0bb54a;
+  border: 1px solid #0bb54a;
+}
+.done:hover {
+  background-color: #0bb54a;
+  border: 1px solid #0bb54a;
+  color: #fff;
+}
+
+@media only screen and (max-width: 700px) {
+  /* CSS rules for phone screens */
+  .personalPage__content {
+    padding: 20px 5%;
   }
-  
+
+  .personalPage__content__info__item {
+    display: block;
+  }
+  .personalPage__content__info__item h4 {
+    margin-bottom: 10px;
+  }
+  .personalPage__content__info__item input {
+    width: 100%;
+  }
+}

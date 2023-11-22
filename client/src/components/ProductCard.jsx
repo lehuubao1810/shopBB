@@ -1,16 +1,17 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import Rating from "@mui/material/Rating";
 
 import formatPrice from "../utils/formatPrice";
 
-const ProductCard = ({ product, categoryName }) => {
-  const priceDiscount = (product.price * (1 - product.discount))
+const ProductCard = ({ product }) => {
+  const priceDiscount = product.price * (1 - product.discount);
 
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate(`/${categoryName}/${product.slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/product/${product.slug}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
@@ -19,10 +20,20 @@ const ProductCard = ({ product, categoryName }) => {
       <h4 className="productName" onClick={handleClick}>
         {product.name}
       </h4>
-      <span className="priceDiscount">{formatPrice(priceDiscount)}</span>
       <div className="productPrice">
+        <span className="priceDiscount">{formatPrice(priceDiscount)}</span>
         <del>{formatPrice(product.price)}</del>
-        <span className="discount">{`${(product.discount * 100).toFixed()} %`}</span>
+        <span className="discount">{`${(
+          product.discount * 100
+        ).toFixed()} %`}</span>
+      </div>
+      <div className="productRating">
+        <Rating
+          name="read-only"
+          value={product.rating}
+          precision={0.1}
+          readOnly
+        />
       </div>
     </div>
   );
@@ -30,7 +41,6 @@ const ProductCard = ({ product, categoryName }) => {
 
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
-  categoryName: PropTypes.string.isRequired,
 };
 
 export default ProductCard;

@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:categoryName" element={<Category />} />
-        <Route path="/:categoryName/:productSlug" element={<Product />} />
+        <Route path="/product/:productSlug" element={<Product />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/response" element={<ResponseCheckout />} />
         <Route path="/search/:searchValue" element={<SearchPage />} />

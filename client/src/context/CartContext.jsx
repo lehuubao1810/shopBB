@@ -76,7 +76,7 @@ export default function CartContextProvider({ children }) {
     );
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
-    updateCartApi(updatedCartItems);
+    user && updateCartApi(updatedCartItems);
   };
 
   const reduceQuantity = (item) => {
@@ -86,10 +86,10 @@ export default function CartContextProvider({ children }) {
     );
     if (foundIndex === -1) {
       updatedCartItems.push({ product: item, quantity: 1 });
-      addToCartApi(item);
+      user && addToCartApi(item);
     } else {
       updatedCartItems[foundIndex].quantity--;
-      updateCartApi(updatedCartItems);
+      user && updateCartApi(updatedCartItems);
     }
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
@@ -102,10 +102,10 @@ export default function CartContextProvider({ children }) {
     );
     if (foundIndex === -1) {
       updatedCartItems.push({ product: item, quantity: 1 });
-      addToCartApi(item);
+      user && addToCartApi(item);
     } else {
       updatedCartItems[foundIndex].quantity++;
-      updateCartApi(updatedCartItems);
+      user && updateCartApi(updatedCartItems);
     }
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));

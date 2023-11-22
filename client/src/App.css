@@ -231,10 +231,14 @@ header {
   color: #4f4e4e;
   cursor: pointer;
 }
+.productCard .productRating {
+  margin-top: 10px;
+}
 .priceDiscount {
   color: #0248b8;
   font-size: 16px;
   font-weight: 600;
+  margin-right: 10px;
 }
 .productPrice {
   font-size: 13px;
@@ -261,6 +265,9 @@ header {
   display: flex;
   margin-bottom: 40px;
   align-items: center;
+}
+.productCart__content {
+  width: 100%;
 }
 .productCart__content__info {
   display: grid;
@@ -355,8 +362,8 @@ header {
   background-color: #00000010;
   width: 100%;
   height: 100vh;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   z-index: 100;
 }
 .cancelOrderModal__content {
@@ -408,8 +415,8 @@ header {
   background-color: #00000010;
   width: 100%;
   height: 100vh;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   z-index: 100;
 }
 .ReviewModal__content {
@@ -421,11 +428,12 @@ header {
   gap: 40px;
   background-color: #fff;
   border-radius: 5px;
+  max-height: 90vh;
+  overflow-y:scroll;
 }
 .ReviewModal__content__buttons {
   display: flex;
   gap: 40px;
-
 }
 .ReviewModal__content__buttons button {
   padding: 10px 20px;
@@ -462,14 +470,14 @@ header {
   align-items: center;
   margin-bottom: 10px;
 }
-.reviewElement__img img{
+.reviewElement__img img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   border: 0.5px solid #d4d4d4;
 }
 
-.reviewElement__review textarea{
+.reviewElement__review textarea {
   width: 100%;
   height: 100px;
   border-radius: 5px;
@@ -478,7 +486,7 @@ header {
   resize: none;
   margin-top: 10px;
 }
-.reviewElement__review textarea:focus{
+.reviewElement__review textarea:focus {
   outline: 2px solid #0248b8;
 }
 
@@ -555,6 +563,9 @@ footer {
   /* Product Card responsive */
   .productCard .productName {
     height: 95px;
+  }
+  .priceDiscount {
+    display: block;
   }
 
   /* Up btn responsive */

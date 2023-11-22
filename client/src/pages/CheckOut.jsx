@@ -120,7 +120,7 @@ export default function CheckOut() {
   const handleCheckOut = () => {
     const orderCheckout = {
       customer: {
-        customer_id: user._id ? user._id : null,
+        customer_id: user ? user._id : null,
         name,
         phone,
         address: `${address}, ${(ward.find((item) => item.code == wardSelected)).name}, ${

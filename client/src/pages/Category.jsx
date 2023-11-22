@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import UpBtn from "../components/UpBtn";
-import Pagination from "../components/Pagination";
+import PaginationControlled from "../components/Pagination";
 // import FilterItem from "../components/FilterItem";
 import FilterAutoWidth from "../components/FilterAutoWidth";
 import SliderPrice from "../components/SliderPrice";
@@ -86,7 +86,7 @@ export default function Category() {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `http://localhost:5000/api/product/category/${categoryName}?${searchParams.toString()}`,
+      `http://localhost:5000/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -141,7 +141,6 @@ export default function Category() {
               <ProductCard
                 key={index}
                 product={product}
-                categoryName={categoryName}
               />
             ))
           ) : (
@@ -149,7 +148,7 @@ export default function Category() {
           )}
         </div>
       </div>
-      <Pagination
+      <PaginationControlled
         totalPages={dataProducts.totalPages}
         currentPage={dataProducts.currentPage}
       />

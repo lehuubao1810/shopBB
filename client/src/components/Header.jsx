@@ -11,9 +11,13 @@ function Header() {
   const [isShowPersonalBoard, setIsShowPersonalBoard] = useState(false);
   const [search, setSearch] = useState("");
 
-  function handleCloseNav() {
+  const handleCloseNav = () => {
     if (isShowNav) setIsShowNav(false);
     if (isShowPersonalBoard) setIsShowPersonalBoard(false);
+  }
+  const handleLogOut = async () => {
+    await logout();
+    navigate("/")
   }
 
   const { cartQuantity } = useCart();
@@ -98,14 +102,23 @@ function Header() {
                 {user.name.split(" ")[1].toUpperCase()}
               </div>
               {isShowPersonalBoard && (
-                <ul className="personalBoard">
+                <ul
+                  className="personalBoard"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <li onClick={() => navigate(`/user/${user._id}/order`)}>
                     Đơn hàng của tôi
                   </li>
                   <li onClick={() => navigate(`/user/${user._id}/personal`)}>
                     Thông tin cá nhân
                   </li>
-                  <li onClick={logout}>Đăng xuất</li>
+                  <li
+                    onClick={handleLogOut}
+                  >
+                    Đăng xuất
+                  </li>
                 </ul>
               )}
             </a>

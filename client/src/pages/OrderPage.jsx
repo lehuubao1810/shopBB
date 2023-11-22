@@ -1,6 +1,6 @@
 // import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +12,7 @@ import FilterAutoWidth from "../components/FilterAutoWidth";
 import CancelOrderModal from "../components/CancelOrderModal";
 import ReviewModal from "../components/ReviewModal";
 import UpBtn from "../components/UpBtn";
+import PaginationControlled from "../components/Pagination";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -22,7 +23,13 @@ import "../assets/css/OrderPage.css";
 export default function OrderPage() {
   const { user } = useAuth();
 
+  const navigate = useNavigate();
+
   const [orders, setOrders] = useState([]);
+  const [pagination, setPagination] = useState({
+    totalPages: 1,
+    currentPage: 1,
+  });
   const [showCancelOrderModal, setShowCancelOrderModal] = useState({
     show: false,
     orderId: "",
@@ -61,6 +68,10 @@ export default function OrderPage() {
           if (data.success === true) {
             // console.log(data);
             setOrders(data.metadata.orders);
+            setPagination({
+              totalPages: data.metadata.totalPages,
+              currentPage: data.metadata.page,
+            });
             console.log(data.metadata.orders);
           } else {
             console.log(data.error);
@@ -172,7 +183,7 @@ export default function OrderPage() {
                               />
                               <h4
                                 className="productOrder__content__info__item__name"
-                                // onClick={handleClickName}
+                                onClick={() => navigate(`/product/${item.product.slug}`)}
                               >
                                 {item.product.name}
                               </h4>
@@ -299,6 +310,10 @@ export default function OrderPage() {
             ))
           )}
         </div>
+        <PaginationControlled
+          totalPages={pagination.totalPages}
+          currentPage={pagination.currentPage}
+        />
       </div>
       <UpBtn />
       <Footer />

@@ -22,10 +22,6 @@ export default function ProductCart(props) {
     props.handleChangeQuantity(props.item, 1);
   }
 
-  const handleClickName = () => {
-    navigate(`/${props.item.categoryName}/${props.item.slug}`);
-  }
-
   return (
     <div className="productCart">
       <input type="checkbox" onChange={(e) => props.handleCheckBox(e, props.item, props.quantity)} checked={props.checkIsExist(props.item)}/>
@@ -33,7 +29,7 @@ export default function ProductCart(props) {
         <div className="productCart__content__info">
           <div className="productCart__content__info__item">
             <img src={props.item.thumb} alt={props.item.name} />
-            <h4 className="productCart__content__info__item__name" onClick={handleClickName}>{props.item.name}</h4>
+            <h4 className="productCart__content__info__item__name" onClick={() => navigate(`/product/${props.item.slug}`)}>{props.item.name}</h4>
           </div>
           <div>
             <p>{formatPrice(props.item.price * (1 - props.item.discount))}</p>

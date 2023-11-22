@@ -121,11 +121,11 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="cartPage__content_checkout">
-                <div className="cartPage__content_checkout__discount">
+                {/* <div className="cartPage__content_checkout__discount">
                   <h4>Khuyến mãi</h4>
                   <i className="fa-solid fa-tag"></i>
                   <button>Chọn hoặc nhập mã khuyến mãi</button>
-                </div>
+                </div> */}
                 <div className="cartPage__content_checkout__payment">
                   <h4>Thanh toán</h4>
                   <div className="cartPage__content_checkout__payment__item">

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-quill/dist/quill.snow.css";
+import Rating from "@mui/material/Rating";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -18,9 +19,9 @@ import "../assets/css/Product.css";
 
 export default function Product() {
   // http://localhost:5173/laptop/laptop-msi-gaming-bravo-15-b7ed-010vn
-  const { productSlug, categoryName } = useParams();
+  const { productSlug } = useParams();
 
-  console.log(productSlug);
+  // console.log(productSlug);
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
@@ -28,27 +29,11 @@ export default function Product() {
   const [productsRelated, setProductsRelated] = useState([]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
     // Get product by slug (use fetch)
-    fetch(`http://localhost:5000/api/category/slug/${categoryName}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((metadata) => {
-        console.log(metadata.data.attributes);
-        setAttributes(metadata.data.attributes);
-        setLoading(false);
-      })
-      .catch((err) =>
-        console.log("Lỗi: ", err, "Tại: ", "client/src/pages/Product.jsx")
-      );
-
     fetch(`http://localhost:5000/api/product/${productSlug}`, {
       method: "GET",
       headers: {
@@ -67,12 +52,13 @@ export default function Product() {
       .catch((err) =>
         console.log("Lỗi: ", err, "Tại: ", "client/src/pages/Product.jsx")
       );
-    
-  }, [productSlug, categoryName]);
+  }, [productSlug]);
 
   useEffect(() => {
     fetch(
-      `http://localhost:5000/api/product/category/${categoryName}?limit=4&brand=${product.attributes === undefined ? "" : product.attributes.brand}`,
+      `http://localhost:5000/api/product/category/${product?.category}?limit=4&brand=${
+        product.attributes === undefined ? "" : product.attributes.brand
+      }`,
       {
         method: "GET",
         headers: {
@@ -86,21 +72,35 @@ export default function Product() {
         // console.log(data);
       })
       .catch((err) => console.log(err));
-  }, [categoryName, product]);
+
+      
+    fetch(`http://localhost:5000/api/category/${product?.category}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((metadata) => {
+        console.log(metadata.data.attributes);
+        setAttributes(metadata.data.attributes);
+        setLoading(false);
+      })
+      .catch((err) =>
+        console.log("Lỗi: ", err, "Tại: ", "client/src/pages/Product.jsx")
+      );
+  }, [ product]);
 
   const { addToCart } = useCart();
   const handleAddToCart = () => {
     // add product to cart (local storage)
-    addToCart(
-      // add product to cart (local storage) and add categoryName to product
-      { ...product, categoryName }
-    );
+    addToCart(product);
     notify("success", "Thêm vào giỏ hàng thành công");
   };
 
   const handleBuyNow = () => {
     // notify("success", "Thêm vào giỏ hàng thành công");
-    addToCart({ ...product, categoryName });
+    addToCart(product);
     navigate("/cart");
   };
 
@@ -153,9 +153,9 @@ export default function Product() {
                   </span>
                   <div className="productPreview__info__right__price">
                     <del>{formatPrice(product.price)}</del>
-                    <span className="productPreview__info__right__price__discount">{`${
-                      (product.discount * 100).toFixed()
-                    } %`}</span>
+                    <span className="productPreview__info__right__price__discount">{`${(
+                      product.discount * 100
+                    ).toFixed()} %`}</span>
                   </div>
                   <div className="productPreview__info__right__line"></div>
                   <div className="productPreview__info__right__gift">
@@ -237,7 +237,10 @@ export default function Product() {
                   {attributesC.map((attribute, index) => (
                     <>
                       {index % 2 == 0 ? (
-                        <div className="productDetail__details__content__item">
+                        <div
+                          className="productDetail__details__content__item"
+                          key={index}
+                        >
                           <span>{attribute.name}</span>
                           <span>
                             {product.attributes &&
@@ -248,6 +251,7 @@ export default function Product() {
                         <div
                           className="productDetail__details__content__item"
                           style={{ background: "#f6f6f6" }}
+                          key={index}
                         >
                           <span>{attribute.name}</span>
                           <span>
@@ -261,13 +265,51 @@ export default function Product() {
                 </div>
               </div>
             </div>
+            <div className="productReviews">
+              <h3>Đánh giá sản phẩm</h3>
+              <div className="productReviews__content">
+                {product.reviews && product.reviews.length !== 0 ? (
+                  product.reviews.map((review, index) => (
+                    <div className="productReviews__item" key={index}>
+                      {/* <div className="productReviews__item__header">
+                        <span className="productReviews__item__header__name">
+                          {review.name}
+                        </span>
+                      </div> */}
+                      <div className="productReviews__item__rating">
+                        <Rating
+                          name="read-only"
+                          value={review.rating}
+                          precision={0.1}
+                          readOnly
+                        />
+                      </div>
+                      <div className="productReviews__item__header__date">
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </div>
+                      <div className="productReviews__item__content">
+                        {review.content}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <h4 style={{ color: "#0248b8" }}>Chưa có đánh giá nào</h4>
+                )}
+              </div>
+            </div>
             <div className="productRelated">
               <h2 className="productRelated__title">Sản phẩm liên quan</h2>
               <div className="productRelated__content">
                 <div className="listProduct__content">
-                  {productsRelated && productsRelated.slice(0, 4).map((product) => (
-                    <ProductCard key={product.id} product={product} categoryName={categoryName}/>
-                  ))}
+                  {productsRelated &&
+                    productsRelated
+                      .slice(0, 4)
+                      .map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                        />
+                      ))}
                 </div>
               </div>
             </div>
