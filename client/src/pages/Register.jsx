@@ -23,6 +23,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.title = "Đăng ký | Shop BB";
   }, []);
 

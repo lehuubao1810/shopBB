@@ -10,6 +10,7 @@ import "../assets/css/Login.css";
 
 function Login() {
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.title = "Đăng nhập | Shop BB";
   }, []);
 
