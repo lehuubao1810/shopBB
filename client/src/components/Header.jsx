@@ -90,7 +90,7 @@ function Header() {
             placeholder="Nhập sản phẩm cần tìm"
             value={search}
             onChange={(e) => {
-              setSearch(e.target.value);
+              setSearch((e.target.value).replace(/\s+/g, ' '));
               setIsShowSearchResult(true);
             }}
           />
@@ -113,7 +113,7 @@ function Header() {
               <div>
                 Xin chào,
                 <br />
-                {user.name.split(" ")[1].toUpperCase()}
+                {user.name.split(" ")[0].toUpperCase()}
               </div>
               {isShowPersonalBoard && (
                 <ul
