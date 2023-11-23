@@ -25,7 +25,7 @@ export default function SearchResult({ search, setIsShow }) {
       .then((res) => res.json())
       .then((metadata) => {
         setResult(metadata.products);
-        setResultSuggestions([2])
+        setResultSuggestions([])
         // console.log(data);
       })
       .catch((err) => console.log(err));
