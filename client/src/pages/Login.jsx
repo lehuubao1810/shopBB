@@ -1,30 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 import { useAuth } from "../context/AuthContext";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+import "../assets/css/Login.css";
 
+function Login() {
   useEffect(() => {
     document.title = "Đăng nhập | Shop BB";
-  },[]);
+  }, []);
 
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { login, loadingUser, errorAuth } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(errorAuth);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle login logic here
     if (email !== "" && password !== "") {
       login(email, password);
-      navigate("/");
-      setError("");
+      loadingUser && navigate("/");
+      setError(errorAuth);
     } else {
-      setError("Invalid email or password");
+      setError("Email hoặc mật khẩu không được để trống");
     }
   };
 
@@ -35,32 +40,39 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      {error && <label style={{ color: "red" }}>{error}</label>}
-      <br />
-      <button onClick={handleRegister}>Register</button>
+    <div className="loginPage">
+      <Header />
+      <div className="loginPage__content">
+        <div className="loginPage__content__box">
+          <h2 className="loginPage__content__box__title">Đăng nhập</h2>
+          <form onSubmit={handleSubmit} className="loginPage__content__box__form">
+            <label>
+              <p>Email</p>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+
+            <label>
+              <p>Mật khẩu</p>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+            <button type="submit">Đăng nhập</button>
+            {error && <span className="form__error">{error}</span>}
+          </form>
+          
+          <p className="loginPage__content__box__register">
+            Bạn chưa có tài khoản? {" "} <span onClick={handleRegister}>Đăng ký</span>
+          </p>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }
