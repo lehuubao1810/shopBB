@@ -7,7 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const [errorAuth, setErrorAuth] = useState(null);
   const [loadingUser, setLoadingUser] = useState(false);
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function AuthContextProvider({ children }) {
         .then((data) => {
           if (data.success) {
             setUser(data.metadata.shop);
-            setError(null);
+            setErrorAuth(null);
           } else {
-            setError(data.error);
+            setErrorAuth(data.error);
           }
         });
     }
@@ -51,17 +51,20 @@ export default function AuthContextProvider({ children }) {
             setUser(data.metadata.shop);
             setLoadingUser(false);
             // alert("Đăng nhập thành công!");
-            setError(null);
+            setErrorAuth(null);
+            if (localStorage.getItem("order")) {
+              localStorage.setItem("order", JSON.stringify([]));
+            }
           } else {
-            setError(data.error);
+            // setErrorAuth(data.error);
+            setErrorAuth("Email hoặc mật khẩu không chính xác");
             setLoadingUser(false);
-            alert("Đăng nhập không thành công. Vui lòng thử lại!");
           }
         });
     } catch (error) {
-      setError(error.message);
+      // setErrorAuth(error.message);
+      setErrorAuth("Email hoặc mật khẩu không chính xác");
       setLoadingUser(false);
-      alert("Đăng nhập không thành công. Vui lòng thử lại!");
     }
   };
 
@@ -84,20 +87,24 @@ export default function AuthContextProvider({ children }) {
             Cookies.remove("access-token");
             Cookies.remove("user-id");
             setUser(null);
-            setError(null);
+            setErrorAuth(null);
             console.log("logout success");
+            if (localStorage.getItem("order")) {
+              localStorage.setItem("order", JSON.stringify([]));
+            }
           } else {
             alert("Đăng xuất không thành công. Vui lòng thử lại!");
-            setError(data.error);
+            setErrorAuth(data.error);
           }
         });
     } catch (error) {
-      setError(error.message);
+      setErrorAuth(error.message);
       alert("Đăng xuất không thành công. Vui lòng thử lại!");
     }
   };
 
   const register = (name, email, password) => {
+    setLoadingUser(true);
     try {
       fetch("http://localhost:5000/api/access/shop/signup?role=Customer", {
         method: "POST",
@@ -112,21 +119,28 @@ export default function AuthContextProvider({ children }) {
             });
             Cookies.set("user-id", data.metadata.shop._id, { expires: 1 });
             setUser(data.metadata.shop);
-            setError(null);
-            alert("Đăng ký tài khoản thành công!");
+            setLoadingUser(false);
+            setErrorAuth(null);
+            if (localStorage.getItem("order")) {
+              localStorage.setItem("order", JSON.stringify([]));
+            }
           } else {
             alert("Đăng ký tài khoản không thành công. Vui lòng thử lại!");
-            setError(data.error);
+            setLoadingUser(false);
+            setErrorAuth(data.error);
           }
         });
     } catch (error) {
-      setError(error.message);
+      setErrorAuth(error.message);
+      setLoadingUser(false);
       alert("Đăng ký tài khoản không thành công. Vui lòng thử lại!");
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, error, login, logout, register, loadingUser }}>
+    <AuthContext.Provider
+      value={{ user, errorAuth, login, logout, register, loadingUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
