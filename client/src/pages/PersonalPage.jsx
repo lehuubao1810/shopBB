@@ -29,7 +29,7 @@ export default function PersonalPage() {
 
   const cityDisplay = useMemo(() => {
     return address
-      ? { name: `${addressUser[3]}` }
+      ? { name: `${addressUser[3].trim()}` }
       : { name: "Tỉnh, Thành phố" };
   }, [address, addressUser]);
   console.log(cityDisplay);
@@ -37,15 +37,15 @@ export default function PersonalPage() {
   const [city, setCity] = useState([]);
   const [citySelected, setCitySelected] = useState("");
   const [district, setDistrict] = useState(
-    address ? [{ name: `${addressUser[2]}` }] : [{ name: "Quận, Huyện" }]
+    address ? [{ name: `${addressUser[2].trim()}` }] : [{ name: "Quận, Huyện" }]
   );
   const [districtSelected, setDistrictSelected] = useState("");
   const [ward, setWard] = useState(
-    address ? [{ name: `${addressUser[1]}` }] : [{ name: "Phường, Xã" }]
+    address ? [{ name: `${addressUser[1].trim()}` }] : [{ name: "Phường, Xã" }]
   );
   const [wardSelected, setWardSelected] = useState("");
   const [addressDetail, setAddressDetail] = useState(
-    address ? `${addressUser[0]}` : ""
+    address ? `${addressUser[0].replace(/\s+/g, ' ')}` : ""
   );
   console.log(city, district, ward, addressDetail);
 
@@ -83,12 +83,12 @@ export default function PersonalPage() {
     console.log({
       name,
       phone,
-      address: `${addressDetail}, ${
+      address: `${addressDetail.replace(/\s+/g, ' ')}, ${
         isChangeAddress
           ? `${ward.find((item) => item.code == wardSelected).name}, ${
               district.find((item) => item.code == districtSelected).name
             }, ${city.find((item) => item.code == citySelected).name}`
-          : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
+          : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
       }`,
     });
     fetch("http://localhost:5000/api/shop/update-info", {
@@ -106,7 +106,7 @@ export default function PersonalPage() {
             ? `${ward.find((item) => item.code == wardSelected).name}, ${
                 district.find((item) => item.code == districtSelected).name
               }, ${city.find((item) => item.code == citySelected).name}`
-            : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
+            : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
         }`,
       }),
     })

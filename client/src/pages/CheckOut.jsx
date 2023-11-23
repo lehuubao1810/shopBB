@@ -49,12 +49,12 @@ export default function CheckOut() {
       setName(user.name);
       setPhone(user.phone);
       setEmail(user.email);
-      setAddress(addressUser[0]);
-      setCitySelected(addressUser[3]);
-      setDistrictSelected(addressUser[2]);
-      setWardSelected(addressUser[1]);
-      setDistrict([{ name: addressUser[2] }]);
-      setWard([{ name: addressUser[1] }]);
+      setAddress(addressUser[0].replace(/\s+/g, ' '));
+      setCitySelected(addressUser[3].trim());
+      setDistrictSelected(addressUser[2].trim());
+      setWardSelected(addressUser[1].trim());
+      setDistrict([{ name: addressUser[2].trim() }]);
+      setWard([{ name: addressUser[1].trim() }]);
     }
   }, [user, addressUser]);
 
@@ -76,7 +76,7 @@ export default function CheckOut() {
         // console.log(data);
         setCity([{ name: "Tỉnh, Thành phố" }, ...data]);
         if (user) {
-          const cityDisplay = address ? { name: `${addressUser[3]}` } : { name: "Tỉnh, Thành phố" };
+          const cityDisplay = address ? { name: `${addressUser[3].trim()}` } : { name: "Tỉnh, Thành phố" };
           setCity([cityDisplay, ...data]);
         }
       })
@@ -140,12 +140,12 @@ export default function CheckOut() {
         customer_id: user ? user._id : null,
         name,
         phone,
-        address: `${address}, ${
+        address: `${address.replace(/\s+/g, ' ')}, ${
           isChangeAddress
             ? `${ward.find((item) => item.code == wardSelected).name}, ${
                 district.find((item) => item.code == districtSelected).name
               }, ${city.find((item) => item.code == citySelected).name}`
-            : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
+            : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
         }`,
       },
       email,
@@ -169,12 +169,12 @@ export default function CheckOut() {
       total: formatPrice(calculateTotal()),
       payment,
       note,
-      address: `${address}, ${
+      address: `${address.replace(/\s+/g, ' ')}, ${
         isChangeAddress
           ? `${ward.find((item) => item.code == wardSelected).name}, ${
               district.find((item) => item.code == districtSelected).name
             }, ${city.find((item) => item.code == citySelected).name}`
-          : `${addressUser[1]}, ${addressUser[2]}, ${addressUser[3]}`
+          : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
       }`,
     };
 
