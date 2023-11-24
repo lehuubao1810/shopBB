@@ -12,7 +12,7 @@ export default function CancelOrderModal({
 
   const handleCancelOrder = () => {
     // console.log(orderId);
-    fetch(`http://localhost:5000/api/order/cancel/${orderId}`, {
+    fetch(`https://shopbb.onrender.com/api/order/cancel/${orderId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

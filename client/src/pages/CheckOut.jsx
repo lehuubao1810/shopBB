@@ -122,7 +122,7 @@ export default function CheckOut() {
   };
 
   const sendOrderToEmail = (orderCheckout) => {
-    fetch("http://localhost:5000/api/mail/send-order", {
+    fetch("https://shopbb.onrender.com/api/mail/send-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -179,7 +179,7 @@ export default function CheckOut() {
     };
 
     // create order in database
-    fetch("http://localhost:5000/api/order", {
+    fetch("https://shopbb.onrender.com/api/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

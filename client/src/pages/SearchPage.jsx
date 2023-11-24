@@ -30,7 +30,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     // Get products by category (use fetch)
-    fetch(`http://localhost:5000/api/product/search/result?name=${searchValue}&${searchParams}`, {
+    fetch(`https://shopbb.onrender.com/api/product/search/result?name=${searchValue}&${searchParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

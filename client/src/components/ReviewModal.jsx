@@ -34,7 +34,7 @@ export default function ReviewModal({ handleCloseReviewModal, order }) {
 
   const handleReview = () => {
     console.log(reviews);
-    fetch(`http://localhost:5000/api/review`, {
+    fetch(`https://shopbb.onrender.com/api/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

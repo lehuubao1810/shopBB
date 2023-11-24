@@ -14,7 +14,7 @@ export default function SearchResult({ search, setIsShow }) {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `http://localhost:5000/api/product/search/result?name=${search}&perPage=3`,
+      `https://shopbb.onrender.com/api/product/search/result?name=${search}&perPage=3`,
       {
         method: "GET",
         headers: {

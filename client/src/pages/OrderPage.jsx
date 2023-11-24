@@ -54,7 +54,7 @@ export default function OrderPage() {
     const accessToken = Cookies.get("access-token");
     // const userId = Cookies.get("user-id");
     if (user) {
-      fetch(`http://localhost:5000/api/shop/orders?${searchParams}`, {
+      fetch(`https://shopbb.onrender.com/api/shop/orders?${searchParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

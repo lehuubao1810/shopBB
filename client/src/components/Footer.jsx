@@ -8,7 +8,7 @@ function Footer() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/category")
+    fetch("https://shopbb.onrender.com/api/category")
       .then((res) => res.json())
       .then((metadata) => {
         setCategories(metadata.data);

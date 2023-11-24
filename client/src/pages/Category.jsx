@@ -61,7 +61,7 @@ export default function Category() {
 
   useEffect(() => {
     // Get category by name (use fetch)
-    fetch(`http://localhost:5000/api/category/slug/${categoryName}`, {
+    fetch(`https://shopbb.onrender.com/api/category/slug/${categoryName}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function Category() {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `http://localhost:5000/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
+      `https://shopbb.onrender.com/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {

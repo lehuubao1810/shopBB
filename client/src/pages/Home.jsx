@@ -28,20 +28,20 @@ export default function Home() {
   },[]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/product/category/slug/laptop`)
+    fetch(`https://shopbb.onrender.com/api/product/category/slug/laptop`)
       .then((res) => res.json())
       .then((data) => {
         setLaptop(data.products);
       })
       .catch((err) => console.log(err));
 
-    // fetch(`http://localhost:5000/api/product/category/pc`)
+    // fetch(`https://shopbb.onrender.com/api/product/category/pc`)
     //   .then((res) => res.json())
     //   .then((data) => {
     //     setPc(data.products);
     //   })
     //   .catch((err) => console.log(err));
-    // fetch(`http://localhost:5000/api/product/category/phone`)
+    // fetch(`https://shopbb.onrender.com/api/product/category/phone`)
     //   .then((res) => res.json())
     //   .then((data) => {
     //     setPhone(data.products);

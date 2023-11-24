@@ -14,7 +14,7 @@ export default function CartContextProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   const updateCartApi = (cart) => {
-    fetch(`http://localhost:5000/api/cart/${user._id}`, {
+    fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export default function CartContextProvider({ children }) {
   }
 
   const addToCartApi = (item) => {
-    fetch(`http://localhost:5000/api/cart/${user._id}`, {
+    fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function CartContextProvider({ children }) {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:5000/api/cart/${user._id}`, {
+      fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

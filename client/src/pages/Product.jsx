@@ -34,7 +34,7 @@ export default function Product() {
 
   useEffect(() => {
     // Get product by slug (use fetch)
-    fetch(`http://localhost:5000/api/product/${productSlug}`, {
+    fetch(`https://shopbb.onrender.com/api/product/${productSlug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function Product() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:5000/api/product/category/${product?.category}?limit=4&brand=${
+      `https://shopbb.onrender.com/api/product/category/${product?.category}?limit=4&brand=${
         product.attributes === undefined ? "" : product.attributes.brand
       }`,
       {
@@ -74,7 +74,7 @@ export default function Product() {
       .catch((err) => console.log(err));
 
       
-    fetch(`http://localhost:5000/api/category/${product?.category}`, {
+    fetch(`https://shopbb.onrender.com/api/category/${product?.category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

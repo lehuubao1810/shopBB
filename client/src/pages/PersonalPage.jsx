@@ -91,7 +91,7 @@ export default function PersonalPage() {
           : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
       }`,
     });
-    fetch("http://localhost:5000/api/shop/update-info", {
+    fetch("https://shopbb.onrender.com/api/shop/update-info", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -14,7 +14,7 @@ export default function AuthContextProvider({ children }) {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
     if (accessToken && userId) {
-      fetch(`http://localhost:5000/api/access/shop/`, {
+      fetch(`https://shopbb.onrender.com/api/access/shop/`, {
         headers: {
           "Content-Type": "application/json",
           "access-token": accessToken,
@@ -36,7 +36,7 @@ export default function AuthContextProvider({ children }) {
   const login = (email, password) => {
     setLoadingUser(true);
     try {
-      fetch("http://localhost:5000/api/access/shop/login?role=Customer", {
+      fetch("https://shopbb.onrender.com/api/access/shop/login?role=Customer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -72,7 +72,7 @@ export default function AuthContextProvider({ children }) {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
     try {
-      fetch("http://localhost:5000/api/access/shop/logout", {
+      fetch("https://shopbb.onrender.com/api/access/shop/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export default function AuthContextProvider({ children }) {
   const register = (name, email, password) => {
     setLoadingUser(true);
     try {
-      fetch("http://localhost:5000/api/access/shop/signup?role=Customer", {
+      fetch("https://shopbb.onrender.com/api/access/shop/signup?role=Customer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
