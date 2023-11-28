@@ -1,0 +1,63 @@
+.adminUserPage {
+    background-color: #f8f8fc;
+    min-height: 100vh;
+}
+
+.adminUserPage__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+}
+.adminUserPage__content__header {
+   position: fixed;
+    top: 0;
+    right: 0;
+    width: 82%;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    z-index: 98;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+.adminUserPage__content__header__item {
+    background-color: #0248b8;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: 10px;
+    font-weight: 500;
+    transition: all .3s ease-in-out;
+    border: 1px solid #0248b8;
+}
+.adminUserPage__content__header__item:hover {
+    background-color: #fff;
+    color: #0248b8;
+    border: 1px solid #0248b8;
+}
+
+.adminUserPage__content__header__item:nth-child(1) {
+    background-color: #f83142;
+    border: 1px solid #f83142;
+}
+.adminUserPage__content__header__item:nth-child(1):hover {
+    background-color: #fff;
+    color: #f83142;
+    border: 1px solid #f83142;
+}
+.adminUserPage__content__body {
+    width: 81%;
+    margin-top: 80px;
+    padding-right: 1%;
+}
+.adminUserPage__content__body__info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,.05);
+}

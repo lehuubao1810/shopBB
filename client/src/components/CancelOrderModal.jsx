@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 
 import notify from "../utils/notify";
 
+import { host } from "../context/host";
+
 export default function CancelOrderModal({
   handleCloseCancelOrderModal,
   orderId,
@@ -12,7 +14,7 @@ export default function CancelOrderModal({
 
   const handleCancelOrder = () => {
     // console.log(orderId);
-    fetch(`https://shopbb.onrender.com/api/order/cancel/${orderId}`, {
+    fetch(`${host.dev}/api/order/cancel/${orderId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -35,13 +37,13 @@ export default function CancelOrderModal({
   };
 
   return (
-    <div className="cancelOrderModal" onClick={handleCloseCancelOrderModal}>
+    <div className="modal" onClick={handleCloseCancelOrderModal}>
       <div
-        className="cancelOrderModal__content"
+        className="modal__content"
         onClick={(e) => e.stopPropagation()}
       >
         <h4>Bạn có chắc muốn hủy đơn hàng này?</h4>
-        <div className="cancelOrderModal__content__buttons">
+        <div className="modal__content__buttons">
           <button onClick={handleCloseCancelOrderModal}>Không</button>
           <button onClick={handleCancelOrder}>Có</button>
         </div>

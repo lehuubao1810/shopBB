@@ -9,6 +9,8 @@ import UpBtn from "../components/UpBtn";
 import FilterAutoWidth from "../components/FilterAutoWidth";
 import SliderPrice from "../components/SliderPrice";
 
+import { host } from "../context/host";
+
 import "../assets/css/SearchPage.css";
 
 export default function SearchPage() {
@@ -30,7 +32,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     // Get products by category (use fetch)
-    fetch(`https://shopbb.onrender.com/api/product/search/result?name=${searchValue}&${searchParams}`, {
+    fetch(`${host.dev}/api/product/search/result?name=${searchValue}&${searchParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

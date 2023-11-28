@@ -14,6 +14,7 @@ import UpBtn from "../components/UpBtn";
 import PaginationControlled from "../components/Pagination";
 
 import { useAuth } from "../context/AuthContext";
+import { host } from "../context/host";
 
 import formatPrice from "../utils/formatPrice";
 
@@ -54,7 +55,7 @@ export default function OrderPage() {
     const accessToken = Cookies.get("access-token");
     // const userId = Cookies.get("user-id");
     if (user) {
-      fetch(`https://shopbb.onrender.com/api/shop/orders?${searchParams}`, {
+      fetch(`${host.dev}/api/shop/orders?${searchParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +132,7 @@ export default function OrderPage() {
                   <h4>
                     Ngày đặt hàng:
                     <span>
-                      {new Date(order.createdAt).toLocaleDateString()}
+                      {new Date(order.createdAt).toLocaleDateString("vi-VN")}
                     </span>
                   </h4>
                   <h4>

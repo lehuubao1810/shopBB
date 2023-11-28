@@ -7,6 +7,8 @@ import SearchResult from "./SearchResult";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
+import { host } from "../context/host";
+
 function Header() {
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ function Header() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("https://shopbb.onrender.com/api/category")
+    fetch(`${host.dev}/api/category`)
       .then((res) => res.json())
       .then((metadata) => {
         setCategories(metadata.data);
@@ -84,26 +86,30 @@ function Header() {
             </ul>
           </nav>
         )}
-        <div className="search">
-          <input
-            type="text"
-            placeholder="Nhập sản phẩm cần tìm"
-            value={search}
-            onChange={(e) => {
-              setSearch((e.target.value).replace(/\s+/g, ' '));
-              setIsShowSearchResult(true);
-            }}
-          />
-          <i
-            className="fa-solid fa-magnifying-glass btnSearch"
-            onClick={() => navigate(`/search/${search}`)}
-          ></i>
-          {
+        <form className="search">
+            <input
+              type="text"
+              placeholder="Nhập danh mục cần tìm"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value.replace(/\s+/g, " "));
+              }}
+            />
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/admin/categories?search=${search}`);
+              }}
+              className="btnSearch"
+            >
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+            {
             isShowSearchResult && (
               <SearchResult search={search} setIsShow={setIsShowSearchResult}/>
             )
           }
-        </div>
+          </form>
         <div className="login">
           {loadingUser ? (
             <LoadingSpin size={8} />
@@ -128,7 +134,10 @@ function Header() {
                   <li onClick={() => navigate(`/user/${user._id}/personal`)}>
                     Thông tin cá nhân
                   </li>
-                  <li onClick={handleLogOut}>Đăng xuất</li>
+                  <li onClick={() => {
+                    handleLogOut();
+                    setIsShowPersonalBoard(false);
+                  }}>Đăng xuất</li>
                 </ul>
               )}
             </a>

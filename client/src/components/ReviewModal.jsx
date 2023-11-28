@@ -7,6 +7,8 @@ import ReviewElement from "./ReviewElement";
 
 import notify from "../utils/notify";
 
+import { host } from "../context/host";
+
 export default function ReviewModal({ handleCloseReviewModal, order }) {
   const [reviews, setReviews] = useState(
     order.products.map((item) => ({ product: item.product._id , content: "", rating: 0 }))
@@ -34,7 +36,7 @@ export default function ReviewModal({ handleCloseReviewModal, order }) {
 
   const handleReview = () => {
     console.log(reviews);
-    fetch(`https://shopbb.onrender.com/api/review`, {
+    fetch(`${host.dev}/api/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

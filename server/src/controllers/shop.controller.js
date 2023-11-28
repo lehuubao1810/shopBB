@@ -114,3 +114,25 @@ export const updateInfo = async (req, res) => {
     });
   }
 };
+
+export const getShop = async (req, res) => {
+  try {
+    const shops = await Shop.find({
+      role: "Customer",
+    }).lean();
+    if (!shops) {
+      return res.status(400).json({ success: false, error: "err get shops" });
+    }
+    return res.status(200).json({ success: true, data: shops });
+    
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        message: "Lỗi không xác định",
+        status: 400,
+        error: error,
+      },
+    });
+  }
+};

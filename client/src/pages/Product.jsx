@@ -13,6 +13,8 @@ import { useCart } from "../context/CartContext";
 import formatPrice from "../utils/formatPrice";
 import notify from "../utils/notify";
 
+import { host } from "../context/host";
+
 import "../assets/css/Product.css";
 
 // import { products } from "../context/products";
@@ -34,7 +36,7 @@ export default function Product() {
 
   useEffect(() => {
     // Get product by slug (use fetch)
-    fetch(`https://shopbb.onrender.com/api/product/${productSlug}`, {
+    fetch(`${host.dev}/api/product/slug/${productSlug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export default function Product() {
 
   useEffect(() => {
     fetch(
-      `https://shopbb.onrender.com/api/product/category/${product?.category}?limit=4&brand=${
+      `${host.dev}/api/product/category/${product?.category}?limit=4&brand=${
         product.attributes === undefined ? "" : product.attributes.brand
       }`,
       {
@@ -74,7 +76,7 @@ export default function Product() {
       .catch((err) => console.log(err));
 
       
-    fetch(`https://shopbb.onrender.com/api/category/${product?.category}`, {
+    fetch(`${host.dev}/api/category/${product?.category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

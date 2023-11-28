@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { host } from "../context/host";
+
 function Footer() {
 
   const navigate = useNavigate();
@@ -8,7 +10,7 @@ function Footer() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("https://shopbb.onrender.com/api/category")
+    fetch(`${host.dev}/api/category`)
       .then((res) => res.json())
       .then((metadata) => {
         setCategories(metadata.data);

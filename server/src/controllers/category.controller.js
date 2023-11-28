@@ -3,6 +3,11 @@ import Product from "../models/product.model.js";
 
 export const createCategory = async (req, res) => {
   try {
+    const existedCategory = await Category.findOne({ slug: req.body.slug });
+    if (existedCategory) {
+      return res.status(400).json({ success: false, error: "Đã tồn tại slug" });
+    }
+
     const newCategory = await Category.create(req.body);
     if (!newCategory) {
       return res.status(400).json({ success: false, error: "err" });
@@ -51,10 +56,27 @@ export const getCategoryBySlug = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
   try {
+    const category = await Category.findById(req.params.id).lean();
+
+    // check if slug is existed, if existed, check if slug is the same as before
+    const existedCategory = await Category.findOne({ slug: req.body.slug });
+    if (existedCategory && existedCategory.slug !== category.slug) {
+      return res.status(400).json({ success: false, error: "Đã tồn tại slug" });
+    }
+
     const updateCategory = await Category.findByIdAndUpdate(
-      req.body.categoryId,
-      {}
-    );
+      req.params.id,
+      {
+        name: req.body.name,
+        slug: req.body.slug,
+        thumb: req.body.thumb,
+        attributes: req.body.attributes,
+      },
+      { new: true }
+    ).lean();
+    if (!updateCategory) {
+      return res.status(400).json({ success: false, error: "err" });
+    }
   } catch (error) {
     return res.status(400).json({ success: false, error: error });
   }

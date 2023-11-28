@@ -64,6 +64,6 @@ FilterAutoWidth.propTypes = {
   name: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  sortPrice: PropTypes.array.isRequired,
-  filterOrder: PropTypes.array.isRequired,
+  sortPrice: PropTypes.array,
+  filterOrder: PropTypes.array,
 };

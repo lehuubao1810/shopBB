@@ -160,7 +160,33 @@ export const getInfoShop = async (req, res) => {
       message: "success get info shop",
       success: true,
       metadata: {
-        shop: getInfoData({ data: shop, fields: ["_id", "name", "email", "phone", "address"] }),
+        shop: getInfoData({ data: shop, fields: ["_id", "name", "email", "phone", "address", "role"] }),
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "error get info shop access in catch",
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
+// get info shop by id (admin)
+export const getInfoShopById = async (req, res) => {
+  try {
+    const shop = await Shop.findById(req.params.id).lean();
+    if (!shop) {
+      return res.status(400).json({
+        error: "shop is invalid",
+      });
+    }
+
+    return res.status(200).json({
+      message: "success get info shop",
+      success: true,
+      metadata: {
+        shop: getInfoData({ data: shop, fields: ["_id", "name", "email", "phone", "address", "createdAt", "updatedAt"] }),
       },
     });
   } catch (error) {

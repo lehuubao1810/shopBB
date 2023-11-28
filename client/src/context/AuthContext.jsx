@@ -2,11 +2,14 @@ import { useContext, createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
+import { host } from "./host";
+
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(null); // [1]
   const [errorAuth, setErrorAuth] = useState(null);
   const [loadingUser, setLoadingUser] = useState(false);
 
@@ -14,7 +17,8 @@ export default function AuthContextProvider({ children }) {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
     if (accessToken && userId) {
-      fetch(`https://shopbb.onrender.com/api/access/shop/`, {
+      setLoadingUser(true);
+      fetch(`${host.dev}/api/access/shop/`, {
         headers: {
           "Content-Type": "application/json",
           "access-token": accessToken,
@@ -24,11 +28,24 @@ export default function AuthContextProvider({ children }) {
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            setUser(data.metadata.shop);
+            if (data.metadata.shop.role === "Customer") {
+              setUser(data.metadata.shop);
+              setAdmin(null);
+            }
+            else if (data.metadata.shop.role === "Seller") {
+              setAdmin(data.metadata.shop);
+              setUser(null);
+            }
             setErrorAuth(null);
+            setLoadingUser(false);
           } else {
             setErrorAuth(data.error);
+            setLoadingUser(false);
           }
+        })
+        .catch((error) => {
+          setErrorAuth(error.message);
+          setLoadingUser(false);
         });
     }
   }, []);
@@ -36,7 +53,7 @@ export default function AuthContextProvider({ children }) {
   const login = (email, password) => {
     setLoadingUser(true);
     try {
-      fetch("https://shopbb.onrender.com/api/access/shop/login?role=Customer", {
+      fetch(`${host.dev}/api/access/shop/login?role=Customer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -68,11 +85,51 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
+  const loginAdmin = (email, password) => {
+    setLoadingUser(true);
+    // if (user) {
+    //   logout();
+    // }
+    try {
+      fetch(`${host.dev}/api/access/shop/login?role=Seller`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            Cookies.set("access-token", data.metadata.tokenPair.accessToken, {
+              expires: 1,
+            });
+            Cookies.set("user-id", data.metadata.shop._id, { expires: 1 });
+            setAdmin(data.metadata.shop);
+            setLoadingUser(false);
+            // alert("Đăng nhập thành công!");
+            setErrorAuth(null);
+            if (localStorage.getItem("order")) {
+              localStorage.setItem("order", JSON.stringify([]));
+            }
+          } else {
+            // setErrorAuth(data.error);
+            setErrorAuth("Email hoặc mật khẩu không chính xác");
+            setLoadingUser(false);
+          }
+        });
+    } catch (error) {
+      // setErrorAuth(error.message);
+      setErrorAuth("Email hoặc mật khẩu không chính xác");
+      setLoadingUser(false);
+    }
+  };
+
+
   const logout = () => {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
+    setLoadingUser(true);
     try {
-      fetch("https://shopbb.onrender.com/api/access/shop/logout", {
+      fetch(`${host.dev}/api/access/shop/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,21 +149,24 @@ export default function AuthContextProvider({ children }) {
             if (localStorage.getItem("order")) {
               localStorage.setItem("order", JSON.stringify([]));
             }
+            setLoadingUser(false);
           } else {
             alert("Đăng xuất không thành công. Vui lòng thử lại!");
             setErrorAuth(data.error);
+            setLoadingUser(false);
           }
         });
     } catch (error) {
       setErrorAuth(error.message);
       alert("Đăng xuất không thành công. Vui lòng thử lại!");
+      setLoadingUser(false);
     }
   };
 
   const register = (name, email, password) => {
     setLoadingUser(true);
     try {
-      fetch("https://shopbb.onrender.com/api/access/shop/signup?role=Customer", {
+      fetch(`${host.dev}/api/access/shop/signup?role=Customer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -139,7 +199,7 @@ export default function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, errorAuth, login, logout, register, loadingUser }}
+      value={{ user, errorAuth, login, logout, register, loadingUser, admin, loginAdmin }}
     >
       {children}
     </AuthContext.Provider>

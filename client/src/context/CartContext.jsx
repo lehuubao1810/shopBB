@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { useAuth } from "./AuthContext";
 
+import { host } from "./host";
+
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
@@ -14,7 +16,7 @@ export default function CartContextProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   const updateCartApi = (cart) => {
-    fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
+    fetch(`${host.dev}/api/cart/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +30,7 @@ export default function CartContextProvider({ children }) {
   }
 
   const addToCartApi = (item) => {
-    fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
+    fetch(`${host.dev}/api/cart/${user._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +54,7 @@ export default function CartContextProvider({ children }) {
 
   useEffect(() => {
     if (user) {
-      fetch(`https://shopbb.onrender.com/api/cart/${user._id}`, {
+      fetch(`${host.dev}/api/cart/${user._id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

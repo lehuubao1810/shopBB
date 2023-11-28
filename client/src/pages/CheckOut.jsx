@@ -11,6 +11,8 @@ import Footer from "../components/Footer";
 import formatPrice from "../utils/formatPrice";
 import PayPalPayment from "../components/PayPalPayment";
 
+import { host } from "../context/host";
+
 import "../assets/css/CheckOut.css";
 
 export default function CheckOut() {
@@ -49,12 +51,12 @@ export default function CheckOut() {
       setName(user.name);
       setPhone(user.phone);
       setEmail(user.email);
-      setAddress(addressUser[0].replace(/\s+/g, ' '));
-      setCitySelected(addressUser[3].trim());
-      setDistrictSelected(addressUser[2].trim());
-      setWardSelected(addressUser[1].trim());
-      setDistrict([{ name: addressUser[2].trim() }]);
-      setWard([{ name: addressUser[1].trim() }]);
+      setAddress(addressUser[0]?.replace(/\s+/g, ' '));
+      setCitySelected(addressUser[3]?.trim());
+      setDistrictSelected(addressUser[2]?.trim());
+      setWardSelected(addressUser[1]?.trim());
+      setDistrict([{ name: addressUser[2]?.trim() }]);
+      setWard([{ name: addressUser[1]?.trim() }]);
     }
   }, [user, addressUser]);
 
@@ -122,7 +124,7 @@ export default function CheckOut() {
   };
 
   const sendOrderToEmail = (orderCheckout) => {
-    fetch("https://shopbb.onrender.com/api/mail/send-order", {
+    fetch(`${host.dev}/api/mail/send-order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -179,7 +181,7 @@ export default function CheckOut() {
     };
 
     // create order in database
-    fetch("https://shopbb.onrender.com/api/order", {
+    fetch(`${host.dev}/api/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

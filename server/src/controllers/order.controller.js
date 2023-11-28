@@ -3,12 +3,27 @@ import mongoose from "mongoose";
 import Order from "../models/order.model.js";
 import Client from "../models/client.model.js";
 import Shop from "../models/shop.model.js";
+import Product from "../models/product.model.js";
+
+import { getInfoData } from "../utils/lodash.util.js";
 
 export const createOrder = async (req, res) => {
   try {
     const newOrder = await Order.create(req.body);
     if (!newOrder) {
       return res.status(400).json({ success: false, error: err });
+    }
+    // update product
+    const products = newOrder.products;
+    for (let i = 0; i < products.length; i++) {
+      const product = await Product.findById(products[i].product);
+      if (!product) {
+        return res.status(400).json({ success: false, error: err });
+      }
+      await Product.findByIdAndUpdate(products[i].product, {
+        quantity: product.quantity - products[i].quantity,
+        sold: product.sold + products[i].quantity,
+      });
     }
 
     if (newOrder.customer.customer_id != null) {
@@ -29,6 +44,17 @@ export const getOrders = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skipIndex = (page - 1) * limit;
 
+    const user = await Shop.findById(req.keyStore.user).lean();
+    if (user.role !== "Admin" && user.role !== "Seller") {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "Bạn không có quyền truy cập",
+          status: 400,
+        },
+      });
+    }
+
     const filter = {};
     const status = req.query.status;
 
@@ -42,7 +68,12 @@ export const getOrders = async (req, res) => {
     };
 
     const orders = await Order.find({
-      "customer.customer_id": req.keyStore.user,
+      // "customer.customer_id": req.keyStore.user,
+      ...filter,
+    }).lean();
+    const length = orders.length;
+    const ordersData = await Order.find({
+      // "customer.customer_id": req.keyStore.user,
       ...filter,
     })
       .sort(sort)
@@ -65,8 +96,8 @@ export const getOrders = async (req, res) => {
       metadata: {
         page: page,
         limit: limit,
-        total: orders.length,
-        orders: orders,
+        total: length,
+        orders: ordersData,
       },
     });
   } catch (error) {
@@ -83,7 +114,7 @@ export const getOrders = async (req, res) => {
 
 export const getOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).lean();
+    const order = await Order.findById(req.params.id).populate("products.product").lean();
     if (!order) {
       return res.status(400).json({ success: false, error: err });
     }
@@ -172,6 +203,19 @@ export const cancelOrder = async (req, res) => {
     if (!updateOrder) {
       return res.status(400).json({ success: false, error: err });
     }
+    // update product
+    const products = updateOrder.products;
+    for (let i = 0; i < products.length; i++) {
+      const product = await Product.findById(products[i].product);
+      if (!product) {
+        return res.status(400).json({ success: false, error: err });
+      }
+      await Product.findByIdAndUpdate(products[i].product, {
+        quantity: product.quantity + products[i].quantity,
+        sold: product.sold - products[i].quantity,
+      });
+    }
+
     return res.status(200).json({ success: true, data: updateOrder });
   } catch (error) {
     return res.status(400).json({ success: false, error: error });

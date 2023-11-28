@@ -10,6 +10,8 @@ import PaginationControlled from "../components/Pagination";
 import FilterAutoWidth from "../components/FilterAutoWidth";
 import SliderPrice from "../components/SliderPrice";
 
+import { host } from "../context/host";
+
 import "../assets/css/Category.css";
 
 // import { products } from "../context/products";
@@ -51,7 +53,7 @@ export default function Category() {
     // const valueText = `minPrice=${value[0]}&maxPrice=${value[1]}`
     searchParams.set("minPrice", value[0]);
     searchParams.set("maxPrice", value[1]);
-    navigate({ search: searchParams.toString() });
+    navigate({ search: searchParams.toString()});
     // console.log(value);
   };
 
@@ -61,7 +63,7 @@ export default function Category() {
 
   useEffect(() => {
     // Get category by name (use fetch)
-    fetch(`https://shopbb.onrender.com/api/category/slug/${categoryName}`, {
+    fetch(`${host.dev}/api/category/slug/${categoryName}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +88,7 @@ export default function Category() {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `https://shopbb.onrender.com/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
+      `${host.dev}/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {

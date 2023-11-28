@@ -14,10 +14,10 @@ routerOrder.get('/email/:email/:otp', getOrderByEmail);
 routerOrder.use(authentication);
 
 // get orders
-routerOrder.get('/', getOrders);
+routerOrder.get('', getOrders);
 
 // get order 
-routerOrder.get('/one/:id', getOrder);
+routerOrder.get('/:id', getOrder);
 
 // cancel order
 routerOrder.put('/cancel/:id', cancelOrder);

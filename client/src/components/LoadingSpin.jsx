@@ -15,5 +15,5 @@ export default function LoadingSpin({size}) {
 }
 
 LoadingSpin.propTypes = {
-  size: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
 };

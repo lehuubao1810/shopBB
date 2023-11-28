@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createCategory, getCategories, getCategory, deleteCategory, getCategoryBySlug } from "../controllers/category.controller.js";
+import { createCategory, getCategories, getCategory, deleteCategory, getCategoryBySlug, updateCategory } from "../controllers/category.controller.js";
 import { authentication } from "../utils/auth.util.js";
 import { checkPermission } from "../utils/auth.util.js";
 
@@ -20,6 +20,9 @@ routerCategory.use(checkPermission);
 
 // create category
 routerCategory.post("", createCategory);
+
+// update category
+routerCategory.put("/:id", updateCategory);
 
 // delete category
 routerCategory.delete("/:id", deleteCategory);

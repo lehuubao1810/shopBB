@@ -12,6 +12,8 @@ import image4 from "../assets/images/small-banner/4.png";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
+import { host } from "../context/host";
+
 // import { products } from "../context/products";
 
 export default function Home() {
@@ -28,20 +30,20 @@ export default function Home() {
   },[]);
 
   useEffect(() => {
-    fetch(`https://shopbb.onrender.com/api/product/category/slug/laptop`)
+    fetch(`${host.dev}/api/product/category/slug/laptop`)
       .then((res) => res.json())
       .then((data) => {
         setLaptop(data.products);
       })
       .catch((err) => console.log(err));
 
-    // fetch(`https://shopbb.onrender.com/api/product/category/pc`)
+    // fetch(`${host.dev}/api/product/category/pc`)
     //   .then((res) => res.json())
     //   .then((data) => {
     //     setPc(data.products);
     //   })
     //   .catch((err) => console.log(err));
-    // fetch(`https://shopbb.onrender.com/api/product/category/phone`)
+    // fetch(`${host.dev}/api/product/category/phone`)
     //   .then((res) => res.json())
     //   .then((data) => {
     //     setPhone(data.products);

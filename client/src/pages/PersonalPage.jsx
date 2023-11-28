@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import notify from "../utils/notify";
 
 import { useAuth } from "../context/AuthContext";
+import { host } from "../context/host";
 
 import "../assets/css/PersonalPage.css";
 
@@ -91,7 +92,7 @@ export default function PersonalPage() {
           : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
       }`,
     });
-    fetch("https://shopbb.onrender.com/api/shop/update-info", {
+    fetch(`${host.dev}/api/shop/update-info`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

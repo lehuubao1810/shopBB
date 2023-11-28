@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import formatPrice from "../utils/formatPrice";
 
+import { host } from "../context/host";
+
 export default function SearchResult({ search, setIsShow }) {
   const [result, setResult] = useState([]);
 
@@ -14,7 +16,7 @@ export default function SearchResult({ search, setIsShow }) {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `https://shopbb.onrender.com/api/product/search/result?name=${search}&perPage=3`,
+      `${host.dev}/api/product/search/result?name=${search}&perPage=3`,
       {
         method: "GET",
         headers: {
