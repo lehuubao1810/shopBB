@@ -49,12 +49,12 @@ export default function CheckOut() {
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setPhone(user.phone);
+      setPhone(user.phone ? user.phone : "");
       setEmail(user.email);
-      setAddress(addressUser[0]?.replace(/\s+/g, ' '));
-      setCitySelected(addressUser[3]?.trim());
-      setDistrictSelected(addressUser[2]?.trim());
-      setWardSelected(addressUser[1]?.trim());
+      setAddress(addressUser[0] ? addressUser[0].replace(/\s+/g, ' ') : "");
+      setCitySelected(addressUser[3] ? addressUser[3].trim() : "");
+      setDistrictSelected(addressUser[2] ? addressUser[2].trim() : "");
+      setWardSelected(addressUser[1] ? addressUser[1].trim() : "");
       setDistrict([{ name: addressUser[2]?.trim() }]);
       setWard([{ name: addressUser[1]?.trim() }]);
     }
@@ -120,6 +120,8 @@ export default function CheckOut() {
       notify("error", "Vui lòng nhập đầy đủ thông tin");
       return false;
     }
+    console.log("check input");
+    console.log(phone)
     return true;
   };
 
@@ -142,7 +144,7 @@ export default function CheckOut() {
         customer_id: user ? user._id : null,
         name,
         phone,
-        address: `${address.replace(/\s+/g, ' ')}, ${
+        address: `${address?.replace(/\s+/g, ' ')}, ${
           isChangeAddress
             ? `${ward.find((item) => item.code == wardSelected).name}, ${
                 district.find((item) => item.code == districtSelected).name
@@ -171,7 +173,7 @@ export default function CheckOut() {
       total: formatPrice(calculateTotal()),
       payment,
       note,
-      address: `${address.replace(/\s+/g, ' ')}, ${
+      address: `${address?.replace(/\s+/g, ' ')}, ${
         isChangeAddress
           ? `${ward.find((item) => item.code == wardSelected).name}, ${
               district.find((item) => item.code == districtSelected).name
@@ -206,7 +208,10 @@ export default function CheckOut() {
   };
 
   const handleBtnCheckOut = () => {
-    if (!checkInput()) return;
+    if (!checkInput()) {
+      console.log("check input");
+      return;
+    }
     handleCheckOut();
   };
 
