@@ -39,12 +39,13 @@ export default function AuthContextProvider({ children }) {
             setErrorAuth(null);
             setLoadingUser(false);
           } else {
-            setErrorAuth(data.error);
+            setErrorAuth("Email hoặc mật khẩu không chính xác");
             setLoadingUser(false);
           }
         })
         .catch((error) => {
-          setErrorAuth(error.message);
+          setErrorAuth("Email hoặc mật khẩu không chính xác");
+          console.log(error);
           setLoadingUser(false);
         });
     }
