@@ -12,7 +12,7 @@ import formatPrice from "../../utils/formatPrice";
 
 import { host } from "../../context/host";
 
-import "../../assets/css/admin/dashboard.css";
+import "../../assets/css/admin/DashboardPage.css";
 
 export default function Dashboard() {
   const [orders, setOrders] = useState([]);
