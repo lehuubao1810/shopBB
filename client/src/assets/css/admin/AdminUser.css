@@ -61,3 +61,23 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,.05);
 }
+.adminUserPage__content__body__info__item {
+    margin-bottom: 15px;
+}
+.adminUserPage__content__body__info__item>p {
+    font-weight: 500;
+    font-size: 16px;
+    color: #0248b8;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.adminUserPage__content__body__info__item input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all .3s ease-in-out;
+}

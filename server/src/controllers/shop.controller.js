@@ -115,6 +115,38 @@ export const updateInfo = async (req, res) => {
   }
 };
 
+// update user by admin 
+export const updateShop = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name, phone, address } = req.body;
+
+    const shop = await Shop.findOneAndUpdate(
+      { _id: userId },
+      { name, phone, address },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        shop: shop,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        message: "Lỗi không xác định",
+        status: 400,
+        error: error,
+      },
+    });
+  }
+};
+
+// get shop by admin
+
 export const getShop = async (req, res) => {
   try {
     const shops = await Shop.find({
@@ -124,6 +156,28 @@ export const getShop = async (req, res) => {
       return res.status(400).json({ success: false, error: "err get shops" });
     }
     return res.status(200).json({ success: true, data: shops });
+    
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        message: "Lỗi không xác định",
+        status: 400,
+        error: error,
+      },
+    });
+  }
+};
+
+// delete shop by admin
+export const deleteShop = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const shop = await Shop.findOneAndDelete({ _id: userId });
+    if (!shop) {
+      return res.status(400).json({ success: false, error: "err delete shop" });
+    }
+    return res.status(200).json({ success: true, data: shop });
     
   } catch (error) {
     return res.status(400).json({

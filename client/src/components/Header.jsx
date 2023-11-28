@@ -98,7 +98,7 @@ function Header() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/admin/categories?search=${search}`);
+                navigate(`/search/${search}`);
               }}
               className="btnSearch"
             >

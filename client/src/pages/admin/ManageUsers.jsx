@@ -67,12 +67,12 @@ export default function ManageUsers() {
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
           </form>
-          <div
-                className="manageUsersPage__content__header__item"
-                // onClick={() => setIsShowDeleteModal(true)}
-              >
-                Thêm người dùng
-              </div>
+          {/* <div
+            className="manageUsersPage__content__header__item"
+            // onClick={() => setIsShowDeleteModal(true)}
+          >
+            Thêm người dùng
+          </div> */}
         </div>
         <div className="manageUsersPage__content__body">
           <div className="manageUsersPage__content__body__listUsers">

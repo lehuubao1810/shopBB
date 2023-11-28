@@ -199,7 +199,6 @@ export const getInfoShopById = async (req, res) => {
 };
 
 // logout
-
 export const logOut = async (req, res) => {
   try {
     const delKeyStore = await removeById(req.keyStore._id);

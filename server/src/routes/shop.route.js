@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getOrders, updateInfo, getShop } from '../controllers/shop.controller.js';
+import { getOrders, updateInfo, getShop, updateShop, deleteShop } from '../controllers/shop.controller.js';
 import { authentication } from '../utils/auth.util.js';
 import { checkPermission } from '../utils/auth.util.js';
 
@@ -18,7 +18,13 @@ router.put('/update-info', updateInfo);
 // check permission
 router.use(checkPermission);
 
+// update shop
+router.put('/:id', updateShop);
+
 // get shop
 router.get('/', getShop);
+
+// delete shop
+router.delete('/:id', deleteShop);
 
 export default router;

@@ -68,12 +68,12 @@ export default function ManageOrders() {
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
           </form>
-          <div
-                className="manageOrdersPage__content__header__item"
-                // onClick={() => setIsShowDeleteModal(true)}
-              >
-                Thêm đơn hàng
-              </div>
+          {/* <div
+            className="manageOrdersPage__content__header__item"
+            // onClick={() => setIsShowDeleteModal(true)}
+          >
+            Thêm đơn hàng
+          </div> */}
         </div>
         <div className="manageOrdersPage__content__body">
           <div className="manageOrdersPage__content__body__listOrders">

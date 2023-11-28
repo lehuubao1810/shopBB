@@ -29,7 +29,7 @@ export default function AdminUser() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    document.title = "Quản lý danh mục sản phẩm | Admin";
+    document.title = "Quản lý khách hàng | Admin";
 
     fetch(`${host.dev}/api/access/shop/${id}`, {
       method: "GET",
@@ -50,45 +50,53 @@ export default function AdminUser() {
   }, [id, accessToken, userId]);
 
   const handleDeleteUser = () => {
-    // fetch(`${host.dev}/api/User/${id}`, {
-    //   method: "DELETE",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "access-token": accessToken,
-    //     "user-id": userId,
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     if (data.success) {
-    //       setIsShowDeleteModal(false);
-    //       window.location.href = "/admin/categories";
-    //     }
-    //   });
+    fetch(`${host.dev}/api/shop/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": accessToken,
+        "user-id": userId,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsShowDeleteModal(false);
+          window.location.href = "/admin/categories";
+        } else {
+          alert("Xóa khách hàng không thành công");
+        }
+      });
   };
 
   const handleEditUser = () => {
-    // fetch(`${host.dev}/api/User/${id}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "access-token": accessToken,
-    //     "user-id": userId,
-    //   },
-    //   body: JSON.stringify({
-    //     name: UserName,
-    //     slug: UserSlug,
-    //     thumb: UserThumb,
-    //     attributes: UserAttributes,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     if (data.success) {
-    //       setIsShowEditModal(false);
-    //       window.location.reload();
-    //     }
-    //   });
+    console.log({
+      name: userName,
+      phone: userPhone,
+      address: userAddress,
+    })
+    fetch(`${host.dev}/api/shop/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": accessToken,
+        "user-id": userId,
+      },
+      body: JSON.stringify({
+        name: userName,
+        phone: userPhone,
+        address: userAddress,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsShowEditModal(false);
+          window.location.reload();
+        } else {
+          alert("Sửa thông tin khách hàng không thành công");
+        }
+      });
   };
 
   return (
@@ -133,15 +141,17 @@ export default function AdminUser() {
         <div className="adminUserPage__content__body">
           <div className="adminUserPage__content__body__info">
             <div className="adminUserPage__content__body__info__item">
-              <span>Ngày tạo</span>
-              <input type="text" value={user.createdAt} disabled />
+              <p>Ngày tạo: {" "}
+                {new Date(user.createdAt).toLocaleDateString("vi-VN")}
+              </p>
             </div>
             <div className="adminUserPage__content__body__info__item">
-              <span>Ngày cập nhật</span>
-              <input type="text" value={user.updatedAt} disabled />
+              <p>Ngày cập nhật: {" "}
+                {new Date(user.updatedAt).toLocaleDateString("vi-VN")}
+              </p>
             </div>
             <div className="adminUserPage__content__body__info__item">
-              <span>Tên khách hàng</span>
+              <p>Tên khách hàng</p>
               <input
                 type="text"
                 value={userName}
@@ -150,17 +160,17 @@ export default function AdminUser() {
               />
             </div>
             <div className="adminUserPage__content__body__info__item">
-              <span>Email</span>
+              <p>Email</p>
               <input
                 type="email"
                 value={userEmail}
-                disabled={!isEdit}
+                disabled
                 onChange={(e) => setUserEmail(e.target.value)}
               />
             </div>
 
             <div className="adminUserPage__content__body__info__item">
-              <span>Số điện thoại</span>
+              <p>Số điện thoại</p>
               <input
                 type="text"
                 value={userPhone}
@@ -169,7 +179,7 @@ export default function AdminUser() {
               />
             </div>
             <div className="adminUserPage__content__body__info__item">
-              <span>Địa chỉ</span>
+              <p>Địa chỉ</p>
               <div className="adminUserPage__content__body__info__item__attributes">
                 <input
                   type="text"
@@ -183,14 +193,14 @@ export default function AdminUser() {
         </div>
         {isShowDeleteModal && (
           <Modal
-            title="Bạn có chắc muốn xóa danh mục này?"
+            title="Bạn có chắc muốn xóa khách hàng này?"
             handleCloseModal={() => setIsShowDeleteModal(false)}
             handle={handleDeleteUser}
           />
         )}
         {isShowEditModal && (
           <Modal
-            title="Bạn có chắc muốn sửa danh mục này?"
+            title="Bạn có chắc muốn sửa thông tin khách hàng này?"
             handleCloseModal={() => setIsShowEditModal(false)}
             handle={handleEditUser}
           />
