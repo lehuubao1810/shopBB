@@ -193,7 +193,46 @@
 
 @media only screen and (max-width: 700px) {
   /* CSS rules for phone screens */
+
+  .orderPage {
+    width: 100vw;
+  }
+
   .orderPage__content {
+    margin-top: 120px;
     padding: 20px 5%;
+  }
+
+  /* orderPage__content__list__item */
+  .orderPage__content__list__item__header h4 {
+    font-size: 14px;
+  }
+
+  .productOrder__content__info p, .productOrder__content__info del, .productOrder__content__info__item__name{
+    font-size: 14px;
+  }
+
+  .orderPage__content_products__header__title span {
+    display: none;
+  }
+  .orderPage__content_products__header__title span:nth-child(1) {
+    display: block;
+  }
+
+  /* productOrder__content__info */
+  .productOrder__content__info {
+    grid-template-columns: auto;
+  }
+
+  /* orderPage__content__list__item__body__right__btn */
+  .orderPage__content__list__item__body__right__btn {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* orderPage__content__list__item__body__right__total */
+  .orderPage__content__list__item__body__right__total h4 {
+    font-size: 14px;
   }
 }

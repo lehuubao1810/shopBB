@@ -85,5 +85,6 @@
   /* CSS rules for phone screens */
   .loginPage__content {
     padding: 20px 5%;
+    margin-top: 90px;
   }
 }

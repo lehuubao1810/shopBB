@@ -44,6 +44,7 @@ function Header() {
   return (
     <>
       <header onClick={handleCloseNav}>
+        <div className="header">
         <a className="logo" onClick={() => navigate("/")}>
           BB.
         </a>
@@ -86,7 +87,7 @@ function Header() {
             </ul>
           </nav>
         )}
-        <form className="search">
+        <form className="search searchPC">
             <input
               type="text"
               placeholder="Nhập danh mục cần tìm"
@@ -110,6 +111,7 @@ function Header() {
             )
           }
           </form>
+
         <div className="login">
           {loadingUser ? (
             <LoadingSpin size={8} />
@@ -155,12 +157,38 @@ function Header() {
         <div className="cart">
           <a onClick={() => navigate("/cart")}>
             <i className="fa-solid fa-cart-shopping"></i>
-            <div>
+            <span>{cartQuantity}</span>
+            <div className="cart__quantity">
               Giỏ hàng của bạn
               <br />({cartQuantity}) sản phẩm
             </div>
           </a>
         </div>
+        </div>
+        <form className="search searchMobile">
+            <input
+              type="text"
+              placeholder="Nhập danh mục cần tìm"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value.replace(/\s+/g, " "));
+              }}
+            />
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/search/${search}`);
+              }}
+              className="btnSearch"
+            >
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+            {
+            isShowSearchResult && (
+              <SearchResult search={search} setIsShow={setIsShowSearchResult}/>
+            )
+          }
+          </form>
       </header>
       {isShowNav && (
         <div className="overlay" onClick={() => setIsShowNav(false)}></div>

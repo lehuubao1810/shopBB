@@ -85,5 +85,6 @@
   /* CSS rules for phone screens */
   .registerPage__content {
     padding: 20px 5%;
+    margin-top: 120px;
   }
 }

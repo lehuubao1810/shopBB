@@ -16,6 +16,7 @@
   /* CSS rules for phone screens */
   .searchPage__content {
     padding: 20px 5%;
+    margin-top: 120px;
   }
   /* List product responsive */
   .listProduct__content {

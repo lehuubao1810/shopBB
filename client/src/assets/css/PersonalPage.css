@@ -153,9 +153,11 @@
 @media only screen and (max-width: 700px) {
   /* CSS rules for phone screens */
   .personalPage__content {
+    margin-top: 120px;
     padding: 20px 5%;
   }
 
+  /* content info item */
   .personalPage__content__info__item {
     display: block;
   }
@@ -164,5 +166,9 @@
   }
   .personalPage__content__info__item input {
     width: 100%;
+  }
+  .personalPage__content__info__item select {
+    width: 100%;
+    margin-bottom: 10px;
   }
 }
