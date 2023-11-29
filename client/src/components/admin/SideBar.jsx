@@ -1,8 +1,18 @@
 // import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+
 export default function SideBar() {
   const navigate = useNavigate();
+  
+  const { logout } = useAuth();
+
+
+  const handleLogOut = async () => {
+    await logout();
+    window.location.reload();
+  };
 
   return (
     <div className="sideBar">
@@ -36,7 +46,7 @@ export default function SideBar() {
           <i className="fa-solid fa-cog"></i>
           Cài đặt
         </div> */}
-        <div className="sideBar__footer__logout">
+        <div className="sideBar__footer__logout" onClick={handleLogOut}>
           <i className="fa-solid fa-sign-out"></i>
           Đăng xuất
         </div>
