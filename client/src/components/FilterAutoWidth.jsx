@@ -63,7 +63,7 @@ export default function FilterAutoWidth({
 FilterAutoWidth.propTypes = {
   name: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.array,
   sortPrice: PropTypes.array,
   filterOrder: PropTypes.array,
 };

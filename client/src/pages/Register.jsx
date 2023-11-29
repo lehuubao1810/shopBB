@@ -9,7 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import "../assets/css/register.css";
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, loadingUser } = useAuth();
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -67,7 +67,7 @@ export default function Register() {
       setEmailError("");
     }
     register(name, email, password);
-    navigate("/");
+    loadingUser && navigate("/");
   };
 
   return (

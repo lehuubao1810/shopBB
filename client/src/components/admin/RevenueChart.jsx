@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import PropTypes from "prop-types";
 
-import formatPrice from "../../utils/formatPrice";
-
 export default function RevenueChart({ orders }) {
   const [data, setData] = useState({
     series: [
@@ -61,6 +59,7 @@ export default function RevenueChart({ orders }) {
         const currentDateString = currentDate.toDateString();
 
         const revenue = orders.reduce((totalRevenue, order) => {
+          if (order.status !== "delivered") return totalRevenue;
           const orderDate = new Date(order.createdAt);
           if (orderDate.toDateString() === currentDateString) {
             return totalRevenue + order.total;

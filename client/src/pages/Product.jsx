@@ -58,7 +58,7 @@ export default function Product() {
 
   useEffect(() => {
     fetch(
-      `${host.dev}/api/product/category/${product?.category}?limit=4&brand=${
+      `${host.dev}/api/product/category/${product.category}?limit=4&brand=${
         product.attributes === undefined ? "" : product.attributes.brand
       }`,
       {
@@ -76,7 +76,7 @@ export default function Product() {
       .catch((err) => console.log(err));
 
       
-    fetch(`${host.dev}/api/category/${product?.category}`, {
+    fetch(`${host.dev}/api/category/${product.category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -237,7 +237,7 @@ export default function Product() {
                 <h3>Thông số kỹ thuật</h3>
                 <div className="productDetail__details__content">
                   {attributesC.map((attribute, index) => (
-                    <>
+                    <div key={index}>
                       {index % 2 == 0 ? (
                         <div
                           className="productDetail__details__content__item"
@@ -262,7 +262,7 @@ export default function Product() {
                           </span>
                         </div>
                       )}
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function Product() {
                         />
                       </div>
                       <div className="productReviews__item__header__date">
-                        {new Date(review.createdAt).toLocaleDateString()}
+                        {new Date(review.createdAt).toLocaleDateString("vi-VN")}
                       </div>
                       <div className="productReviews__item__content">
                         {review.content}
@@ -306,9 +306,9 @@ export default function Product() {
                   {productsRelated &&
                     productsRelated
                       .slice(0, 4)
-                      .map((product) => (
+                      .map((product, index) => (
                         <ProductCard
-                          key={product.id}
+                          key={index}
                           product={product}
                         />
                       ))}

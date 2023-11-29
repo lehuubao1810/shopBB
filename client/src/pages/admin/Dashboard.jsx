@@ -15,6 +15,8 @@ import { host } from "../../context/host";
 import "../../assets/css/admin/AdminHomePage.css";
 
 export default function Dashboard() {
+
+
   const [orders, setOrders] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [products, setProducts] = useState([]);
@@ -46,7 +48,10 @@ export default function Dashboard() {
         setTotalOrders(data.metadata.total);
         console.log(data.metadata.orders);
         setRevenue(
-          data.metadata.orders.reduce((acc, cur) => acc + cur.total, 0)
+          data.metadata.orders.reduce((totalRevenue, order) => {
+            if (order.status !== "delivered") return totalRevenue;
+            return totalRevenue + order.total;
+          }, 0)
         );
       })
       .catch((err) => console.log(err));
@@ -81,6 +86,7 @@ export default function Dashboard() {
         setCategories(metadata.data);
       });
   }, []);
+
 
   return (
     <div className="dashboardPage">

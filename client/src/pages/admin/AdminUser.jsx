@@ -62,7 +62,7 @@ export default function AdminUser() {
       .then((data) => {
         if (data.success) {
           setIsShowDeleteModal(false);
-          window.location.href = "/admin/categories";
+          window.location.href = "/admin/users";
         } else {
           alert("Xóa khách hàng không thành công");
         }
