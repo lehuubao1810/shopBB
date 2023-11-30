@@ -75,8 +75,9 @@
 * [![MUI]][MUI-url]
 ### Feature
 
-* Display projects, skills and contact information
-* Responsive design
+* Client: Sign in, sign up, search, filter product, add to cart, create order, pay online, check list
+order, cancel order, review product.
+* Admin: Sign in, manage order, category, product, user.
 
 <!-- GETTING STARTED -->
 ## Getting Started
