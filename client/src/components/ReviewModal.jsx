@@ -35,6 +35,12 @@ export default function ReviewModal({ handleCloseReviewModal, order }) {
   const userId = Cookies.get("user-id");
 
   const handleReview = () => {
+
+    if (reviews.some((review) => review.content === "" || review.rating === 0)) {
+      notify("error", "Vui lòng nhập đánh giá đầy đủ các sản phẩm");
+      return;
+    }
+
     console.log(reviews);
     fetch(`${host.dev}/api/review`, {
       method: "POST",

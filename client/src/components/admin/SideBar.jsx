@@ -11,7 +11,7 @@ export default function SideBar() {
 
   const handleLogOut = async () => {
     await logout();
-    window.location.reload();
+    navigate("/");
   };
 
   return (

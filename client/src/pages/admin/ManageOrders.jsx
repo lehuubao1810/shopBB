@@ -25,7 +25,7 @@ export default function ManageOrders() {
     const accessToken = Cookies.get("access-token");
     const userId = Cookies.get("user-id");
 
-    fetch(`${host.dev}/api/order?limit=5`, {
+    fetch(`${host.dev}/api/order`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -314,6 +314,7 @@ export default function AdminProduct() {
                   dispatch({ type: "category", payload: e.target.value })
                 }
               >
+                <option value="">Chọn danh mục</option>
                 {categories.map((category, index) => (
                   <option key={index} value={category._id}>
                     {category.name}
