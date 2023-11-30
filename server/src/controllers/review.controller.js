@@ -85,7 +85,7 @@ export const createOneReview = async (req, res) => {
       },
     });
 
-    // Update shop reviews
+    // Update shop reviews 
     await Shop.findByIdAndUpdate(userId, {
       $push: {
         reviews: newReview._id,
