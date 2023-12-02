@@ -34,7 +34,7 @@ router.get("/search", async (req, res) => {
     const searchText = req.query.query;
     // const result = await elasticClient.helpers.search({
     const result = await elasticClient.search({
-      index: "new-search-products",
+      index: "search-products",
       query: { fuzzy: { name: req.query.query } },
       size: 3,
 
