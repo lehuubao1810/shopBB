@@ -93,12 +93,14 @@ function Header() {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value.replace(/\s+/g, " "));
+                setIsShowSearchResult(true);
               }}
             />
             <button
               onClick={(e) => {
                 e.preventDefault();
                 navigate(`/search/${search}`);
+                setIsShowSearchResult(false);
               }}
               className="btnSearch"
             >

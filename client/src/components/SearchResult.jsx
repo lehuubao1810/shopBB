@@ -16,7 +16,7 @@ export default function SearchResult({ search, setIsShow }) {
   useEffect(() => {
     // Get products by category (use fetch)
     fetch(
-      `${host.dev}/api/product/search/result?name=${search}&perPage=3`,
+      `${host.dev}/search?query=${search}`,
       {
         method: "GET",
         headers: {
@@ -26,7 +26,7 @@ export default function SearchResult({ search, setIsShow }) {
     )
       .then((res) => res.json())
       .then((metadata) => {
-        setResult(metadata.products);
+        setResult(metadata.hits.hits.map((item) => item._source));
         setResultSuggestions([])
         // console.log(data);
       })
