@@ -2,10 +2,11 @@ import compression from "compression";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import connectMongoDB from "./dbs/init.mongodb.js";
 import mongoose from "mongoose";
-import router from "./routes/index.js";
 import cors from "cors";
+
+import router from "./routes/index.js";
+import connectMongoDB from "./dbs/init.mongodb.js";
 
 const app = express();
 
