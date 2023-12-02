@@ -73,6 +73,8 @@
 * [![Vite]][Vite-url]
 * [![Express.js]][Express.js-url]
 * [![MUI]][MUI-url]
+* [![ElasticSearch]][ElasticSearch-url]
+
 ### Feature
 
 * Client: Sign in, sign up, search, filter product, add to cart, create order, pay online, check list
@@ -151,3 +153,5 @@ Project Link: [https://github.com/lehuubao1810/shopBB](https://github.com/lehuub
 [Express.js-url]: https://expressjs.com/
 [MUI]: https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white
 [MUI-url]: https://mui.com/material-ui/
+[ElasticSearch]:https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch
+[ElasticSearch-url]:https://www.elastic.co/
