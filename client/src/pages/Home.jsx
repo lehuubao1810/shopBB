@@ -57,25 +57,25 @@ export default function Home() {
       <SlideShow />
       <div className="homePage__content">
         <div className="smallBanner">
-          <a onClick={()=> navigate('/laptop')}>
+          <div className="smallBanner__item" onClick={()=> navigate('/laptop')}>
             <img src={image1} alt="small-bannerLaptop" />
-          </a>
-          <a onClick={()=> navigate('/pc')}>
+          </div>
+          <div className="smallBanner__item" onClick={()=> navigate('/pc')}>
             <img src={image2} alt="small-bannerPc" />
-          </a>
-          <a onClick={()=> navigate('/monitor')}>
+          </div>
+          <div className="smallBanner__item" onClick={()=> navigate('/monitor')}>
             <img src={image3} alt="small-bannerMonitor" />
-          </a>
-          <a onClick={()=> navigate('/phone')}>
+          </div>
+          <div className="smallBanner__item" onClick={()=> navigate('/phone')}>
             <img src={image4} alt="small-bannerPhone" />
-          </a>
+          </div>
         </div>
         <div className="listProduct">
           <div className="listProduct__header">
             <h2>Laptop nổi bật</h2>
-            <a onClick={()=> navigate('/laptop')}>
+            <div className="listProduct__header__moreBtn" onClick={()=> navigate('/laptop')}>
               Xem tất cả <i className="fa-solid fa-angle-right"></i>
-            </a>
+            </div>
           </div>
           <div className="listProduct__content">
             {laptop?.map((product) => (
@@ -83,32 +83,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* <div className="listProduct">
-          <div className="listProduct__header">
-            <h2>PC nổi bật</h2>
-            <a href="/pc">
-              Xem tất cả <i className="fa-solid fa-angle-right"></i>
-            </a>
-          </div>
-          <div className="listProduct__content">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-        <div className="listProduct">
-          <div className="listProduct__header">
-            <h2>Điện thoại nổi bật</h2>
-            <a href="/phone">
-              Xem tất cả <i className="fa-solid fa-angle-right"></i>
-            </a>
-          </div>
-          <div className="listProduct__content">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div> */}
       </div>
       <Footer />
       <UpBtn />

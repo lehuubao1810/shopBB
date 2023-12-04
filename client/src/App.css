@@ -638,7 +638,12 @@ footer {
   gap: 200px;
   margin-bottom: 20px;
 }
-
+.footer__row__link {
+  cursor: pointer;
+}
+.footer__row__link:hover {
+  color: #0248b8;
+}
 .footer__row a {
   display: block;
   text-decoration: none;

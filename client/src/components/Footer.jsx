@@ -27,9 +27,9 @@ function Footer() {
           </a> */}
           {
             categories.map((category) => (
-              <a key={category._id} onClick={()=> navigate(`/${category.slug}`)} className="footer__col__item">
+              <div className="footer__row__link footer__col__item" key={category._id} onClick={()=> navigate(`/${category.slug}`)}>
                 {category.name}
-              </a>
+              </div>
             ))
           }
 
@@ -64,21 +64,23 @@ function Footer() {
             Góp ý, khiếu nại:
             <a href="mailto:kn@bb.com">kn@bb.com</a>
           </div>
-          <a href="/contact" className="footer__col__item">
+          <div className="footer__row__link footer__col__item" 
+            onClick={()=> navigate('/contact')}
+          >
             Liên hệ, feedback
-          </a>
+          </div>
         </div>
         <div className="footer__col">
           <div className="footer__col__title">Chính sách</div>
-          <a onClick={()=> navigate('/policy/return-policy')} className="footer__col__item">
+          <div className="footer__row__link footer__col__item" onClick={()=> navigate('/policy/return-policy')}>
             Chính sách đổi trả
-          </a>
-          <a onClick={()=> navigate('/policy/warranty-policy')} className="footer__col__item">
+          </div>
+          <div className="footer__row__link footer__col__item" onClick={()=> navigate('/policy/warranty-policy')}>
             Chính sách bảo hành
-          </a>
-          <a onClick={()=> navigate('/policy/shipping-policy')} className="footer__col__item">
+          </div>
+          <div className="footer__row__link footer__col__item" onClick={()=> navigate('/policy/shipping-policy')}>
             Chính sách vận chuyển
-          </a>
+          </div>
         </div>
       </div>
       <div className="footer__row">

@@ -16,10 +16,11 @@
   object-fit: cover;
   border-radius: 10px;
 }
-.smallBanner a {
+.smallBanner .smallBanner__item {
   transition: all 0.3s ease;
+  cursor: pointer;
 }
-.smallBanner a:hover {
+.smallBanner .smallBanner__item:hover {
   transform: scale(1.05);
 }
 
@@ -35,12 +36,12 @@
   align-items: center;
   margin-bottom: 20px;
 }
-.listProduct__header a {
-  text-decoration: none;
+.listProduct__header .listProduct__header__moreBtn {
+  cursor: pointer;
   color: #82869e;
   font-weight: 500;
 }
-.listProduct__header a:hover {
+.listProduct__header .listProduct__header__moreBtn:hover {
   color: #0248b8;
 }
 .listProduct__content {
