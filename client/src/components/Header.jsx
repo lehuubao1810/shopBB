@@ -45,9 +45,9 @@ function Header() {
     <>
       <header onClick={handleCloseNav}>
         <div className="header">
-          <a className="logo" onClick={() => navigate("/")}>
+          <div className="logo" onClick={() => navigate("/")}>
             BB.
-          </a>
+          </div>
           <div
             className="category"
             onClick={() => {
@@ -115,7 +115,7 @@ function Header() {
             {loadingUser ? (
               <LoadingSpin size={8} />
             ) : user ? (
-              <a onClick={() => setIsShowPersonalBoard(!isShowPersonalBoard)}>
+              <div className="personalBoard__btn" onClick={() => setIsShowPersonalBoard(!isShowPersonalBoard)}>
                 <i className="fa-solid fa-circle-user"></i>
                 <div>
                   Xin chào,
@@ -145,27 +145,27 @@ function Header() {
                     </li>
                   </ul>
                 )}
-              </a>
+              </div>
             ) : (
-              <a onClick={() => navigate("/login")}>
+              <div className="login__btn" onClick={() => navigate("/login")}>
                 <i className="fa-solid fa-circle-user"></i>
                 <div>
                   Đăng nhập
                   <br />
                   Đăng ký
                 </div>
-              </a>
+              </div>
             )}
           </div>
           <div className="cart">
-            <a onClick={() => navigate("/cart")}>
+            <div className="cart__btn" onClick={() => navigate("/cart")}>
               <i className="fa-solid fa-cart-shopping"></i>
               <span>{cartQuantity}</span>
               <div className="cart__quantity">
                 Giỏ hàng của bạn
                 <br />({cartQuantity}) sản phẩm
               </div>
-            </a>
+            </div>
           </div>
         </div>
         <form className="search searchMobile">

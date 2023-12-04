@@ -74,8 +74,8 @@ header {
 .logo {
   font-size: 20px;
   font-weight: 600;
-  text-decoration: none;
   color: #0248b8;
+  cursor: pointer;
 }
 
 /* search */
@@ -104,7 +104,7 @@ header {
   right: 12px;
   top: calc(50% - 8px);
   color: #616161;
-  /* cursor: pointer; */
+  cursor: pointer;
   border: none;
   background-color: transparent;
 }
@@ -184,8 +184,9 @@ header {
 .personalBoard li:nth-last-child(1) {
   border-radius: 0 0 5px 5px;
 }
-.login a,
-.cart a {
+.login .login__btn,
+.login .personalBoard__btn,
+.cart .cart__btn {
   display: flex;
   gap: 15px;
   align-items: center;
@@ -195,16 +196,19 @@ header {
   font-weight: 500;
   line-height: 1.6;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
-.login a i,
-.cart a i {
+.login .login__btn i,
+.login .personalBoard__btn i,
+.cart .cart__btn i {
   font-size: 25px;
 }
 .cart span {
   display: none;
 }
-.login:hover a,
-.cart:hover a {
+.login:hover .login__btn,
+.login:hover .personalBoard__btn,
+.cart:hover .cart__btn {
   color: #0248b8;
 }
 .overlay {
