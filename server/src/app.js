@@ -41,7 +41,7 @@ app.use(cors(corsOptions));
 // Routes
 app.get("/", (req, res) => {
   res.send("Server is running!");
-});
+}); 
 app.use("/api", router);
 
 // Handling Errors
