@@ -25,8 +25,6 @@
     <br />
     <br />
     <a href="https://shop-bb.vercel.app/">View Demo</a>
-    <p>(You need to wait for the server to operate to view the data)</p>
-    <a href="https://shopbb.onrender.com/">Check server status</a>
     <!-- ·
     <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
     ·
