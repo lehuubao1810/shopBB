@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { host } from "./host";
 
 const AuthContext = createContext();
+
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthContextProvider({ children }) {
