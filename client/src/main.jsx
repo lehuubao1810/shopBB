@@ -8,6 +8,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthContextProvider>
     <CartContextProvider>
       <App />
-    </CartContextProvider>
+    </CartContextProvider> 
   </AuthContextProvider>
 );

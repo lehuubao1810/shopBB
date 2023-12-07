@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import DataGrid, {
+  Column,
+  Grouping,
+  GroupPanel,
+  Pager,
+  Paging,
+  SearchPanel,
+  Editing,
+  FilterRow,
+  HeaderFilter,
+  FilterPanel,
+  FilterBuilderPopup,
+  Lookup,
+} from "devextreme-react/data-grid";
 import SideBar from "../../components/admin/SideBar";
 import TableDashboard from "../../components/admin/TableDashboard";
 
