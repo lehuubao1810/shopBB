@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import SideBar from "../../components/admin/SideBar";
@@ -15,11 +15,12 @@ export default function ManageUsers() {
     document.title = "Quản lý nguời dùng | Admin";
   }, []);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
 
   const [users, setUsers] = useState([]);
+  const [usersDisplay, setUsersDisplay] = useState([]);
 
   useEffect(() => {
     const accessToken = Cookies.get("access-token");
@@ -35,10 +36,19 @@ export default function ManageUsers() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.data);
+        setUsersDisplay(data.data);
         // console.log(data.data.length);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const result = users.filter((user) => {
+      return user.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setUsersDisplay(result);
+  }
 
   return (
     <div className="manageUsersPage">
@@ -58,10 +68,7 @@ export default function ManageUsers() {
               }}
             />
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(`/admin/users?search=${search}`);
-              }}
+              onClick={(e) => handleSearch(e)}
               className="btnSearch"
             >
               <i className="fa-solid fa-magnifying-glass"></i>
@@ -84,7 +91,7 @@ export default function ManageUsers() {
                 "Số lượt đánh giá",
                 "Ngày đăng ký",
               ]}
-              data={users}
+              data={usersDisplay}
               type="user"
             />
           </div>

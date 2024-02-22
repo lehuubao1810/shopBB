@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import SideBar from "../../components/admin/SideBar";
@@ -15,11 +15,12 @@ export default function ManageOrders() {
     document.title = "Quản lý đơn hàng | Admin";
   }, []);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
 
   const [orders, setOrders] = useState([]);
+  const [ordersDisplay, setOrdersDisplay] = useState([]);
 
   useEffect(() => {
     const accessToken = Cookies.get("access-token");
@@ -36,10 +37,19 @@ export default function ManageOrders() {
       .then((res) => res.json())
       .then((data) => {
         setOrders(data.metadata.orders);
-        console.log(data.metadata.orders);
+        setOrdersDisplay(data.metadata.orders);
+        // console.log(data.metadata.orders);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const result = orders.filter((order) => {
+      return order._id.toLowerCase().includes(search.toLowerCase());
+    });
+    setOrdersDisplay(result);
+  };
 
   return (
     <div className="manageOrdersPage">
@@ -59,10 +69,7 @@ export default function ManageOrders() {
               }}
             />
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(`/admin/orders?search=${search}`);
-              }}
+              onClick={(e) => handleSearch(e)}
               className="btnSearch"
             >
               <i className="fa-solid fa-magnifying-glass"></i>
@@ -85,7 +92,7 @@ export default function ManageOrders() {
                 "Trạng thái",
                 "Thời gian",
               ]}
-              data={orders}
+              data={ordersDisplay}
               type="order"
             />
           </div>

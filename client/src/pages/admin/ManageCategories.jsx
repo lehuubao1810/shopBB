@@ -12,14 +12,17 @@ import DataGrid, {
   HeaderFilter,
   FilterPanel,
   FilterBuilderPopup,
-  Lookup,
+  // Button,
+  // Lookup,
 } from "devextreme-react/data-grid";
+
 import SideBar from "../../components/admin/SideBar";
 import TableDashboard from "../../components/admin/TableDashboard";
 
 import { host } from "../../context/host";
 
 import "../../assets/css/admin/ManageCategories.css";
+import "devextreme/dist/css/dx.light.css";
 
 export default function ManageCategories() {
   useEffect(() => {
@@ -32,14 +35,26 @@ export default function ManageCategories() {
   const [search, setSearch] = useState("");
 
   const [categories, setCategories] = useState([]);
+  const [categoriesDisplay, setCategoriesDisplay] = useState([]);
+
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     fetch(`${host.dev}/api/category`)
       .then((res) => res.json())
       .then((metadata) => {
         setCategories(metadata.data);
+        setCategoriesDisplay(metadata.data);
       });
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const result = categories.filter((category) => {
+      return category.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setCategoriesDisplay(result);
+  }
 
   return (
     <div className="manageCategoriesPage">
@@ -59,21 +74,18 @@ export default function ManageCategories() {
               }}
             />
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(`/admin/categories?search=${search}`);
-              }}
+              onClick={e => handleSearch(e)}
               className="btnSearch"
             >
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
           </form>
           <div
-                className="manageCategoriesPage__content__header__item"
-                onClick={() => navigate("/admin/create-category")}
-              >
-                Thêm danh mục
-              </div>
+            className="manageCategoriesPage__content__header__item"
+            onClick={() => navigate("/admin/create-category")}
+          >
+            Thêm danh mục
+          </div>
         </div>
         <div className="manageCategoriesPage__content__body">
           <div className="manageCategoriesPage__content__body__listCategories">
@@ -85,9 +97,65 @@ export default function ManageCategories() {
                 "Số thuộc tính",
                 "Ngày cập nhật",
               ]}
-              data={categories}
+              data={categoriesDisplay}
               type="category"
             />
+          </div>
+          <div className="manageCategoriesPage__content__body__listCategories">
+            <DataGrid
+              dataSource={categories}
+              allowColumnReordering={true}
+              rowAlternationEnabled={true}
+              showBorders={true}
+              width="100%"
+              onContentReady={(e) => {
+                if (!collapsed) {
+                  e.component.expandRow(["EnviroCare"]);
+                  setCollapsed(true);
+                }
+              }}
+            >
+              <FilterRow visible={true} />
+              <FilterPanel visible={true} />
+              <FilterBuilderPopup />
+              <HeaderFilter visible={true} />
+              <GroupPanel visible={true} />
+              <SearchPanel visible={true} highlightCaseSensitive={true} />
+              <Grouping autoExpandAll={false} />
+              <Editing
+                mode="row"
+                useIcons={true}
+                allowUpdating={true}
+                allowDeleting={true}
+                allowAdding={true}
+                // startEditAction="dblClick"
+                // selectTextOnEditStart={true}
+              />
+              {/* <Column type="buttons" width={110}>
+                <Button name="edit" />
+                <Button name="delete" />
+              </Column> */}
+              <Column dataField="name" caption="Name" />
+              <Column dataField="slug" caption="Slug" alignment="center" />
+              <Column
+                dataField="createdAt"
+                caption="Created At"
+                dataType="date"
+                alignment="center"
+              />
+              <Column
+                dataField="updatedAt"
+                caption="Updated At"
+                dataType="date"
+                alignment="center"
+              />
+
+              <Pager
+                allowedPageSizes={[5, 10, 25, 100]}
+                showPageSizeSelector={true}
+              />
+              <Paging defaultPageSize={10} />
+            </DataGrid>
           </div>
         </div>
         {false && <div className="overlay"></div>}
