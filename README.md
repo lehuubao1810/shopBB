@@ -74,10 +74,14 @@
 * [![ElasticSearch]][ElasticSearch-url]
 
 ### Feature
-
+<h4>The demo page uses a free server, so it may not be available all the time. If you can't access the page, please try reloading it a few times.</h4>
 * Client: Sign in, sign up, search, filter product, add to cart, create order, pay online, check list
 order, cancel order, review product.
 * Admin: Sign in, manage order, category, product, user.
+
+Account for test:
+* Client: clienttest@gmail.com / client
+* Admin: admintest@gmail.com / admin ([Admin Page](https://shop-bb.vercel.app/admin) )
 
 <!-- GETTING STARTED -->
 ## Getting Started
