@@ -25,11 +25,11 @@ export default function CheckOut() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [city, setCity] = useState([{ name: "Tỉnh, Thành phố" }]);
+  const [city, setCity] = useState([{ province_name: "Tỉnh, Thành phố" }]);
   const [citySelected, setCitySelected] = useState("");
-  const [district, setDistrict] = useState([{ name: "Quận, Huyện" }]);
+  const [district, setDistrict] = useState([{ district_name: "Quận, Huyện" }]);
   const [districtSelected, setDistrictSelected] = useState("");
-  const [ward, setWard] = useState([{ name: "Phường, Xã" }]);
+  const [ward, setWard] = useState([{ ward_name: "Phường, Xã" }]);
   const [wardSelected, setWardSelected] = useState("");
   const [address, setAddress] = useState("");
 
@@ -51,12 +51,12 @@ export default function CheckOut() {
       setName(user.name);
       setPhone(user.phone ? user.phone : "");
       setEmail(user.email);
-      setAddress(addressUser[0] ? addressUser[0].replace(/\s+/g, ' ') : "");
+      setAddress(addressUser[0] ? addressUser[0].replace(/\s+/g, " ") : "");
       setCitySelected(addressUser[3] ? addressUser[3].trim() : "");
       setDistrictSelected(addressUser[2] ? addressUser[2].trim() : "");
       setWardSelected(addressUser[1] ? addressUser[1].trim() : "");
-      setDistrict([{ name: addressUser[2]?.trim() }]);
-      setWard([{ name: addressUser[1]?.trim() }]);
+      setDistrict([{ district_name: addressUser[2]?.trim() }]);
+      setWard([{ ward_name: addressUser[1]?.trim() }]);
     }
   }, [user, addressUser]);
 
@@ -68,33 +68,55 @@ export default function CheckOut() {
     setOrder(orderStorage);
 
     // get address from api
-    // const apiProvince = https://provinces.open-api.vn/api/
-    // const apiDistrict = https://provinces.open-api.vn/api/p/${provinceId}?depth=2
-    // const apiWard = https://provinces.open-api.vn/api/d/${districtId}?depth=2
-
-    fetch("https://provinces.open-api.vn/api/")
+    fetch("https://vapi.vnappmob.com/api/province/")
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        setCity([{ name: "Tỉnh, Thành phố" }, ...data]);
+        const provinceData = data.results.map((item) => {
+          return {
+            code: item.province_id,
+            province_name: item.province_name,
+          };
+        });
+
+        // console.log(data);
+        setCity([{ province_name: "Tỉnh, Thành phố" }, ...provinceData]);
         if (user) {
-          const cityDisplay = address ? { name: `${addressUser[3].trim()}` } : { name: "Tỉnh, Thành phố" };
-          setCity([cityDisplay, ...data]);
+          const cityDisplay = user.address
+            ? { province_name: `${addressUser[3].trim()}` }
+            : { province_name: "Tỉnh, Thành phố" };
+          setCity([cityDisplay, ...provinceData]);
         }
       })
       .catch((err) => console.log(err));
   }, [user, address, addressUser]);
 
   const callApiDistrict = (provinceId) => {
-    fetch(`https://provinces.open-api.vn/api/p/${provinceId}?depth=2`)
+    fetch(`https://vapi.vnappmob.com/api/province/district/${provinceId}`)
       .then((res) => res.json())
-      .then((data) => setDistrict(data.districts))
+      .then((data) => {
+        const districtData = data.results.map((item) => {
+          return {
+            code: item.district_id,
+            district_name: item.district_name,
+          };
+        });
+        setDistrict(districtData);
+      })
       .catch((err) => console.log(err));
   };
   const callApiWard = (districtId) => {
-    fetch(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`)
+    fetch(`https://vapi.vnappmob.com/api/province/ward/${districtId}`)
       .then((res) => res.json())
-      .then((data) => setWard(data.wards))
+      .then((data) => {
+        const wardData = data.results.map((item) => {
+          return {
+            code: item.ward_id,
+            ward_name: item.ward_name,
+          };
+        });
+        setWard(wardData);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -121,7 +143,7 @@ export default function CheckOut() {
       return false;
     }
     console.log("check input");
-    console.log(phone)
+    console.log(phone);
     return true;
   };
 
@@ -144,7 +166,7 @@ export default function CheckOut() {
         customer_id: user ? user._id : null,
         name,
         phone,
-        address: `${address?.replace(/\s+/g, ' ')}, ${
+        address: `${address?.replace(/\s+/g, " ")}, ${
           isChangeAddress
             ? `${ward.find((item) => item.code == wardSelected).name}, ${
                 district.find((item) => item.code == districtSelected).name
@@ -173,7 +195,7 @@ export default function CheckOut() {
       total: formatPrice(calculateTotal()),
       payment,
       note,
-      address: `${address?.replace(/\s+/g, ' ')}, ${
+      address: `${address?.replace(/\s+/g, " ")}, ${
         isChangeAddress
           ? `${ward.find((item) => item.code == wardSelected).name}, ${
               district.find((item) => item.code == districtSelected).name
@@ -275,7 +297,7 @@ export default function CheckOut() {
                     >
                       {city.map((item, index) => (
                         <option value={item.code} key={index}>
-                          {item.name}
+                          {item.province_name}
                         </option>
                       ))}
                     </select>
@@ -292,7 +314,7 @@ export default function CheckOut() {
                     >
                       {district.map((item, index) => (
                         <option value={item.code} key={index}>
-                          {item.name}
+                          {item.district_name}
                         </option>
                       ))}
                     </select>
@@ -310,7 +332,7 @@ export default function CheckOut() {
                     >
                       {ward.map((item, index) => (
                         <option value={item.code} key={index}>
-                          {item.name}
+                          {item.ward_name}
                         </option>
                       ))}
                     </select>

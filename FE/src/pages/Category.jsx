@@ -13,6 +13,7 @@ import SliderPrice from "../components/SliderPrice";
 import { host } from "../context/host";
 
 import "../assets/css/Category.css";
+import { Skeleton } from "@mui/material";
 
 // import { products } from "../context/products";
 // import { filterProduct } from "../context/filterProduct";
@@ -22,7 +23,8 @@ export default function Category() {
   const [dataProducts, setDataProducts] = useState([]); // [products, setProducts]
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingFilter, setLoadingFilter] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const { categoryName } = useParams();
   const sortPrice = [
     {
@@ -53,7 +55,7 @@ export default function Category() {
     // const valueText = `minPrice=${value[0]}&maxPrice=${value[1]}`
     searchParams.set("minPrice", value[0]);
     searchParams.set("maxPrice", value[1]);
-    navigate({ search: searchParams.toString()});
+    navigate({ search: searchParams.toString() });
     // console.log(value);
   };
 
@@ -62,6 +64,7 @@ export default function Category() {
   }, []);
 
   useEffect(() => {
+    setLoadingFilter(true);
     // Get category by name (use fetch)
     fetch(`${host.dev}/api/category/slug/${categoryName}`, {
       method: "GET",
@@ -77,18 +80,21 @@ export default function Category() {
         document.title = `${metadata.data.name} | Shop BB`;
         console.log(metadata.data.attributes);
         setFilter(metadata.data.attributes);
-        setLoading(false);
+        setLoadingFilter(false);
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        setLoadingFilter(false);
       });
   }, [categoryName]);
 
   useEffect(() => {
     // Get products by category (use fetch)
+    setLoadingProducts(true);
     fetch(
-      `${host.dev}/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
+      `${
+        host.dev
+      }/api/product/category/slug/${categoryName}?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -100,9 +106,13 @@ export default function Category() {
       .then((metadata) => {
         setDataProducts(metadata);
         setProducts(metadata.products);
+        setLoadingProducts(false);
         // console.log(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoadingProducts(false);
+      });
   }, [searchParams, categoryName]);
 
   return (
@@ -112,18 +122,25 @@ export default function Category() {
       <div className="categoryPage__content">
         <h5 className="categoryPage__content__title">Lọc danh sách</h5>
         <div className="categoryPage__content__filter">
-          {loading && <h1>Loading...</h1>}
-
           <div className="categoryPage__content__filter__row">
-            {filter?.map((item, index) => (
-              <FilterAutoWidth
-                key={index}
-                slug={item.slug}
-                name={item.name}
-                options={item.options}
-                handleFilter={handleFilter}
-              />
-            ))}
+            {loadingFilter ? (
+              <div className="loadingFilter">
+                <Skeleton variant="rounded" width={100} height={40} />
+                <Skeleton variant="rounded" width={100} height={40} />
+                <Skeleton variant="rounded" width={100} height={40} />
+                <Skeleton variant="rounded" width={100} height={40} />
+              </div>
+            ) : (
+              filter?.map((item, index) => (
+                <FilterAutoWidth
+                  key={index}
+                  slug={item.slug}
+                  name={item.name}
+                  options={item.options}
+                  handleFilter={handleFilter}
+                />
+              ))
+            )}
 
             <FilterAutoWidth
               slug="sortPrice"
@@ -138,12 +155,16 @@ export default function Category() {
         </div>
         <h2 className="categoryPage__content__title">{categoryName}</h2>
         <div className="listProduct__content">
-          {products?.length > 0 ? (
+          {loadingProducts ? (
+            <>
+              <Skeleton variant="rounded" width={"100%"} height={360} />
+              <Skeleton variant="rounded" width={"100%"} height={360} />
+              <Skeleton variant="rounded" width={"100%"} height={360} />
+              <Skeleton variant="rounded" width={"100%"} height={360} />
+            </>
+          ) : products?.length > 0 ? (
             products?.map((product, index) => (
-              <ProductCard
-                key={index}
-                product={product}
-              />
+              <ProductCard key={index} product={product} />
             ))
           ) : (
             <h4>Không tồn tại sản phẩm nào</h4>

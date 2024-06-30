@@ -30,23 +30,27 @@ export default function PersonalPage() {
 
   const cityDisplay = useMemo(() => {
     return address
-      ? { name: `${addressUser[3].trim()}` }
-      : { name: "Tỉnh, Thành phố" };
+      ? { province_name: `${addressUser[3].trim()}` }
+      : { province_name: "Tỉnh, Thành phố" };
   }, [address, addressUser]);
   console.log(cityDisplay);
 
   const [city, setCity] = useState([]);
   const [citySelected, setCitySelected] = useState("");
   const [district, setDistrict] = useState(
-    address ? [{ name: `${addressUser[2].trim()}` }] : [{ name: "Quận, Huyện" }]
+    address
+      ? [{ district_name: `${addressUser[2].trim()}` }]
+      : [{ district_name: "Quận, Huyện" }]
   );
   const [districtSelected, setDistrictSelected] = useState("");
   const [ward, setWard] = useState(
-    address ? [{ name: `${addressUser[1].trim()}` }] : [{ name: "Phường, Xã" }]
+    address
+      ? [{ ward_name: `${addressUser[1].trim()}` }]
+      : [{ ward_name: "Phường, Xã" }]
   );
   const [wardSelected, setWardSelected] = useState("");
   const [addressDetail, setAddressDetail] = useState(
-    address ? `${addressUser[0].replace(/\s+/g, ' ')}` : ""
+    address ? `${addressUser[0].replace(/\s+/g, " ")}` : ""
   );
   console.log(city, district, ward, addressDetail);
 
@@ -57,24 +61,48 @@ export default function PersonalPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     document.title = `Thông tin cá nhân | Shop BB`;
-    fetch("https://provinces.open-api.vn/api/")
+    fetch("https://vapi.vnappmob.com/api/province/")
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        setCity([cityDisplay, ...data]);
+        const provinceData = data.results.map((item) => {
+          return {
+            code: item.province_id,
+            province_name: item.province_name,
+          };
+        });
+
+        setCity([cityDisplay, ...provinceData]);
+        console.log([cityDisplay, ...provinceData]);
       })
       .catch((err) => console.log(err));
   }, [cityDisplay]);
   const callApiDistrict = (provinceId) => {
-    fetch(`https://provinces.open-api.vn/api/p/${provinceId}?depth=2`)
+    fetch(`https://vapi.vnappmob.com/api/province/district/${provinceId}`)
       .then((res) => res.json())
-      .then((data) => setDistrict(data.districts))
+      .then((data) => {
+        const districtData = data.results.map((item) => {
+          return {
+            code: item.district_id,
+            district_name: item.district_name,
+          };
+        });
+        setDistrict(districtData);
+      })
       .catch((err) => console.log(err));
   };
   const callApiWard = (districtId) => {
-    fetch(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`)
+    fetch(`https://vapi.vnappmob.com/api/province/ward/${districtId}`)
       .then((res) => res.json())
-      .then((data) => setWard(data.wards))
+      .then((data) => {
+        const wardData = data.results.map((item) => {
+          return {
+            code: item.ward_id,
+            ward_name: item.ward_name,
+          };
+        });
+        setWard(wardData);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -84,11 +112,12 @@ export default function PersonalPage() {
     console.log({
       name,
       phone,
-      address: `${addressDetail.replace(/\s+/g, ' ')}, ${
+      address: `${addressDetail.replace(/\s+/g, " ")}, ${
         isChangeAddress
-          ? `${ward.find((item) => item.code == wardSelected).name}, ${
-              district.find((item) => item.code == districtSelected).name
-            }, ${city.find((item) => item.code == citySelected).name}`
+          ? `${ward.find((item) => item.code == wardSelected).ward_name}, ${
+              district.find((item) => item.code == districtSelected)
+                .district_name
+            }, ${city.find((item) => item.code == citySelected).province_name}`
           : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
       }`,
     });
@@ -104,9 +133,12 @@ export default function PersonalPage() {
         phone,
         address: `${addressDetail}, ${
           isChangeAddress
-            ? `${ward.find((item) => item.code == wardSelected).name}, ${
-                district.find((item) => item.code == districtSelected).name
-              }, ${city.find((item) => item.code == citySelected).name}`
+            ? `${ward.find((item) => item.code == wardSelected).ward_name}, ${
+                district.find((item) => item.code == districtSelected)
+                  .district_name
+              }, ${
+                city.find((item) => item.code == citySelected).province_name
+              }`
             : `${addressUser[1].trim()}, ${addressUser[2].trim()}, ${addressUser[3].trim()}`
         }`,
       }),
@@ -191,7 +223,7 @@ export default function PersonalPage() {
             >
               {city.map((item, index) => (
                 <option value={item.code} key={index}>
-                  {item.name}
+                  {item.province_name}
                 </option>
               ))}
             </select>
@@ -206,7 +238,7 @@ export default function PersonalPage() {
             >
               {district.map((item, index) => (
                 <option value={item.code} key={index}>
-                  {item.name}
+                  {item.district_name}
                 </option>
               ))}
             </select>
@@ -220,7 +252,7 @@ export default function PersonalPage() {
             >
               {ward.map((item, index) => (
                 <option value={item.code} key={index}>
-                  {item.name}
+                  {item.ward_name}
                 </option>
               ))}
             </select>

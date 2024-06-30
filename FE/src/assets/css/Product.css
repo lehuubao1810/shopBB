@@ -21,10 +21,11 @@
   border-radius: 10px;
   padding: 20px;
   display: flex;
-  gap: 20px;
   justify-content: space-between;
 }
-
+.productPreview__info__left {
+  width: 35%;
+}
 .productPreview__info__left__tech {
   padding: 40px;
   font-size: 14px;
@@ -33,6 +34,10 @@
 }
 .productPreview__info__left__tech__item {
   margin-bottom: 10px;
+}
+
+.productPreview__info__right {
+  width: 60%;
 }
 .productPreview__info__right__btn {
   display: grid;
@@ -196,7 +201,8 @@
   padding-left: 20px;
 }
 
-.productReviews__item__header__date, .productReviews__item__content {
+.productReviews__item__header__date,
+.productReviews__item__content {
   margin-left: 5px;
 }
 .productReviews__item__header__date {
@@ -229,7 +235,7 @@
     flex-direction: column;
     align-items: center;
   }
-  .productPreview__info__left__img img{
+  .productPreview__info__left__img img {
     width: 100%;
     object-fit: contain;
   }

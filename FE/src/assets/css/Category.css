@@ -21,6 +21,14 @@
   flex-wrap: wrap;
 }
 
+.loadingFilter {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 80%;
+  padding-top: 8px;
+}
+
 .categoryPage__content__filter .btnFilter {
   margin: 8px;
   margin-top: 32px;

@@ -16,6 +16,7 @@ import notify from "../utils/notify";
 import { host } from "../context/host";
 
 import "../assets/css/Product.css";
+import { Skeleton } from "@mui/material";
 
 // import { products } from "../context/products";
 
@@ -75,7 +76,6 @@ export default function Product() {
       })
       .catch((err) => console.log(err));
 
-      
     fetch(`${host.dev}/api/category/${product.category}`, {
       method: "GET",
       headers: {
@@ -91,7 +91,7 @@ export default function Product() {
       .catch((err) =>
         console.log("Lỗi: ", err, "Tại: ", "client/src/pages/Product.jsx")
       );
-  }, [ product]);
+  }, [product]);
 
   const { addToCart } = useCart();
   const handleAddToCart = () => {
@@ -109,7 +109,72 @@ export default function Product() {
   return (
     <>
       {loading ? (
-        <h4>Loading...</h4>
+        <div className="productPage">
+          <Header />
+          <div className="productPage__content">
+            <div className="productPreview">
+              <div className="productPreview__info">
+                <div className="productPreview__info__left">
+                  <div className="productPreview__info__left__img">
+                    <Skeleton variant="rounded" width={"100%"} height={400} />
+                  </div>
+                </div>
+                <div className="productPreview__info__right">
+                  <h2 className="productPreview__info__right__name">
+                    <Skeleton variant="text" width={"100%"} height={40} />
+                  </h2>
+                  <div className="productPreview__info__right__brand">
+                    <span className="productPreview__info__right__brand__name">
+                      <Skeleton variant="text" width={"60%"} height={40} />
+                    </span>
+                    <span className="productPreview__info__right__brand__value">
+                      <Skeleton variant="text" width={"50%"} height={40} />
+                    </span>
+                  </div>
+                  <span className="productPreview__info__right__priceDiscounted">
+                    <Skeleton variant="text" width={"45%"} height={40} />
+                  </span>
+                  <div className="productPreview__info__right__line"></div>
+                  <div className="productPreview__info__right__gift">
+                    <Skeleton variant="text" width={"30%"} height={40} />
+
+                    <div className="productPreview__info__right__gift__item">
+                      <Skeleton variant="text" width={"100%"} height={40} />
+                    </div>
+                    <div className="productPreview__info__right__gift__item">
+                      <Skeleton variant="text" width={"100%"} height={40} />
+                    </div>
+                    <div className="productPreview__info__right__gift__item">
+                      <Skeleton variant="text" width={"100%"} height={40} />
+                    </div>
+                  </div>
+                  <div className="productPreview__info__right__btn">
+                    <Skeleton variant="rounded" width={"100%"} height={60} />
+
+                    <Skeleton variant="rounded" width={"100%"} height={60} />
+                  </div>
+                </div>
+              </div>
+              <div className="productPreview__policies">
+                <div className="productPreview__policies__content">
+                  <div className="productPreview__policies__content__item">
+                    <Skeleton variant="text" width={"100%"} height={40} />
+                  </div>
+                  <div className="productPreview__policies__content__item">
+                    <Skeleton variant="text" width={"100%"} height={40} />
+                  </div>
+                  <div className="productPreview__policies__content__item">
+                    <Skeleton variant="text" width={"100%"} height={40} />
+                  </div>
+                  <div className="productPreview__policies__content__item">
+                    <Skeleton variant="text" width={"100%"} height={40} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Footer />
+        </div>
       ) : (
         <div className="productPage">
           <ToastContainer />
@@ -307,10 +372,7 @@ export default function Product() {
                     productsRelated
                       .slice(0, 4)
                       .map((product, index) => (
-                        <ProductCard
-                          key={index}
-                          product={product}
-                        />
+                        <ProductCard key={index} product={product} />
                       ))}
                 </div>
               </div>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import formatPrice from "../utils/formatPrice";
 
 import { host } from "../context/host";
+import { CircularProgress } from "@mui/material";
 
 export default function SearchResult({ search, setIsShow }) {
   const [result, setResult] = useState([]);
@@ -12,25 +13,28 @@ export default function SearchResult({ search, setIsShow }) {
   const navigate = useNavigate();
 
   const [resultSuggestions, setResultSuggestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get products by category (use fetch)
-    fetch(
-      `${host.dev}/api/product/search/result?name=${search}&perPage=3`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    setLoading(true);
+    fetch(`${host.dev}/api/product/search/result?name=${search}&perPage=3`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((metadata) => {
         setResult(metadata.products);
-        setResultSuggestions([])
+        setResultSuggestions([]);
+        setLoading(false);
         // console.log(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [search]);
 
   return (
@@ -41,7 +45,9 @@ export default function SearchResult({ search, setIsShow }) {
       }}
     >
       <h4>Kết quả tìm kiếm cho: {search}</h4>
-      {result?.length > 0 ? (
+      {loading ? (
+        <CircularProgress />
+      ) : result?.length > 0 ? (
         <>
           <div className="searchResult__list">
             {result.map((item) => (
